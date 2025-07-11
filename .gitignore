@@ -30,6 +30,10 @@ temp_processing/
 # Large image directories
 GreaterCleveland/
 
+# Embedded git repositories (submodules)
+Digital-Redlining-and-Academic-Outcomes/
+plot/
+
 # Generated HTML files (keep main analysis files but exclude test/temp ones)
 *_test.html
 test_*.html
