@@ -1,0 +1,120 @@
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin=""/>
+
+<!-- Leaflet JavaScript -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""></script>
+
+<!-- Leaflet Providers for additional map tiles -->
+<script src="https://unpkg.com/leaflet-providers@2.0.0/leaflet-providers.js"></script>
+
+<!-- Leaflet Marker Cluster CSS and JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+
+<!-- Custom map_fix.js script -->
+<script src="map_fix.js"></script>
+
+<!-- Additional CSS to fix layout issues -->
+<style>
+/* Fix z-index issues */
+.leaflet-container {
+  position: relative;
+  z-index: 1;
+}
+.leaflet-pane {
+  z-index: 1;
+}
+.leaflet-top, .leaflet-bottom {
+  z-index: 10;
+}
+.leaflet-popup-pane {
+  z-index: 7;
+}
+
+/* Force leaflet containers to display properly */
+.leaflet-container {
+  display: block !important;
+  visibility: visible !important;
+  height: 600px !important;
+  width: 100% !important;
+}
+
+/* Ensure map containers have proper height */
+.map-container {
+  min-height: 600px;
+  position: relative !important;
+  display: block !important;
+}
+
+/* Make sure tiles are visible */
+.leaflet-tile-pane {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+.leaflet-tile {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Prevent other elements from overlapping the map */
+.section-wrapper {
+  position: relative;
+  overflow: visible;
+}
+</style>
+
+<!-- Fix for leaflet map rendering issues -->
+<script>
+// Force maps to redraw after page load
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM loaded, initializing maps...');
+  
+  // First attempt at resize
+  if (typeof window.dispatchEvent === 'function') {
+    window.dispatchEvent(new Event('resize'));
+    console.log('Initial resize event dispatched');
+  }
+  
+  // Multiple attempts with increasing delays
+  const resizeDelays = [100, 500, 1000, 2000];
+  resizeDelays.forEach(delay => {
+    setTimeout(function() {
+      if (typeof window.dispatchEvent === 'function') {
+        window.dispatchEvent(new Event('resize'));
+        console.log(`Resize event dispatched after ${delay}ms`);
+      }
+    }, delay);
+  });
+  
+  // Find all map containers and make sure they're visible
+  setTimeout(function() {
+    const leafletContainers = document.querySelectorAll('.leaflet-container');
+    console.log(`Found ${leafletContainers.length} leaflet containers`);
+    
+    leafletContainers.forEach((container, i) => {
+      container.style.display = 'block';
+      container.style.visibility = 'visible';
+      console.log(`Fixed container ${i} visibility`);
+    });
+  }, 1500);
+});
+</script>
+
+<!-- Additional leaflet CSS tweaks -->
+<style>
+  /* Force leaflet containers to display properly */
+  .leaflet-container {
+    display: block !important;
+    visibility: visible !important;
+  }
+  
+  /* Ensure map containers have proper height */
+  .map-container {
+    min-height: 600px;
+  }
+</style> 

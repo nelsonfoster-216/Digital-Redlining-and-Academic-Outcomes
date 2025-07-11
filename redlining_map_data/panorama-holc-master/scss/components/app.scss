@@ -1,0 +1,81 @@
+body {
+	font-size: 16px;
+}
+
+.hidden {
+	visibility: hidden;
+}
+
+.leaflet-container {
+
+	.donut, .donuthole {
+		stroke-width: 1;
+		stroke: #ddd;
+		stroke-dasharray: 5,5;
+
+	}
+	
+	.ringArea {
+		stroke: black;
+		stroke-width: 1;
+	}	
+	
+	.neighborhoodPolygon,
+	.ringGradedArea {
+		stroke-width: 2;
+		mix-blend-mode: overlay;
+		&.gradeA {
+			stroke: $gradeA;
+			fill: $gradeA;
+		}
+		&.gradeB {
+			stroke: $gradeB;
+			fill: $gradeB;
+		}
+		&.gradeC {
+			stroke: $gradeCDark;
+			fill: $gradeCDark;
+		}
+		&.gradeD {
+			stroke: $gradeD;
+			fill: $gradeD;
+		}
+	}
+	
+	.selectedGradedNeighborhoods,
+	.neighborhoodPolygonInverted {
+		stroke: black;
+
+		fill-opacity: 0.5;
+		stroke-opacity: 1;
+		fill: $background;
+		stroke-width : 2.5;
+	}
+	
+	.simpleDonut {
+		stroke: none;
+		fill-opacity: .6;
+	
+		&.grade_a {
+			fill: $gradeA;
+		}
+		&.grade_b {
+			fill: $gradeB;
+		}
+		&.grade_c {
+			fill: $gradeC;
+		}
+		&.grade_d {
+			fill: $gradeD;
+		}
+	}
+
+	.cityCircle {
+		stroke-width: 0;
+		fill-opacity: 0;
+	}
+}
+
+.nav_header h2 {
+	background-color: transparent;
+}

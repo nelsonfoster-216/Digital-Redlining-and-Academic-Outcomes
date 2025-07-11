@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Extracted Broadband Polygons - Cleveland</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        #header {
+            background-color: #3b5998;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        #map {
+            height: calc(100vh - 50px);
+            width: 100%;
+        }
+        .legend {
+            line-height: 18px;
+            color: #555;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+        }
+        .info {
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255,255,255,0.8);
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>Extracted Broadband Polygons - Cleveland</h1>
+    </div>
+    <div id="map"></div>
+    
+    <script>
+        // Initialize the map centered on Cleveland
+        var map = L.map('map').setView([41.49, -81.67], 11);
+        
+        // Add base map layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        // Define colors for different broadband speeds
+        var colors = {
+            '0-9 Mbps': '#d73027',     // Red
+            '10-24 Mbps': '#f46d43',   // Orange-Red
+            '25-49 Mbps': '#fdae61',   // Orange-Yellow
+            '50-100 Mbps': '#abd9e9',  // Light Blue
+            '100+ Mbps': '#74add1'     // Blue
+        };
+        
+        // Load and display the GeoJSON data
+        fetch('broadband_cleveland.geojson')
+            .then(response => response.json())
+            .then(data => {
+                // Add GeoJSON layer
+                L.geoJSON(data, {
+                    style: function(feature) {
+                        return {
+                            fillColor: feature.properties.color_code || colors[feature.properties.speed_category] || '#999999',
+                            weight: 1,
+                            opacity: 1,
+                            color: '#666',
+                            fillOpacity: 0.7
+                        };
+                    },
+                    onEachFeature: function(feature, layer) {
+                        // Add popup with information
+                        var popupContent = '<b>Broadband Speed:</b> ' + 
+                                          (feature.properties.speed_category || 'Unknown');
+                        layer.bindPopup(popupContent);
+                    }
+                }).addTo(map);
+                
+                // Add legend
+                var legend = L.control({position: 'bottomright'});
+                legend.onAdd = function(map) {
+                    var div = L.DomUtil.create('div', 'legend');
+                    div.innerHTML = '<h4>Broadband Speeds</h4>';
+                    
+                    // Loop through our categories and generate a label with a colored square for each
+                    for (var speed in colors) {
+                        div.innerHTML += 
+                            '<i style="background:' + colors[speed] + '"></i> ' + speed + '<br>';
+                    }
+                    return div;
+                };
+                legend.addTo(map);
+            })
+            .catch(error => {
+                console.error('Error loading GeoJSON:', error);
+                alert('Error loading broadband data. Check console for details.');
+            });
+    </script>
+</body>
+</html> 

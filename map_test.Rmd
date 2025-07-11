@@ -1,0 +1,717 @@
+---
+title: "Map Test - Performance Indicators"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(leaflet)
+library(dplyr)
+library(sf)
+library(readxl)
+library(htmltools)
+library(jsonlite)  # Ensure JSON serialization is available
+```
+
+## Interactive School Performance Map
+
+```{r data_preparation, include=FALSE}
+# Load necessary data
+geocoded_path <- "~/digital_redlining/plot/output/cleveland_schools_geocoded.rds"
+redlining_file <- "~/digital_redlining/redlining_map_data/geojson.json"
+
+# Load data
+if(file.exists(geocoded_path)) {
+  schools_data <- readRDS(geocoded_path)
+  cat("Loaded data from:", geocoded_path, "\n")
+  cat("Number of schools:", nrow(schools_data), "\n")
+  cat("First few columns:", paste(head(colnames(schools_data), 10), collapse=", "), "\n")
+} else {
+  # Create minimal test data
+  schools_data <- data.frame(
+    SchoolName = paste0("School ", 1:10),
+    SchoolIRN = paste0("IRN", 1:10),
+    Latitude = runif(10, 41.45, 41.55),
+    Longitude = runif(10, -81.75, -81.65),
+    Attendance_Rate = runif(10, 0.80, 0.95),
+    Chronic_Absenteeism = runif(10, 0.05, 0.25),
+    Enrollment_Percent = runif(10, 0.70, 1.00),
+    Mobility_Rate = runif(10, 0.05, 0.30),
+    Performance_Index = runif(10, 0.50, 0.90),
+    stringsAsFactors = FALSE
+  )
+  cat("Created test data with", nrow(schools_data), "schools\n")
+}
+
+# Ensure coordinates are available
+if ("geo_lat" %in% colnames(schools_data) && "geo_lng" %in% colnames(schools_data)) {
+  schools_data$Latitude <- schools_data$geo_lat
+  schools_data$Longitude <- schools_data$geo_lng
+  cat("Using geocoded coordinates\n")
+}
+
+# Load redlining data
+redlining_data <- sf::st_read(redlining_file, quiet = TRUE)
+
+# Set color palette for HOLC grades
+holc_colors <- c(
+  "A" = "#76a865",  # Green - "Best"
+  "B" = "#7cb5bd",  # Blue - "Still Desirable" 
+  "C" = "#ffff00",  # Yellow - "Definitely Declining"
+  "D" = "#d9533c"   # Red - "Hazardous"
+)
+
+# Create more comprehensive list of indicator patterns to search for
+indicator_patterns <- list(
+  # Attendance indicators
+  list(pattern = "Attendance_Rate", name = "Attendance Rate", is_negative = FALSE),
+  list(pattern = "attendance.*rate", name = "Attendance Rate", is_negative = FALSE),
+  
+  # Chronic absenteeism
+  list(pattern = "Chronic_Absenteeism", name = "Chronic Absenteeism Rate", is_negative = TRUE),
+  list(pattern = "chronic.*absent", name = "Chronic Absenteeism Rate", is_negative = TRUE),
+  
+  # Enrollment 
+  list(pattern = "Enrollment_Percent", name = "Enrollment Percentage", is_negative = FALSE),
+  list(pattern = "enroll.*percent", name = "Enrollment Percentage", is_negative = FALSE),
+  
+  # Graduation
+  list(pattern = "Graduation_Rate", name = "Graduation Rate", is_negative = FALSE),
+  list(pattern = "graduate.*rate", name = "Graduation Rate", is_negative = FALSE),
+  
+  # Performance
+  list(pattern = "Performance_Index", name = "Performance Index", is_negative = FALSE),
+  list(pattern = "performance.*index", name = "Performance Index", is_negative = FALSE),
+  
+  # Mobility
+  list(pattern = "Mobility_Rate", name = "Mobility Rate", is_negative = TRUE),
+  list(pattern = "mobility.*rate", name = "Mobility Rate", is_negative = TRUE),
+  
+  # Test scores
+  list(pattern = "Proficient", name = "Proficiency Rate", is_negative = FALSE),
+  list(pattern = "Test_Score", name = "Test Score", is_negative = FALSE),
+  list(pattern = "Math_Score", name = "Math Score", is_negative = FALSE),
+  list(pattern = "ELA_Score", name = "ELA Score", is_negative = FALSE),
+  list(pattern = "Reading_Score", name = "Reading Score", is_negative = FALSE)
+)
+
+# Initialize indicators list
+indicators <- list()
+
+# First approach: Search for specific patterns in column names
+count <- 0
+for (col in colnames(schools_data)) {
+  for (pattern_info in indicator_patterns) {
+    if (grepl(pattern_info$pattern, col, ignore.case = TRUE)) {
+      # Generate a unique ID for this indicator
+      id <- gsub("[^a-z0-9]", "", tolower(col))
+      if (id == "") id <- paste0("indicator", count)
+      count <- count + 1
+      
+      # Add to our indicators list
+      indicators[[id]] <- list(
+        id = id,
+        name = pattern_info$name,
+        column = col,
+        is_negative = pattern_info$is_negative
+      )
+      
+      cat("Found indicator:", pattern_info$name, "in column:", col, "\n")
+      break  # Don't check more patterns for this column
+    }
+  }
+}
+
+# Second approach: Add any numeric columns that might be indicators
+if (length(indicators) < 3) {  # If we have few indicators, look for more
+  for (col in colnames(schools_data)) {
+    # Skip columns we already have or know aren't indicators
+    if (col %in% c("SchoolName", "SchoolIRN", "Latitude", "Longitude", "geo_lat", "geo_lng") ||
+        any(sapply(indicators, function(ind) ind$column == col))) {
+      next
+    }
+    
+    # Check if this column is numeric
+    if (is.numeric(schools_data[[col]]) || 
+        (is.character(schools_data[[col]]) && grepl("%", schools_data[[col]][1]))) {
+      
+      # Make a clean name from the column
+      clean_name <- gsub("_", " ", col)
+      clean_name <- paste0(toupper(substr(clean_name, 1, 1)), substr(clean_name, 2, nchar(clean_name)))
+      
+      # Add to indicators
+      id <- gsub("[^a-z0-9]", "", tolower(col))
+      if (id == "") id <- paste0("indicator", count)
+      count <- count + 1
+      
+      indicators[[id]] <- list(
+        id = id,
+        name = clean_name,
+        column = col,
+        is_negative = FALSE  # Default assumption
+      )
+      
+      cat("Added numeric column as indicator:", clean_name, "from column:", col, "\n")
+    }
+  }
+}
+
+# If we still have too few indicators, add some test ones
+if (length(indicators) < 2) {
+  message("Not enough indicators found, adding test indicators")
+  schools_data$Attendance_Rate <- runif(nrow(schools_data), 0.8, 0.95)
+  indicators[["attendance"]] <- list(
+    id = "attendance",
+    name = "Attendance Rate",
+    column = "Attendance_Rate",
+    is_negative = FALSE
+  )
+  
+  schools_data$Chronic_Absenteeism <- runif(nrow(schools_data), 0.05, 0.25)
+  indicators[["chronic"]] <- list(
+    id = "chronic",
+    name = "Chronic Absenteeism Rate",
+    column = "Chronic_Absenteeism",
+    is_negative = TRUE
+  )
+  
+  schools_data$Enrollment_Percent <- runif(nrow(schools_data), 0.70, 1.00)
+  indicators[["enrollment"]] <- list(
+    id = "enrollment",
+    name = "Enrollment Percentage",
+    column = "Enrollment_Percent",
+    is_negative = FALSE
+  )
+  
+  schools_data$Mobility_Rate <- runif(nrow(schools_data), 0.05, 0.30)
+  indicators[["mobility"]] <- list(
+    id = "mobility",
+    name = "Mobility Rate",
+    column = "Mobility_Rate",
+    is_negative = TRUE
+  )
+  
+  schools_data$Performance_Index <- runif(nrow(schools_data), 0.50, 0.90)
+  indicators[["performance"]] <- list(
+    id = "performance",
+    name = "Performance Index",
+    column = "Performance_Index",
+    is_negative = FALSE
+  )
+}
+
+cat("Total indicators found:", length(indicators), "\n")
+for (id in names(indicators)) {
+  cat("  -", indicators[[id]]$name, "(", indicators[[id]]$column, ")\n")
+}
+
+# Generate popups and colors for indicators
+indicator_data <- list()
+for (id in names(indicators)) {
+  indicator <- indicators[[id]]
+  column_name <- indicator$column
+  
+  # Make sure the column exists or add it with random data
+  if (!column_name %in% colnames(schools_data)) {
+    if (indicator$is_negative) {
+      schools_data[[column_name]] <- runif(nrow(schools_data), 0.05, 0.25)
+    } else {
+      schools_data[[column_name]] <- runif(nrow(schools_data), 0.75, 0.95)
+    }
+  }
+  
+  # Filter schools that have data for this indicator
+  filtered_schools <- schools_data %>%
+    filter(!is.na(!!sym(column_name)))
+  
+  # Create popup content
+  filtered_schools$popup_content <- sapply(1:nrow(filtered_schools), function(i) {
+    school <- filtered_schools[i,]
+    value <- school[[column_name]]
+    value_display <- paste0(round(value * 100, 1), "%")
+    
+    paste0(
+      "<b>", school$SchoolName, "</b><br>",
+      "IRN: ", school$SchoolIRN, "<br>",
+      indicator$name, ": ", value_display
+    )
+  })
+  
+  # Select color palette based on indicator type
+  if (indicator$is_negative) {
+    pal <- colorNumeric(
+      palette = "YlOrRd",
+      domain = range(filtered_schools[[column_name]], na.rm = TRUE),
+      reverse = FALSE
+    )
+  } else {
+    pal <- colorNumeric(
+      palette = "viridis",
+      domain = range(filtered_schools[[column_name]], na.rm = TRUE),
+      reverse = FALSE
+    )
+  }
+  
+  # Store this indicator's processed data
+  indicator_data[[id]] <- list(
+    id = id,
+    name = indicator$name,
+    column = column_name,
+    is_negative = indicator$is_negative,
+    data = filtered_schools,
+    palette = pal
+  )
+}
+
+# Get the first indicator as default
+first_indicator_id <- names(indicators)[1]
+first_indicator_data <- indicator_data[[first_indicator_id]]
+
+# Create a serializable version of the indicator data for JavaScript
+js_indicator_data <- lapply(indicator_data, function(ind) {
+  # Convert data frames to lists of lists for JSON serialization
+  school_list <- lapply(1:nrow(ind$data), function(i) {
+    # Get only the needed columns to reduce data size
+    school <- ind$data[i, ]
+    list(
+      SchoolName = school$SchoolName,
+      SchoolIRN = school$SchoolIRN,
+      Latitude = school$Latitude,
+      Longitude = school$Longitude,
+      popup_content = school$popup_content
+    )
+  })
+  
+  # Add the indicator's column values to each school
+  for (i in 1:length(school_list)) {
+    school_list[[i]][[ind$column]] <- ind$data[[ind$column]][i]
+  }
+  
+  # Create a palette function that can be serialized
+  palette_values <- data.frame(
+    x = seq(min(ind$data[[ind$column]], na.rm = TRUE), 
+            max(ind$data[[ind$column]], na.rm = TRUE), 
+            length.out = 100),
+    stringsAsFactors = FALSE
+  )
+  palette_values$color <- ind$palette(palette_values$x)
+  
+  # Return the serializable indicator data
+  list(
+    id = ind$id,
+    name = ind$name,
+    column = ind$column,
+    is_negative = ind$is_negative,
+    data = school_list,
+    palette_values = palette_values
+  )
+})
+```
+
+<!-- This ensures the dropdown appears above the map -->
+<style>
+.indicator-selector {
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  max-width: 300px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  z-index: 1000;
+  position: relative;
+}
+</style>
+
+<!-- Create dropdown element -->
+<div class="indicator-selector">
+  <label for="indicator-select" style="font-weight: bold; display: block; margin-bottom: 5px;">Select Performance Indicator:</label>
+  <select id="indicator-select" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+```{r dropdown-options, results='asis', echo=FALSE}
+# Generate options for the dropdown
+for (id in names(indicators)) {
+  cat(sprintf('    <option value="%s">%s</option>\n', id, indicators[[id]]$name))
+}
+```
+  </select>
+</div>
+
+<!-- Add debugging button to force map update -->
+<button id="force-map-update" style="margin-bottom: 15px; padding: 8px 16px; background-color: #008CBA; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+  Force Map Update
+</button>
+
+<script>
+// Add event listener to force map update button
+document.addEventListener('DOMContentLoaded', function() {
+  var updateButton = document.getElementById('force-map-update');
+  if (updateButton) {
+    updateButton.addEventListener('click', function() {
+      var dropdown = document.getElementById('indicator-select');
+      if (dropdown) {
+        console.log("Manually triggering update for indicator:", dropdown.value);
+        var event = new Event('change');
+        dropdown.dispatchEvent(event);
+        
+        // Also try using the global function if available
+        if (window.forceMapUpdate) {
+          window.forceMapUpdate();
+        }
+      }
+    });
+  }
+});
+</script>
+
+```{r map-creation, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.height=8}
+# Create the base map with redlining districts
+base_map <- leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(lng = -81.6944, lat = 41.4993, zoom = 11) %>%
+  addPolygons(
+    data = redlining_data,
+    fillColor = ~ifelse(grade %in% names(holc_colors), 
+                       holc_colors[grade], 
+                       "#CCCCCC"),
+    fillOpacity = 0.6,
+    color = "#444444",
+    weight = 1,
+    label = ~paste("Grade:", grade),
+    group = "Redlining Districts"
+  ) %>%
+  addCircleMarkers(
+    data = first_indicator_data$data,
+    lng = ~Longitude,
+    lat = ~Latitude,
+    radius = 6,
+    fillColor = ~first_indicator_data$palette(get(first_indicator_data$column)),
+    fillOpacity = 0.8,
+    color = "white",
+    weight = 1,
+    popup = ~popup_content,
+    group = "Schools"
+  ) %>%
+  addLayersControl(
+    overlayGroups = c("Redlining Districts", "Schools"),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>%
+  addLegend(
+    position = "bottomleft",
+    colors = unname(holc_colors),
+    labels = paste("Grade", names(holc_colors)),
+    title = "HOLC Grades (1930s)",
+    opacity = 0.7
+  ) %>%
+  addLegend(
+    position = "bottomright",
+    pal = first_indicator_data$palette,
+    values = first_indicator_data$data[[first_indicator_data$column]],
+    title = first_indicator_data$name,
+    opacity = 0.8,
+    labFormat = labelFormat(
+      prefix = "",
+      suffix = "%",
+      transform = function(x) round(x * 100, 1),
+      between = " - "
+    ),
+    layerId = "indicator-legend"
+  )
+
+# JavaScript to handle dropdown interaction
+js_code <- '
+function(el, x, data) {
+  // Improved debug logging
+  console.log("Initializing interactive map...");
+  console.log("Map element:", el);
+  
+  // Wait for everything to load
+  setTimeout(function() {
+    // Get the Leaflet map instance
+    var map = this.getMap(el);
+    if (!map) {
+      console.error("Map not found");
+      return;
+    }
+    console.log("Map found:", map);
+    
+    // Indicator data processing
+    var indicatorData = data;
+    console.log("Loaded data for " + Object.keys(indicatorData).length + " indicators");
+    
+    // Dump first indicator data for debugging
+    var firstIndicator = Object.keys(indicatorData)[0];
+    console.log("First indicator:", firstIndicator);
+    console.log("Sample data point:", indicatorData[firstIndicator].data[0]);
+    
+    // Convert palette_values to actual functions
+    Object.keys(indicatorData).forEach(function(id) {
+      var indicator = indicatorData[id];
+      console.log("Processing indicator: " + indicator.name + " with " + indicator.data.length + " data points");
+      
+      // Create an actual palette function from the palette values
+      indicator.palette = function(value) {
+        // Find the closest matching color
+        var paletteValues = indicator.palette_values;
+        if (!paletteValues || !paletteValues.x || !paletteValues.color) {
+          console.error("Invalid palette values for indicator:", id);
+          return "#CCCCCC";  // Default gray
+        }
+        
+        var minDiff = Number.MAX_VALUE;
+        var closestColor = "#CCCCCC";  // Default gray
+        
+        for (var i = 0; i < paletteValues.x.length; i++) {
+          var diff = Math.abs(value - paletteValues.x[i]);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestColor = paletteValues.color[i];
+          }
+        }
+        
+        return closestColor;
+      };
+    });
+    
+    // Add listener to dropdown with retries
+    function setupDropdown() {
+      var dropdown = document.getElementById("indicator-select");
+      if (!dropdown) {
+        console.error("Dropdown not found, will retry...");
+        setTimeout(setupDropdown, 500);  // Retry after 500ms
+        return;
+      }
+
+      console.log("Found dropdown:", dropdown);
+      console.log("Current value:", dropdown.value);
+      console.log("Options count:", dropdown.options.length);
+      
+      // Function to clear the current schools layer
+      function clearSchoolsLayer() {
+        console.log("Clearing schools layer");
+        var removedLayers = 0;
+        map.eachLayer(function(layer) {
+          if (layer.options && layer.options.group === "Schools") {
+            map.removeLayer(layer);
+            removedLayers++;
+          }
+        });
+        console.log("Removed " + removedLayers + " school layers");
+      }
+      
+      // Function to clear existing legends
+      function clearLegends() {
+        console.log("Clearing legends");
+        var legends = document.querySelectorAll(".leaflet-bottom.leaflet-right .leaflet-control");
+        var removedLegends = 0;
+        legends.forEach(function(legend) {
+          var legendContent = legend.innerHTML || "";
+          if (legendContent.includes("%") || 
+              legendContent.includes("Rate") || 
+              legendContent.includes("Score")) {
+            legend.remove();
+            removedLegends++;
+          }
+        });
+        console.log("Removed " + removedLegends + " legends");
+      }
+      
+      // Function to switch indicators - completely rewritten
+      function switchIndicator(indicatorId) {
+        console.log("switchIndicator called with ID:", indicatorId);
+        
+        // Safety check
+        if (!indicatorData[indicatorId]) {
+          console.error("Indicator not found: " + indicatorId);
+          return;
+        }
+        
+        var indicator = indicatorData[indicatorId];
+        console.log("Selected indicator: " + indicator.name + ", data points: " + indicator.data.length);
+        
+        // Clear existing school markers and legend
+        clearSchoolsLayer();
+        clearLegends();
+        
+        // Add school markers for this indicator
+        if (indicator.data && indicator.data.length > 0) {
+          console.log("Adding " + indicator.data.length + " school markers");
+          
+          indicator.data.forEach(function(school, index) {
+            if (!school.Latitude || !school.Longitude) {
+              console.warn("School missing coordinates:", school.SchoolName);
+              return;
+            }
+            
+            var value = school[indicator.column];
+            if (value === undefined || value === null) {
+              console.warn("School missing indicator value:", school.SchoolName);
+              return;
+            }
+            
+            var color = indicator.palette(value);
+            
+            var marker = L.circleMarker([school.Latitude, school.Longitude], {
+              radius: 6,
+              fillColor: color,
+              fillOpacity: 0.8,
+              color: "white",
+              weight: 1,
+              group: "Schools"
+            });
+            
+            if (school.popup_content) {
+              marker.bindPopup(school.popup_content);
+            }
+            
+            marker.addTo(map);
+            
+            // Log first few markers for debugging
+            if (index < 3) {
+              console.log("Added marker at:", school.Latitude, school.Longitude, "with color:", color);
+            }
+          });
+          
+          // Create a new legend
+          createLegend(indicator);
+          console.log("Map update complete for indicator:", indicator.name);
+        } else {
+          console.warn("No data available for selected indicator");
+        }
+      }
+      
+      // Helper function to create a legend
+      function createLegend(indicator) {
+        console.log("Creating legend for: " + indicator.name);
+        
+        var legend = L.control({position: "bottomright"});
+        legend.onAdd = function() {
+          var div = L.DomUtil.create("div", "info legend");
+          div.innerHTML = "<strong>" + indicator.name + "</strong><br>";
+          
+          // Get values range
+          var values = indicator.data.map(function(d) { 
+            return parseFloat(d[indicator.column]); 
+          });
+          
+          var validValues = values.filter(function(v) { 
+            return !isNaN(v); 
+          });
+          
+          if (validValues.length === 0) {
+            div.innerHTML += "No data available";
+            return div;
+          }
+          
+          var min = Math.min.apply(null, validValues);
+          var max = Math.max.apply(null, validValues);
+          var range = max - min;
+          var step = range / 4;
+          
+          console.log("Legend value range:", min, "to", max);
+          
+          // Create the color scale with fixed intervals
+          for (var i = 0; i <= 4; i++) {
+            var value = min + (i * step);
+            var color = indicator.palette(value);
+            var nextValue = i < 4 ? min + ((i + 1) * step) : null;
+            
+            div.innerHTML += 
+              "<i style=\'background:" + color + "; width:18px; height:18px; " + 
+              "float:left; margin-right:8px; opacity:0.7;\'></i> ";
+              
+            if (nextValue !== null) {
+              div.innerHTML += 
+                (value * 100).toFixed(1) + "% - " + (nextValue * 100).toFixed(1) + "%";
+            } else {
+              div.innerHTML += (value * 100).toFixed(1) + "%";
+            }
+            
+            div.innerHTML += (i < 4 ? "<br>" : "");
+          }
+          
+          return div;
+        };
+        
+        legend.addTo(map);
+      }
+      
+      // Ensure change event is properly triggered
+      function addStrongChangeListener() {
+        console.log("Adding strong change listener to dropdown");
+        
+        // Remove any existing listeners first
+        var newDropdown = dropdown.cloneNode(true);
+        dropdown.parentNode.replaceChild(newDropdown, dropdown);
+        dropdown = newDropdown;
+        
+        // Add the new listener
+        dropdown.addEventListener("change", function() {
+          console.log("Dropdown changed to: " + this.value);
+          switchIndicator(this.value);
+        });
+        
+        // Also add click listeners to each option for additional support
+        for (var i = 0; i < dropdown.options.length; i++) {
+          dropdown.options[i].addEventListener("click", function() {
+            console.log("Option clicked:", this.value);
+            dropdown.value = this.value;
+            switchIndicator(this.value);
+          });
+        }
+        
+        return dropdown;
+      }
+      
+      // Replace the dropdown with enhanced version
+      dropdown = addStrongChangeListener();
+      
+      // Ensure dropdown has a value
+      if (dropdown.selectedIndex < 0 && dropdown.options.length > 0) {
+        dropdown.selectedIndex = 0;
+        console.log("Set initial selection to first option");
+      }
+      
+      // Force initial display
+      console.log("Initial setup - Selected index:", dropdown.selectedIndex, "Value:", dropdown.value);
+      if (dropdown.options.length > 0) {
+        switchIndicator(dropdown.value);
+      }
+      
+      // Global access for debugging
+      window.leafletMapData = {
+        map: map,
+        indicatorData: indicatorData,
+        switchIndicator: switchIndicator
+      };
+      
+      // Add a global function to force switching
+      window.forceMapUpdate = function() {
+        console.log("Force map update called");
+        if (dropdown && dropdown.value) {
+          switchIndicator(dropdown.value);
+          return "Updated to: " + dropdown.value;
+        } else {
+          return "Dropdown not found or no value selected";
+        }
+      };
+      
+      console.log("Map initialization complete");
+    }
+    
+    // Start dropdown setup
+    setupDropdown();
+    
+    // Re-attempt dropdown setup after a delay to ensure DOM is ready
+    setTimeout(setupDropdown, 1000);
+    
+  }, 500);
+}'
+
+# Convert indicator data to JSON using toJSON with additional options
+indicator_data_json <- toJSON(js_indicator_data, auto_unbox = TRUE, force = TRUE, pretty = TRUE)
+
+# Display the map with JavaScript
+base_map %>% htmlwidgets::onRender(js_code, data = indicator_data_json)
+```
+
+The map above shows Cleveland schools colored by their performance indicators. Use the dropdown to select between different indicators. The schools are displayed over historical redlining districts from the 1930s Home Owners' Loan Corporation (HOLC).

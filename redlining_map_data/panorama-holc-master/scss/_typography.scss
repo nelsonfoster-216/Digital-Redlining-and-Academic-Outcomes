@@ -1,0 +1,33 @@
+// Google Fonts imported in index.html;
+// Replace these SASS placeholders as necessary with imported fonts
+%lora-light {
+	font-family: 'Lora', serif;
+	font-weight: 100;
+	color: $text-color;
+}
+
+%lato-thin {
+	font-family: 'Lato', sans-serif;
+	font-weight: 100;
+	color: $text-color;
+}
+
+%lato-light {
+	font-family: 'Lato', sans-serif;
+	font-weight: 300;
+	color: $text-color;
+}
+
+%lato-normal {
+	font-family: 'Lato', sans-serif;
+	font-weight: 400;
+	color: $text-color;
+}
+
+h1 { font-size: 1.8em; }
+h2 { font-size: 1.4em; }
+h3 { font-size: 1.3em; letter-spacing: 0.04rem; }
+h4 { font-size: 0.87em; }
+h5 { font-size: 0.5em; }
+h6 { font-size: 0.35em; }
+

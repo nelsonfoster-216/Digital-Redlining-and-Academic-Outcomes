@@ -1,0 +1,6 @@
+SchoolName,SchoolIRN,Latitude,Longitude,Enrollment_Percent,Attendance_Rate,Mobility_Rate,Chronic_Absenteeism_Rate
+"Case Elementary School",SCH1001,41.5113,-81.6079,0.85,0.92,0.08,0.15
+"Charles Dickens Elementary",SCH1002,41.5387,-81.6468,0.78,0.89,0.12,0.18
+"Cleveland School of the Arts",SCH1003,41.4936,-81.6359,0.92,0.87,0.07,0.14
+"East Tech High School",SCH1004,41.4875,-81.6246,0.83,0.85,0.15,0.22
+"Glenville High School",SCH1005,41.5352,-81.6117,0.79,0.84,0.17,0.25

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleveland Broadband and Redlining Visualization</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+        .info {
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255,255,255,0.8);
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+        }
+        .info h4 {
+            margin: 0 0 5px;
+            color: #777;
+        }
+        .legend {
+            line-height: 18px;
+            color: #555;
+        }
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script>
+        // Initialize the map centered on Cleveland
+        const map = L.map('map').setView([41.49, -81.67], 11);
+        
+        // Add base layers
+        const baseLayers = {
+            "Carto Positron": L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map),
+            "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 19
+            }),
+            "Satellite": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Imagery &copy; Esri',
+                maxZoom: 19
+            })
+        };
+        
+        // Initialize layer groups for our data
+        const broadbandLayer = L.layerGroup().addTo(map);
+        const redliningLayer = L.layerGroup().addTo(map);
+        const schoolsLayer = L.layerGroup();
+        
+        // Overlay layers control
+        const overlays = {
+            "Broadband Speeds": broadbandLayer,
+            "Historical Redlining": redliningLayer,
+            "Schools": schoolsLayer
+        };
+        
+        // Add layer controls
+        L.control.layers(baseLayers, overlays, {collapsed: false}).addTo(map);
+        
+        // Define broadband speed colors
+        const speedColors = {
+            "0-9 Mbps": "#d73027",      // Red
+            "10-24 Mbps": "#f46d43",    // Orange
+            "25-49 Mbps": "#fdae61",    // Yellow
+            "50-100 Mbps": "#abd9e9",   // Light Blue
+            "100+ Mbps": "#74add1"      // Dark Blue
+        };
+        
+        // Define redlining grade colors
+        const redliningColors = {
+            "A": "#76a865",   // Green
+            "B": "#7cb5bd",   // Blue
+            "C": "#ffff00",   // Yellow
+            "D": "#d9838d"    // Red
+        };
+        
+        // Load the broadband data
+        fetch('cleveland_broadband_data.geojson')
+            .then(response => response.json())
+            .then(data => {
+                // Add the broadband polygons to the map
+                L.geoJSON(data, {
+                    style: function(feature) {
+                        return {
+                            fillColor: feature.properties.color_code,
+                            weight: 1,
+                            opacity: 1,
+                            color: '#000',
+                            fillOpacity: 0.7
+                        };
+                    },
+                    onEachFeature: function(feature, layer) {
+                        layer.bindPopup(`
+                            <strong>Broadband Speed:</strong> ${feature.properties.speed_category}
+                        `);
+                    }
+                }).addTo(broadbandLayer);
+            })
+            .catch(error => {
+                console.error("Error loading broadband data:", error);
+                alert("Failed to load broadband data. Please make sure the GeoJSON file exists.");
+            });
+        
+        // Try to load redlining data if available
+        fetch('../redlining_map_data/mapping-inequality-census-crosswalk-main/MIv3Areas_2020TractCrosswalk.geojson')
+            .then(response => response.json())
+            .then(data => {
+                // Add the redlining polygons to the map
+                L.geoJSON(data, {
+                    style: function(feature) {
+                        // Determine which property has the grade
+                        const grade = feature.properties.grade || feature.properties.holc_grade || "C";
+                        return {
+                            fillColor: redliningColors[grade] || "#999999",
+                            weight: 1,
+                            opacity: 1,
+                            color: '#000',
+                            fillOpacity: 0.5
+                        };
+                    },
+                    onEachFeature: function(feature, layer) {
+                        const grade = feature.properties.grade || feature.properties.holc_grade || "Unknown";
+                        const name = feature.properties.name || feature.properties.label || "Unknown Area";
+                        
+                        layer.bindPopup(`
+                            <strong>Area:</strong> ${name}<br>
+                            <strong>HOLC Grade:</strong> ${grade}
+                        `);
+                    }
+                }).addTo(redliningLayer);
+            })
+            .catch(error => {
+                console.error("Error loading redlining data:", error);
+                // Silently fail as this data might not be accessible
+            });
+        
+        // Try to load schools data if available
+        fetch('../schools_geocoded.rds')
+            .then(response => response.ok ? response.json() : Promise.reject('No schools data'))
+            .then(data => {
+                data.forEach(school => {
+                    L.circleMarker([school.latitude, school.longitude], {
+                        radius: 6,
+                        fillColor: "#0000ff",
+                        color: "#000",
+                        weight: 1,
+                        opacity: 1,
+                        fillOpacity: 0.8
+                    })
+                    .bindPopup(`<strong>${school.school_name}</strong>`)
+                    .addTo(schoolsLayer);
+                });
+            })
+            .catch(error => {
+                console.error("Could not load schools data:", error);
+                // Silently fail as this data might not be accessible
+            });
+        
+        // Add legend
+        const legend = L.control({position: 'bottomright'});
+        
+        legend.onAdd = function(map) {
+            const div = L.DomUtil.create('div', 'info legend');
+            
+            div.innerHTML = '<h4>Broadband Speeds</h4>';
+            
+            for (const speed in speedColors) {
+                div.innerHTML +=
+                    '<i style="background:' + speedColors[speed] + '"></i> ' + speed + '<br>';
+            }
+            
+            div.innerHTML += '<h4>HOLC Grades</h4>';
+            
+            for (const grade in redliningColors) {
+                div.innerHTML +=
+                    '<i style="background:' + redliningColors[grade] + '"></i> Grade ' + grade + '<br>';
+            }
+            
+            return div;
+        };
+        
+        legend.addTo(map);
+    </script>
+</body>
+</html> 

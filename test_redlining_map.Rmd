@@ -1,0 +1,99 @@
+---
+title: "Test Redlining Map"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(leaflet)
+library(sf)
+library(dplyr)
+```
+
+# Redlining Map Test
+
+```{r redlining-map, fig.width=10, fig.height=8}
+# Load the redlining data (HOLC grades) from GeoJSON
+redlining_file <- "~/digital_redlining/redlining_map_data/geojson.json"
+
+# Create simplified schools data
+cleveland_schools_data <- data.frame(
+  SchoolName = c("Test School 1", "Test School 2"),
+  SchoolIRN = c("12345", "67890"),
+  Latitude = c(41.4993, 41.4900),
+  Longitude = c(-81.6944, -81.6800)
+)
+
+# Read the redlining data
+redlining_data <- sf::st_read(redlining_file, quiet = TRUE)
+
+# Create color palette for redlining grades
+holc_colors <- c(
+  "A" = "#76a865",  # Green
+  "B" = "#7cb5bd",  # Blue
+  "C" = "#ffff00",  # Yellow
+  "D" = "#d9533c"   # Red
+)
+
+# Create a base map
+map <- leaflet(options = leafletOptions(minZoom = 10)) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(lng = -81.6944, lat = 41.4993, zoom = 11)  # Center on Cleveland
+
+# Add the redlining polygons with appropriate colors based on their grade
+map <- map %>%
+  addPolygons(
+    data = redlining_data,
+    fillColor = ~ifelse(grade %in% names(holc_colors), 
+                        holc_colors[grade], 
+                        "#CCCCCC"),
+    fillOpacity = 0.7,
+    color = "#444444",
+    weight = 1,
+    label = ~paste("Grade:", grade),
+    popup = ~paste(
+      "<strong>Grade:", grade, "</strong><br>",
+      "Area ID:", area_id, "<br>",
+      "Primarily Residential:", ifelse(residential, "Yes", "No")
+    ),
+    group = "Redlining Districts"
+  )
+
+# Add simple school markers
+map <- map %>%
+  addCircleMarkers(
+    data = cleveland_schools_data,
+    lng = ~Longitude, 
+    lat = ~Latitude,
+    radius = 6,
+    fillColor = "steelblue",
+    fillOpacity = 0.8,
+    color = "white",
+    weight = 1,
+    popup = ~paste0(
+      "<b>", SchoolName, "</b><br>",
+      "IRN: ", SchoolIRN
+    ),
+    group = "Schools"
+  )
+
+# Add layer controls so users can toggle the redlining districts and schools
+map <- map %>%
+  addLayersControl(
+    overlayGroups = c("Redlining Districts", "Schools"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+# Add a legend for the redlining grades
+map <- map %>%
+  addLegend(
+    position = "bottomleft",
+    colors = unname(holc_colors),
+    labels = paste("Grade", names(holc_colors)),
+    title = "HOLC Grades (1930s)",
+    opacity = 0.7
+  )
+
+# Display the map
+map
+``` 

@@ -1,0 +1,76 @@
+h2 {
+        text-align: center;
+        background-color: #d3e0df;
+    }
+
+    .downloadicon {
+        margin-left: -30px;
+        margin-top: -2px;
+        float: right;
+        width: 30px;
+        height: 26px;
+        display: inline-block;
+        background-repeat: no-repeat;
+        opacity: 0.4;
+        cursor: pointer;
+    }
+
+    .downloadicon:hover {
+        opacity: 1.0;
+    }
+
+.download_menu ul {
+    font-family: 'Lato';
+    font-size: 12px;
+    color: #454545;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li.greentop {
+        list-style: none;
+        border-bottom: 1px solid #d72e2a;
+        height: 100px;
+    }
+
+    li.greenmiddle {
+        list-style: none;
+        border-bottom: 1px solid #d72e2a;
+        height: 100px;
+    }
+
+    li.greenbottom {
+        list-style: none;
+        border-bottom: 1px solid #d72e2a;
+        height: 100px;
+    }
+
+    li.greensubbottom {
+        list-style: none;
+        border-bottom: 1px solid #d72e2a;
+        height: 100px;
+    }
+
+    li a {
+    	text-decoration: none;
+    	color: #454545;
+        font-size: .9em;
+    }
+
+    h3 {
+    	padding: 35px 4px;
+    }
+
+    img {
+    	float: right;
+    	margin: 14px 14px 0;
+    	width: 100px;
+    }
+
+}
+
+.citydownloads h3 {
+    background-color: #eaf0ef;
+    text-align: center;
+    cursor: pointer;
+}

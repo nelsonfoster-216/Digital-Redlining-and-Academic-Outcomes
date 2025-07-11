@@ -1,0 +1,71 @@
+{
+  "name": "holc",
+  "version": "0.0.1",
+  "description": "Application to explore and analyze HOLC maps and area descriptions.",
+  "main": "index.js",
+  "scripts": {
+    "start": "gulp",
+    "dist": "gulp dist",
+    "test": "gulp test",
+    "lint": "eslint ./src",
+    "build:basemaps": "node_modules/.bin/cartodb-yaml ./basemaps/cartodb/basemaps.yml > ./basemaps/cartodb/basemaps.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rnelson2/holc"
+  },
+  "keywords": [
+    "visualization",
+    "geospatial",
+    "maps",
+    "mapping",
+    "dataviz",
+    "geoviz"
+  ],
+  "author": "digitalscholarshiplab",
+  "license": "ISC",
+  "dependencies": {
+    "@panorama/toolkit": "*",
+    "cartodb-client": "stamen/cartodb-client",
+    "d3": "^3.5.6",
+    "flux": "^2.1.1",
+    "leaflet": "^0.7.5",
+    "react": "^15.0.1",
+    "react-dom": "^0.14.0",
+    "react-leaflet": "^0.11.4",
+    "queue-async": "^1.0.7"
+  },
+  "devDependencies": {
+    "babel-core": "^6.7.0",
+    "babel-eslint": "^4.1.3",
+    "babel-polyfill": "^6.6.1",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babelify": "^7.2.0",
+    "browserify": "^11.1.0",
+    "cartodb-yaml": "^0.1.0",
+    "eslint": "^1.7.0",
+    "glob": "^5.0.14",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-connect": "^2.2.0",
+    "gulp-copy": "0.0.2",
+    "gulp-cssmin": "^0.1.7",
+    "gulp-eslint": "^1.0.0",
+    "gulp-livereload": "^3.8.0",
+    "gulp-load-plugins": "^1.0.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-sass": "^2.1.0",
+    "gulp-uglify": "^1.4.1",
+    "gulp-util": "^3.0.6",
+    "lodash": "^3.10.1",
+    "node-sass": "^3.4.1",
+    "parcelify": "^2.1.0",
+    "reactify": "^1.1.1",
+    "rimraf": "^2.4.3",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.4.0"
+  }
+}

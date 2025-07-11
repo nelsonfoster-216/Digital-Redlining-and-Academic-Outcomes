@@ -1,0 +1,170 @@
+.cityStats {
+	li {
+		list-style: none;
+		font-weight: bolder;
+	}
+
+	h1 {
+        text-align: center;
+        background-color: #d3e0df;
+        font-size: 1.4em;
+        margin-top: 0;
+        padding: 0 40px;
+        position: relative;
+
+        a {
+        	text-decoration: none;
+        	color: black;
+        }
+    }
+
+    .downloadicon {
+    	position: absolute;
+        right: 5px;
+        bottom: 2px;
+        top: 4px;
+        width: 30px;
+        background-image: url(//dsl.richmond.edu/panorama/static/images/cloud.svg);
+        background-repeat: no-repeat;
+        opacity: 0.4;
+        cursor: pointer;
+    }
+
+    .downloadicon:hover {
+        opacity: 1.0;
+    }
+
+		.stats {
+		    /* height: 415px; */
+		}
+		
+		.stats li {
+		    ;
+		}
+		
+		.state-stat {
+		    color: #0c789a;
+		    font-weight: bolder;
+		    margin-top: 4px;
+		}
+		
+		.population-stat {
+		    color: #0c789a;
+		    font-weight: bolder;
+		    margin: 0px 2px 0px 0px;
+		}
+		
+		ul.left-stat {
+		    width: 50%;
+		    float: left
+		}
+		
+		ul.right-stat {
+		    width: 50%;
+		    float: right;
+		}
+
+		.pop-header {
+			font-weight: bold;
+		}
+	
+
+
+	.nestedpiechart {
+		text-align: center;
+		padding-top: 30px;
+		height: 400px;
+		svg {
+			shape-rendering: 'crispEdges';
+		}
+	
+		#burgessDiagram {
+			position: relative;
+			top: -352px;
+			pointer-events: none;	
+		}
+	}
+
+	.adInstructions {
+		margin-bottom: 20px;
+		text-align: center;
+		color: #adacac;
+		background-color: #ececec;
+		clear: both;
+	}
+
+	.content {
+		height: 0px;
+	}
+
+	table.population-stats {
+		border: none;
+		margin: 0 auto;
+	}
+
+	th {
+		text-align: right;
+		padding: 2px 10px;
+		font-size: 22px;
+	}
+
+	td {
+		text-align: right;
+		padding: 2px 10px;
+
+		.total {
+			color: #0c789a;
+		}
+	}
+}
+
+.downloads {
+	clear: both;
+}
+
+.download_menu_left {
+
+	padding-bottom: 10px;
+	float: left;
+	width: 50%;
+
+	h3 {
+		font-size: .9em;
+		line-height: .8;
+		margin-bottom: .5em;
+	}
+
+	h4 {
+		font-size: .9em;
+		line-height: .8;
+		margin-bottom: .5em;
+
+	}
+
+}
+
+.download_menu_right {
+
+	h3 {
+		font-size: .9em;
+		line-height: .8;
+		margin-bottom: .5em;
+	}
+
+	h4 {
+		font-size: .9em;
+		line-height: .8;
+		margin-bottom: .5em;
+	}
+
+	float: right;
+	padding-bottom: 14px;
+	max-width: 200px;
+	width: 50%;
+	
+}
+
+.ad_polygon_exp h3 {
+	color: #adacac;
+	font-size: .9em;
+}

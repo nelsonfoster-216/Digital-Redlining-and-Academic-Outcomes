@@ -1,0 +1,37 @@
+---
+title: "Test Map"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(leaflet)
+```
+
+<style>
+.leaflet-container {
+  height: 600px !important;
+  width: 100% !important;
+  z-index: 1 !important;
+}
+</style>
+
+## Test Map
+
+This is a basic test map to verify that Leaflet is working properly.
+
+```{r}
+leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(lng = -81.6944, lat = 41.4993, zoom = 11)
+```
+
+## Second Test Map (with OpenStreetMap)
+
+This tests with a different tile provider.
+
+```{r}
+leaflet() %>%
+  addTiles() %>% # Use default OpenStreetMap tiles
+  setView(lng = -81.6944, lat = 41.4993, zoom = 11)
+``` 

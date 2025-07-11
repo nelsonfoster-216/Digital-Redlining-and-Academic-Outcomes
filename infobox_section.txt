@@ -1,0 +1,18 @@
+
+<div class="info-box">
+  <strong>About the ELA Achievement Maps:</strong> These interactive maps use data from the Gap Closing Report's ELA Performance Index Details for 2023-24. The maps show detailed information about English Language Arts achievement levels for Cleveland schools:
+  <ul>
+    <li><strong>Number of Students Tested:</strong> Total count of students taking ELA assessments</li>
+    <li><strong>Percent Untested:</strong> Percentage of students who did not take the ELA assessment</li>
+    <li><strong>Achievement Levels:</strong> Distribution of students across performance levels:
+      <ul>
+        <li><strong>Limited:</strong> Students with significant gaps in knowledge and skills</li>
+        <li><strong>Basic:</strong> Students approaching proficiency</li>
+        <li><strong>Proficient:</strong> Students meeting grade-level expectations</li>
+        <li><strong>Accomplished:</strong> Students exceeding grade-level expectations</li>
+        <li><strong>Advanced:</strong> Students with superior performance</li>
+        <li><strong>Advanced Plus:</strong> Students with exceptional performance</li>
+      </ul>
+    </li>
+    <li><strong>Performance Index:</strong> Overall performance score calculated from the distribution of achievement levels</li>
+  </ul>

@@ -1,0 +1,2897 @@
+---
+title: "Digital Redlining - EDA"
+author: "ProKofa Solutions, LLP"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Digital Redlining - Exploratory Data Analysis
+
+```{r}
+# Loading Packages 
+
+library(shiny)
+library(shinydashboard)
+library(leaflet)
+library(leaflet.extras) # For marker clustering and other advanced features
+library(dplyr)
+library(ggplot2)
+library(DT)
+library(corrplot)
+library(maps)
+library(sf)
+library(tidyr)
+library(writexl)
+library(plotly)  # Add plotly for interactive plots
+library(readxl)
+# Additional libraries (if needed for modeling, etc.)
+library(car)
+library(mgcv)
+library(htmlwidgets) # For saving widgets as HTML
+library(rsconnect)
+```
+
+
+```{r}
+
+# Loading Datasets
+
+#1. 22-23 Building Details Report (Created on 2023-09-12)
+
+# Data Notes: 
+# Ohio School Report Cards give your community a clear picture of the progress of your district and schools in raising achievement and preparing students for the future. The Download Data files provide the data from The Ohio School Report Cards in a Microsoft Excel format. Please refer to the technical documentation, report card user guide, and accountability system crosswalk on the Department's Report Card Resources webpage for additional information on the report card calculations. If you have questions about this file, please contact The Office of Accountability at accountability@education.ohio.gov.
+
+# Tabs:
+
+  # 1. Notes
+  # 2. Building Details
+
+Building_Details_Report_22_23 <- read_excel("~/digital_redlining/plot/datasets/22-23 Building Details Report.xlsx", 
+    sheet = "Building_Details")
+
+#2. 22-23 Building Student Opportunity Report
+
+# Ohio School Report Cards give your community a clear picture of the progress of your district and schools in raising achievement and preparing students for the future. The Download Data files provide the data from The Ohio School Report Cards in a Microsoft Excel format. Please refer to the technical documentation, report card user guide, and accountability system crosswalk on the Department's Report Card Resources webpage for additional information on the report card calculations. If you have questions about this file, please contact The Office of Accountability at accountability@education.ohio.gov.
+
+#Tabs
+
+  # 1. Notes
+  # 2. By_Subgroup
+
+Building_Student_Opportunity_Report_22_23 <- read_excel("~/digital_redlining/plot/datasets/22-23 Building Student Opportunity Report.xlsx", 
+    sheet = "By_Subgroup")
+
+#3. 22-23 CCWMR
+
+# Data Notes:
+
+# Ohio School Report Cards give your community a clear picture of the progress of your district and schools in raising achievement and preparing students for the future. The Download Data files provide the data from The Ohio School Report Cards in a Microsoft Excel format. Please refer to the technical documentation, report card user guide, and accountability system crosswalk on the Department's Report Card Resources webpage for additional information on the report card calculations. If you have questions about this file, please contact The Office of Accountability at accountability@education.ohio.gov.
+
+# Tabs: 
+
+  # 1. Notes 
+  # 2. Overview
+  # 3. Additional_Details
+  # 4. Report_Only
+
+
+CCWMR_22_23_Overview <- read_excel("~/digital_redlining/plot/datasets/22-23 CCWMR.xlsx", 
+    sheet = "Overview")
+
+CCWMR_22_23_Additional_Details <- read_excel("~/digital_redlining/plot/datasets/22-23 CCWMR.xlsx", 
+    sheet = "Additional_Details")
+
+CCWMR_22_23_Report_Only <- read_excel("~/digital_redlining/plot/datasets/22-23 CCWMR.xlsx", 
+    sheet = "Report_Only")
+
+# 4. 22-23 Gap Closing
+
+# Data Notes
+
+# Ohio School Report Cards give your community a clear picture of the progress of your district and schools in raising achievement and preparing students for the future. The Download Data files provide the data from The Ohio School Report Cards in a Microsoft Excel format. Please refer to the technical documentation, report card user guide, and accountability system crosswalk on the Department's Report Card Resources webpage for additional information on the report card calculations. If you have questions about this file, please contact The Office of Accountability at accountability@education.ohio.gov.
+
+  # 1. Notes
+  # 2. Gap Closing
+  # 3. Additional_Details_ELA_PI
+  # 4. Additional_Details_MATH_PI
+
+Gap_Closing_22_23_Gap_Closing <- read_excel("~/digital_redlining/plot/datasets/22-23 Gap Closing.xlsx", 
+    sheet = "Gap Closing")
+
+
+Gap_Closing_22_23_Gap_Additional_Details_ELA_PI <- read_excel("~/digital_redlining/plot/datasets/22-23 Gap Closing.xlsx", 
+    sheet = "Additional_Details_ELA_PI")
+
+
+Gap_Closing_22_23_Gap_Additional_Details_MATH_PI <- read_excel("~/digital_redlining/plot/datasets/22-23 Gap Closing.xlsx", 
+    sheet = "Additional_Details_Math_PI")
+
+# 5. 23-24 Building Details Report
+
+# Data Notes: Ohio school report cards provide a snapshot of the progress districts and schools are making in raising achievement and preparing students for the future. The Download Data Files provide the data from the Ohio School Report Cards in Microsoft Excel Format. Please refer to the technical documentation and report card user guide on the Department's Report Card Resources webpage for additional information on the report card calculations. If you have any questions about this file, please contact The Office of Accountability at accountability@education.ohio.gov
+
+
+#Tabs
+
+  # 1. Data Notes
+  # 2. Building_Details
+
+Building_Details_Report_23_24 <- read_excel("~/digital_redlining/plot/datasets/23-24 Building Details Report.xlsx", 
+    sheet = "Building_Details")
+
+
+# 6. 23-24 Building Student Opportunity Report
+
+# Notes: Ohio School Report Cards provide a snapshot of the progress districts and schools are making in raising achievement and preparing students for the future. The Download Data files provide the data from The Ohio School Report Cards in a Microsoft Excel format. Please refer to the technical documentation and report card user guide on the Department's Report Card Resources webpage for additional information on the report card calculations. If you have questions about this file, please contact The Office of Accountability at accountability@education.ohio.gov.
+
+# Tabs
+  # 1. Notes
+  # 2. By_Student_Group
+
+Building_Student_Opportunity_Report_23_24 <- read_excel("~/digital_redlining/plot/datasets/23-24 Building Student Opportunity Report.xlsx", 
+    sheet = "By_Student_Group")
+
+# 7. 23-24 CCWMR
+
+# Data Notes: Ohio school report cards provide a snapshot of the progress districts and schools are making in raising achievement and preparing students for the future. The Download Data Files provide the data from the Ohio School Report Cards in Microsoft Excel Format. Please refer to the technical documentation and report card user guide on the Department's Report Card Resources webpage for additional information on the report card calculations. If you have any questions about this file, please contact The Office of Accountability at accountability@education.ohio.gov
+
+# Tabs
+# 1. Data Notes
+# 2. Overview
+# 3. Additional_Details
+# 4. Follow-Up_Collection
+
+
+CCWMR_23_24_Overview <- read_excel("~/digital_redlining/plot/datasets/23-24 CCWMR.xlsx", 
+    sheet = "Overview")
+
+CCWMR_23_24_Additional_Details <- read_excel("~/digital_redlining/plot/datasets/23-24 CCWMR.xlsx", 
+    sheet = "Additional_Details")
+
+CCWMR_23_24_Follow_Up_Collection <- read_excel("~/digital_redlining/plot/datasets/23-24 CCWMR.xlsx", 
+    sheet = "Follow-Up Collection")
+
+# 8. 23-24 Gap Closing
+
+# Notes: Ohio School Report Cards provide a snapshot of the progress districts and schools are making in raising achievement and preparing students for the future. The Download Data files provide the data from The Ohio School Report Cards in a Microsoft Excel format. Please refer to the technical documentation and report card user guide on the Department's Report Card Resources webpage for additional information on the report card calculations. If you have questions about this file, please contact The Office of Accountability at accountability@education.ohio.gov.
+
+# Tabs
+# 1. Notes
+# 2. Gap Closing
+# 3. Additional_Details_ELA_PI
+# 4. Additional_Details_Math_PI
+
+Gap_Closing_23_24_Gap_Closing <- read_excel("~/digital_redlining/plot/datasets/23-24 Gap Closing.xlsx", 
+    sheet = "Gap Closing")
+
+Gap_Closing_23_24_Additional_Details_ELA_PI <- read_excel("~/digital_redlining/plot/datasets/23-24 Gap Closing.xlsx", 
+    sheet = "Additional_Details_ELA_PI")
+
+Gap_Closing_23_24_Additional_Details_Math_PI <- read_excel("~/digital_redlining/plot/datasets/23-24 Gap Closing.xlsx", 
+    sheet = "Additional_Details_Math_PI")
+
+# 9. report-card-data-district-dashboard - Overview - Percent Proficient Trends
+
+report_card_data_district_dashboard_Overview_Percent_Proficient_Trends <- read_excel("~/digital_redlining/plot/datasets/report-card-data-district-dashboard - Overview - Percent Proficient Trends.xlsx")
+
+# 10. report-card-data-district-dashboard - Overview - Enrollment Trends
+
+report_card_data_school_dashboard_Overview_Enrollment_Trends <- read_excel("~/digital_redlining/plot/datasets/report-card-data-school-dashboard - Overview - Enrollment Trends.xlsx")
+
+# 11. Digital Redlining - Codebook
+
+Digital_Redlining_Codebook <- read_excel("~/digital_redlining/plot/datasets/Digital Redlining - Codebook.xlsx")
+
+
+
+
+
+
+
+
+
+
+```
+
+```{r fix_column_names}
+# Fix column name discrepancies for District IRN across all datasets
+# This will check each dataset for "DistrictIRN" without underscore and rename it to "District_IRN" 
+
+# Function to check and rename columns in a data frame
+fix_district_irn <- function(df) {
+  if ("DistrictIRN" %in% colnames(df) && !"District_IRN" %in% colnames(df)) {
+    df <- df %>% rename(District_IRN = DistrictIRN)
+    message("Renamed 'DistrictIRN' to 'District_IRN' in dataset")
+  }
+  
+  # Also check for other variations like "District IRN" with a space
+  if ("District IRN" %in% colnames(df) && !"District_IRN" %in% colnames(df)) {
+    df <- df %>% rename(District_IRN = `District IRN`)
+    message("Renamed 'District IRN' to 'District_IRN' in dataset")
+  }
+  
+  return(df)
+}
+
+# Apply the fix to all datasets
+Building_Details_Report_22_23 <- fix_district_irn(Building_Details_Report_22_23)
+Building_Student_Opportunity_Report_22_23 <- fix_district_irn(Building_Student_Opportunity_Report_22_23)
+CCWMR_22_23_Overview <- fix_district_irn(CCWMR_22_23_Overview)
+CCWMR_22_23_Additional_Details <- fix_district_irn(CCWMR_22_23_Additional_Details)
+CCWMR_22_23_Report_Only <- fix_district_irn(CCWMR_22_23_Report_Only)
+Gap_Closing_22_23_Gap_Closing <- fix_district_irn(Gap_Closing_22_23_Gap_Closing)
+Gap_Closing_22_23_Gap_Additional_Details_ELA_PI <- fix_district_irn(Gap_Closing_22_23_Gap_Additional_Details_ELA_PI)
+Gap_Closing_22_23_Gap_Additional_Details_MATH_PI <- fix_district_irn(Gap_Closing_22_23_Gap_Additional_Details_MATH_PI)
+Building_Details_Report_23_24 <- fix_district_irn(Building_Details_Report_23_24)
+Building_Student_Opportunity_Report_23_24 <- fix_district_irn(Building_Student_Opportunity_Report_23_24)
+CCWMR_23_24_Overview <- fix_district_irn(CCWMR_23_24_Overview)
+CCWMR_23_24_Additional_Details <- fix_district_irn(CCWMR_23_24_Additional_Details)
+CCWMR_23_24_Follow_Up_Collection <- fix_district_irn(CCWMR_23_24_Follow_Up_Collection)
+Gap_Closing_23_24_Gap_Closing <- fix_district_irn(Gap_Closing_23_24_Gap_Closing)
+Gap_Closing_23_24_Additional_Details_ELA_PI <- fix_district_irn(Gap_Closing_23_24_Additional_Details_ELA_PI)
+Gap_Closing_23_24_Additional_Details_Math_PI <- fix_district_irn(Gap_Closing_23_24_Additional_Details_Math_PI)
+
+# Also check the trends datasets
+report_card_data_district_dashboard_Overview_Percent_Proficient_Trends <- 
+  fix_district_irn(report_card_data_district_dashboard_Overview_Percent_Proficient_Trends)
+report_card_data_school_dashboard_Overview_Enrollment_Trends <- 
+  fix_district_irn(report_card_data_school_dashboard_Overview_Enrollment_Trends)
+
+# Additionally, check for IRN without prefix that might be the district identifier
+fix_irn <- function(df) {
+  if ("IRN" %in% colnames(df) && !"District_IRN" %in% colnames(df)) {
+    # First check if it's likely a district IRN by sampling values
+    sample_irns <- head(unique(df$IRN), 10)
+    cleveland_count <- sum(sample_irns == "043786")
+    
+    # If we find Cleveland's IRN or if there are few unique values, it's likely district IRNs
+    if (cleveland_count > 0 || length(unique(df$IRN)) < 100) {
+      df <- df %>% mutate(District_IRN = IRN)
+      message("Created 'District_IRN' column based on 'IRN' column")
+    }
+  }
+  return(df)
+}
+
+# Apply IRN fix to all datasets that might use plain IRN for districts
+report_card_data_district_dashboard_Overview_Percent_Proficient_Trends <- 
+  fix_irn(report_card_data_district_dashboard_Overview_Percent_Proficient_Trends)
+report_card_data_school_dashboard_Overview_Enrollment_Trends <- 
+  fix_irn(report_card_data_school_dashboard_Overview_Enrollment_Trends)
+
+# Print column names for verification
+cat("Checking District_IRN column in Building_Details_Report_22_23:", 
+    "'District_IRN' in columns:", "District_IRN" %in% colnames(Building_Details_Report_22_23), "\n")
+cat("Checking District_IRN column in Building_Details_Report_23_24:", 
+    "'District_IRN' in columns:", "District_IRN" %in% colnames(Building_Details_Report_23_24), "\n")
+```
+
+```{r cleveland_filter}
+# Filter all datasets to include only Cleveland Municipal School District (IRN = 043786)
+
+# 1. Building Details Report 22-23
+Cleveland_Building_Details_22_23 <- Building_Details_Report_22_23 %>%
+  filter(`District_IRN` == "043786")
+
+# 2. Building Student Opportunity Report 22-23
+Cleveland_Student_Opportunity_22_23 <- Building_Student_Opportunity_Report_22_23 %>%
+  filter(`District_IRN` == "043786")
+
+# 3. CCWMR 22-23
+Cleveland_CCWMR_22_23_Overview <- CCWMR_22_23_Overview %>%
+  filter(`District_IRN` == "043786")
+
+Cleveland_CCWMR_22_23_Additional_Details <- CCWMR_22_23_Additional_Details %>%
+  filter(`District_IRN` == "043786")
+
+Cleveland_CCWMR_22_23_Report_Only <- CCWMR_22_23_Report_Only %>%
+  filter(`District_IRN` == "043786")
+
+# 4. Gap Closing 22-23
+Cleveland_Gap_Closing_22_23 <- Gap_Closing_22_23_Gap_Closing %>%
+  filter(`District_IRN` == "043786")
+
+Cleveland_Gap_Closing_22_23_ELA_PI <- Gap_Closing_22_23_Gap_Additional_Details_ELA_PI %>%
+  filter(`District_IRN` == "043786")
+
+Cleveland_Gap_Closing_22_23_MATH_PI <- Gap_Closing_22_23_Gap_Additional_Details_MATH_PI %>%
+  filter(`District_IRN` == "043786")
+
+# 5. Building Details Report 23-24
+Cleveland_Building_Details_23_24 <- Building_Details_Report_23_24 %>%
+  filter(`District_IRN` == "043786")
+
+# 6. Building Student Opportunity Report 23-24
+Cleveland_Student_Opportunity_23_24 <- Building_Student_Opportunity_Report_23_24 %>%
+  filter(`District_IRN` == "043786")
+
+# 7. CCWMR 23-24
+Cleveland_CCWMR_23_24_Overview <- CCWMR_23_24_Overview %>%
+  filter(`District_IRN` == "043786")
+
+Cleveland_CCWMR_23_24_Additional_Details <- CCWMR_23_24_Additional_Details %>%
+  filter(`District_IRN` == "043786")
+
+Cleveland_CCWMR_23_24_Follow_Up_Collection <- CCWMR_23_24_Follow_Up_Collection %>%
+  filter(`District_IRN` == "043786")
+
+# 8. Gap Closing 23-24
+Cleveland_Gap_Closing_23_24 <- Gap_Closing_23_24_Gap_Closing %>%
+  filter(`District_IRN` == "043786")
+
+Cleveland_Gap_Closing_23_24_ELA_PI <- Gap_Closing_23_24_Additional_Details_ELA_PI %>%
+  filter(`District_IRN` == "043786")
+
+Cleveland_Gap_Closing_23_24_MATH_PI <- Gap_Closing_23_24_Additional_Details_Math_PI %>%
+  filter(`District_IRN` == "043786")
+
+# 9 & 10. For the district dashboard and enrollment trends, we'll check if they have IRN column
+# and filter accordingly (column name might be different)
+
+# For district dashboard
+if("District_IRN" %in% colnames(report_card_data_district_dashboard_Overview_Percent_Proficient_Trends)) {
+  Cleveland_Proficient_Trends <- report_card_data_district_dashboard_Overview_Percent_Proficient_Trends %>%
+    filter(`District_IRN` == "043786")
+} else if("IRN" %in% colnames(report_card_data_district_dashboard_Overview_Percent_Proficient_Trends)) {
+  Cleveland_Proficient_Trends <- report_card_data_district_dashboard_Overview_Percent_Proficient_Trends %>%
+    filter(IRN == "043786")
+} else {
+  # If no matching column found, keep original data but note it in a message
+  Cleveland_Proficient_Trends <- report_card_data_district_dashboard_Overview_Percent_Proficient_Trends
+  message("Warning: Could not filter Proficient Trends data by Cleveland IRN - check column names")
+}
+
+# For enrollment trends
+if("District_IRN" %in% colnames(report_card_data_school_dashboard_Overview_Enrollment_Trends)) {
+  Cleveland_Enrollment_Trends <- report_card_data_school_dashboard_Overview_Enrollment_Trends %>%
+    filter(`District_IRN` == "043786")
+} else if("IRN" %in% colnames(report_card_data_school_dashboard_Overview_Enrollment_Trends)) {
+  Cleveland_Enrollment_Trends <- report_card_data_school_dashboard_Overview_Enrollment_Trends %>%
+    filter(IRN == "043786")
+} else {
+  # If no matching column found, keep original data but note it in a message
+  Cleveland_Enrollment_Trends <- report_card_data_school_dashboard_Overview_Enrollment_Trends
+  message("Warning: Could not filter Enrollment Trends data by Cleveland IRN - check column names")
+}
+
+# Print row counts to verify the filtering worked
+cat("Cleveland Buildings 22-23:", nrow(Cleveland_Building_Details_22_23), "rows\n")
+cat("Cleveland Buildings 23-24:", nrow(Cleveland_Building_Details_23_24), "rows\n")
+cat("Cleveland Student Opportunity 22-23:", nrow(Cleveland_Student_Opportunity_22_23), "rows\n")
+cat("Cleveland Student Opportunity 23-24:", nrow(Cleveland_Student_Opportunity_23_24), "rows\n")
+```
+
+```{r cleveland_eda}
+# Basic Exploratory Visualizations for Cleveland Schools
+
+# 1. Overview of Cleveland schools by school type
+if("School_Type_Description" %in% colnames(Cleveland_Building_Details_23_24)) {
+  # School counts by type
+  cleveland_school_types <- Cleveland_Building_Details_23_24 %>%
+    group_by(School_Type_Description) %>%
+    summarise(count = n()) %>%
+    arrange(desc(count))
+  
+  # Create visualization
+  ggplot(cleveland_school_types, aes(x = reorder(School_Type_Description, -count), y = count)) +
+    geom_bar(stat = "identity", fill = "steelblue") +
+    theme_minimal() +
+    labs(
+      title = "Cleveland Schools by Type (2023-24)",
+      x = "School Type",
+      y = "Number of Schools"
+    ) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+}
+
+# 2. Exploring student performance across schools (using GAP closing data if available)
+if(exists("Cleveland_Gap_Closing_23_24") && 
+   "Performance_Index_Score" %in% colnames(Cleveland_Gap_Closing_23_24) &&
+   "School_Name" %in% colnames(Cleveland_Gap_Closing_23_24)) {
+  
+  # Filter to schools with available data and create basic performance plot
+  cleveland_performance <- Cleveland_Gap_Closing_23_24 %>%
+    filter(!is.na(Performance_Index_Score)) %>%
+    select(School_Name, Performance_Index_Score) %>%
+    mutate(School_Name = factor(School_Name, 
+                               levels = School_Name[order(Performance_Index_Score)]))
+  
+  # Create visualization
+  ggplot(cleveland_performance, aes(x = School_Name, y = Performance_Index_Score)) +
+    geom_bar(stat = "identity", fill = "darkgreen") +
+    theme_minimal() +
+    labs(
+      title = "Performance Index Scores Across Cleveland Schools (2023-24)",
+      x = "School",
+      y = "Performance Index Score"
+    ) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 8))
+}
+
+# 3. Compare student opportunity metrics (if available in the dataset)
+# This assumes the structure from the Building Student Opportunity Report
+if(exists("Cleveland_Student_Opportunity_23_24") && 
+   "Student_Group" %in% colnames(Cleveland_Student_Opportunity_23_24) &&
+   "Chronic_Absenteeism_Rate" %in% colnames(Cleveland_Student_Opportunity_23_24)) {
+  
+  # Create summary by student group
+  cleveland_opportunity <- Cleveland_Student_Opportunity_23_24 %>%
+    filter(Student_Group != "All Students") %>%  # Exclude overall category to avoid double counting
+    group_by(Student_Group) %>%
+    summarise(
+      Avg_Absence_Rate = mean(Chronic_Absenteeism_Rate, na.rm = TRUE)
+    ) %>%
+    arrange(desc(Avg_Absence_Rate))
+  
+  # Create visualization
+  ggplot(cleveland_opportunity, aes(x = reorder(Student_Group, Avg_Absence_Rate), y = Avg_Absence_Rate)) +
+    geom_bar(stat = "identity", fill = "orangered") +
+    theme_minimal() +
+    labs(
+      title = "Average Chronic Absenteeism Rate by Student Group in Cleveland (2023-24)",
+      x = "Student Group",
+      y = "Average Chronic Absenteeism Rate (%)"
+    ) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+}
+
+# 4. Geographic visualization if coordinates are available
+# Check if lat/long or other spatial data is available
+# For now we'll just check if we can map schools by any categorical variable
+
+# 5. Year-over-year comparison (22-23 vs 23-24) for key metrics
+# This assumes both year datasets have comparable structure and metrics
+if(exists("Cleveland_Gap_Closing_22_23") && exists("Cleveland_Gap_Closing_23_24")) {
+  # Try to create year-over-year comparison for Performance Index if available
+  if("Performance_Index_Score" %in% colnames(Cleveland_Gap_Closing_22_23) && 
+     "Performance_Index_Score" %in% colnames(Cleveland_Gap_Closing_23_24) &&
+     "School_Name" %in% colnames(Cleveland_Gap_Closing_22_23) &&
+     "School_Name" %in% colnames(Cleveland_Gap_Closing_23_24)) {
+    
+    # Prepare data from 22-23
+    performance_22_23 <- Cleveland_Gap_Closing_22_23 %>%
+      select(School_Name, Performance_Index_Score) %>%
+      rename(Score_22_23 = Performance_Index_Score)
+    
+    # Prepare data from 23-24
+    performance_23_24 <- Cleveland_Gap_Closing_23_24 %>%
+      select(School_Name, Performance_Index_Score) %>%
+      rename(Score_23_24 = Performance_Index_Score)
+    
+    # Join the datasets
+    performance_comparison <- performance_22_23 %>%
+      inner_join(performance_23_24, by = "School_Name") %>%
+      mutate(
+        Score_Change = Score_23_24 - Score_22_23,
+        Direction = ifelse(Score_Change > 0, "Improved", "Declined")
+      ) %>%
+      arrange(desc(Score_Change))
+    
+    # Create visualization
+    ggplot(performance_comparison, aes(x = reorder(School_Name, Score_Change), 
+                                      y = Score_Change, fill = Direction)) +
+      geom_bar(stat = "identity") +
+      scale_fill_manual(values = c("Improved" = "green3", "Declined" = "red3")) +
+      theme_minimal() +
+      labs(
+        title = "Change in Performance Index Scores (2022-23 to 2023-24)",
+        x = "School",
+        y = "Score Change",
+        fill = "Direction"
+      ) +
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 8))
+  }
+}
+```
+
+```{r cleveland_map, warning=FALSE, message=FALSE}
+# Creating a map of Cleveland schools if lat/long coordinates are available
+
+# Check if latitude and longitude columns exist in the building details dataset
+# (Column names may vary, so we'll check for common variations)
+lat_columns <- c("Latitude", "latitude", "lat", "LAT", "School_Latitude")
+long_columns <- c("Longitude", "longitude", "lon", "long", "LONG", "School_Longitude") 
+
+# Function to find matching column
+find_column <- function(data, possible_names) {
+  existing <- which(possible_names %in% colnames(data))
+  if(length(existing) > 0) {
+    return(possible_names[existing[1]])
+  } else {
+    return(NULL)
+  }
+}
+
+# Try to create a map with the most recent data
+if(exists("Cleveland_Building_Details_23_24")) {
+  lat_col <- find_column(Cleveland_Building_Details_23_24, lat_columns)
+  long_col <- find_column(Cleveland_Building_Details_23_24, long_columns)
+  
+  # If we don't find lat/long in the current dataset, we'll create a message about it
+  if(is.null(lat_col) || is.null(long_col)) {
+    cat("No latitude/longitude coordinates found in the dataset. A geographic visualization cannot be created.")
+    
+    # Instead, let's create a map of Ohio and highlight Cleveland's location
+    # Get Ohio county data
+    ohio <- maps::map("county", "ohio", fill = TRUE, plot = FALSE)
+    ohio_sf <- sf::st_as_sf(ohio)
+    
+    # Create a basic leaflet map centered on Cleveland (approximate coordinates)
+    leaflet(ohio_sf) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      setView(lng = -81.6944, lat = 41.4993, zoom = 10) %>%
+      addPolygons(color = "#444444", weight = 1, fillColor = "lightblue", 
+                  fillOpacity = 0.5, popup = ~ID) %>%
+      addMarkers(lng = -81.6944, lat = 41.4993, popup = "Cleveland, Ohio")
+  } else {
+    # We have coordinates, so create a map with school locations
+    # First, prepare the data for mapping
+    map_data <- Cleveland_Building_Details_23_24 %>%
+      select(
+        School_Name, 
+        School_IRN,
+        !!lat_col := !!sym(lat_col), 
+        !!long_col := !!sym(long_col)
+      ) %>%
+      filter(!is.na(!!sym(lat_col)) & !is.na(!!sym(long_col)))
+    
+    # If we have performance data, try to join it for color coding
+    if(exists("Cleveland_Gap_Closing_23_24") && 
+       "School_IRN" %in% colnames(Cleveland_Gap_Closing_23_24) &&
+       "Performance_Index_Score" %in% colnames(Cleveland_Gap_Closing_23_24)) {
+      
+      performance_data <- Cleveland_Gap_Closing_23_24 %>%
+        select(School_IRN, Performance_Index_Score) %>%
+        filter(!is.na(Performance_Index_Score))
+      
+      map_data <- map_data %>%
+        left_join(performance_data, by = "School_IRN")
+    }
+    
+    # Create color palette if we have performance data
+    if("Performance_Index_Score" %in% colnames(map_data)) {
+      pal <- colorNumeric(
+        palette = "viridis",
+        domain = map_data$Performance_Index_Score
+      )
+      
+      # Create map with performance data
+      leaflet(map_data) %>%
+        addProviderTiles(providers$CartoDB.Positron) %>%
+        addCircleMarkers(
+          lng = ~get(long_col), 
+          lat = ~get(lat_col),
+          radius = 8,
+          fillColor = ~pal(Performance_Index_Score),
+          fillOpacity = 0.8,
+          color = "white",
+          weight = 1,
+          popup = ~paste0(
+            "<b>", School_Name, "</b><br>",
+            "IRN: ", School_IRN, "<br>",
+            "Performance Index: ", round(Performance_Index_Score, 1)
+          )
+        ) %>%
+        addLegend(
+          position = "bottomright",
+          pal = pal,
+          values = ~Performance_Index_Score,
+          title = "Performance Index",
+          opacity = 0.8
+        )
+    } else {
+      # Create basic map without performance data
+      leaflet(map_data) %>%
+        addProviderTiles(providers$CartoDB.Positron) %>%
+        addCircleMarkers(
+          lng = ~get(long_col), 
+          lat = ~get(lat_col),
+          radius = 8,
+          fillColor = "steelblue",
+          fillOpacity = 0.8,
+          color = "white",
+          weight = 1,
+          popup = ~paste0(
+            "<b>", School_Name, "</b><br>",
+            "IRN: ", School_IRN
+          )
+        )
+    }
+  }
+} else {
+  cat("Building details dataset not available for mapping")
+}
+```
+
+## Summary of Cleveland Municipal School District Analysis
+
+This exploratory data analysis has focused on the Cleveland Municipal School District (IRN: 043786) using Ohio Department of Education data from the 2022-23 and 2023-24 school years. 
+
+The analysis includes:
+
+1. **School Demographics**: Overview of Cleveland schools by type and size
+2. **Performance Metrics**: Analysis of Performance Index scores across Cleveland schools
+3. **Student Opportunity**: Examination of chronic absenteeism rates by student group
+4. **Geographic Distribution**: Mapping of schools with available location data
+5. **Year-over-Year Comparison**: Trends in performance between 2022-23 and 2023-24
+
+This exploratory analysis provides a foundation for deeper investigation into educational equity and digital redlining in Cleveland schools. Further analysis could incorporate additional data on:
+
+- Internet access and technology availability at home and school
+- Comparison with neighboring districts
+- Correlation between performance metrics and socioeconomic factors
+- Analysis of educational resource allocation across schools
+
+### Next Steps
+
+1. Integrate additional geospatial data on broadband access in Cleveland neighborhoods
+2. Analyze the relationship between internet access and student performance
+3. Compare Cleveland's digital divide with statewide patterns
+4. Develop models to identify schools that could benefit most from digital equity interventions
+
+```{r consolidated_dataset, message=FALSE, warning=FALSE}
+# Create consolidated dataset with all Cleveland schools and geocoding
+# This will join data from all 15 datasets based on Building/School IRN
+
+library(tidyverse)
+
+# Step 1: First check if we already have geocoding data in our datasets
+# Extract column names related to geo-coordinates
+geo_columns <- function(df) {
+  cols <- colnames(df)
+  lat_cols <- cols[grepl("lat|latitude", cols, ignore.case = TRUE)]
+  lon_cols <- cols[grepl("lon|longitude", cols, ignore.case = TRUE)]
+  return(list(lat = lat_cols, lon = lon_cols))
+}
+
+# Check which datasets might have geocoding
+geo_in_building_details_23_24 <- geo_columns(Cleveland_Building_Details_23_24)
+print("Latitude columns in Building Details 23-24:")
+print(geo_in_building_details_23_24$lat)
+print("Longitude columns in Building Details 23-24:")
+print(geo_in_building_details_23_24$lon)
+
+geo_in_building_details_22_23 <- geo_columns(Cleveland_Building_Details_22_23)
+print("Latitude columns in Building Details 22-23:")
+print(geo_in_building_details_22_23$lat)
+print("Longitude columns in Building Details 22-23:")
+print(geo_in_building_details_22_23$lon)
+
+# Step 2: Create base dataset with school information from Building Details
+# First examine column names to find the correct ones without underscores
+print("Column names in Cleveland_Building_Details_23_24:")
+print(colnames(Cleveland_Building_Details_23_24))
+
+# We'll use the most recent data (23-24) and fallback to 22-23 if needed
+# Updated to use column names without underscores
+base_columns <- c("SchoolIRN", "SchoolName", "DistrictIRN", "DistrictName", 
+                 "SchoolTypeDescription", "Address", "City", "State", "ZipCode")
+
+# Function to find matching columns in a dataframe including variations
+find_matching_columns <- function(df, target_columns) {
+  available_cols <- c()
+  
+  for (col in target_columns) {
+    # Check direct match
+    if (col %in% colnames(df)) {
+      available_cols <- c(available_cols, col)
+    } else {
+      # Check for variations with underscores
+      with_underscore <- gsub("([a-z])([A-Z])", "\\1_\\2", col)
+      if (with_underscore %in% colnames(df)) {
+        available_cols <- c(available_cols, with_underscore)
+      } else {
+        # Check for lowercase variations
+        lower_col <- tolower(col)
+        matches <- grep(lower_col, tolower(colnames(df)), value = TRUE)
+        if (length(matches) > 0) {
+          available_cols <- c(available_cols, matches[1])
+        }
+      }
+    }
+  }
+  
+  return(available_cols)
+}
+
+# Get available columns in each dataset
+available_cols_23_24 <- find_matching_columns(Cleveland_Building_Details_23_24, base_columns)
+available_cols_22_23 <- find_matching_columns(Cleveland_Building_Details_22_23, base_columns)
+
+print("Available columns in 23-24 dataset:")
+print(available_cols_23_24)
+print("Available columns in 22-23 dataset:")
+print(available_cols_22_23)
+
+# Create base dataset from 23-24 data
+if (length(available_cols_23_24) >= 3) {  # At least need IRN, name, and district
+  cleveland_schools <- Cleveland_Building_Details_23_24 %>%
+    select(all_of(available_cols_23_24))
+} else if (length(available_cols_22_23) >= 3) {
+  cleveland_schools <- Cleveland_Building_Details_22_23 %>%
+    select(all_of(available_cols_22_23))
+} else {
+  # If neither dataset has enough info, create minimal base
+  # Check for the actual column names first
+  irn_col <- grep("IRN", colnames(Cleveland_Building_Details_23_24), value = TRUE)[1]
+  name_col <- grep("Name", colnames(Cleveland_Building_Details_23_24), value = TRUE)[1]
+  
+  # Create a minimal dataset with correct column names
+  cleveland_schools <- Cleveland_Building_Details_23_24 %>%
+    select(all_of(c(irn_col, name_col))) %>%
+    rename(SchoolIRN = irn_col, SchoolName = name_col) %>%
+    mutate(DistrictIRN = "043786",
+           DistrictName = "Cleveland Municipal School District")
+}
+
+# Ensure consistent column names in the base dataset
+name_mappings <- c(
+  "School_IRN" = "SchoolIRN", 
+  "School_Name" = "SchoolName",
+  "District_IRN" = "DistrictIRN", 
+  "District_Name" = "DistrictName"
+)
+
+# Rename columns for consistency if they exist with underscores
+for (old_name in names(name_mappings)) {
+  if (old_name %in% colnames(cleveland_schools)) {
+    cleveland_schools <- cleveland_schools %>%
+      rename_with(~ name_mappings[old_name], all_of(old_name))
+  }
+}
+
+# If we're missing address info, check if it's in the other year's data
+if (!"Address" %in% colnames(cleveland_schools) && "Address" %in% colnames(Cleveland_Building_Details_22_23)) {
+  # Find the school IRN column in both datasets
+  school_irn_23_24 <- grep("IRN", colnames(cleveland_schools), value = TRUE)[1]
+  school_irn_22_23 <- grep("IRN", colnames(Cleveland_Building_Details_22_23), value = TRUE)[1]
+  
+  # Select address columns
+  address_cols <- c("Address", "City", "State", "ZipCode", "Zip_Code", "Zip")
+  avail_address_cols <- intersect(address_cols, colnames(Cleveland_Building_Details_22_23))
+  
+  address_data <- Cleveland_Building_Details_22_23 %>%
+    select(all_of(c(school_irn_22_23, avail_address_cols)))
+  
+  # Rename the IRN column to match
+  address_data <- address_data %>%
+    rename_with(~ school_irn_23_24, all_of(school_irn_22_23))
+  
+  # Join using the correct column name
+  cleveland_schools <- cleveland_schools %>%
+    left_join(address_data, by = school_irn_23_24)
+}
+
+# Display actual column names for debugging
+print("Column names in cleveland_schools:")
+print(colnames(cleveland_schools))
+
+# Step 3: Add performance data from Gap Closing
+if (exists("Cleveland_Gap_Closing_23_24")) {
+  # Check for the correct school IRN column name in both datasets
+  school_irn_base <- grep("IRN", colnames(cleveland_schools), value = TRUE)[1]
+  school_irn_perf <- grep("IRN", colnames(Cleveland_Gap_Closing_23_24), value = TRUE)[1]
+  
+  # Check for performance columns
+  perf_columns <- c("PerformanceIndexScore", "Performance_Index_Score", "ProgressScore", "Progress_Score", "GapClosingScore", "Gap_Closing_Score")
+  available_perf_cols <- intersect(colnames(Cleveland_Gap_Closing_23_24), perf_columns)
+  
+  if (length(available_perf_cols) > 0) {
+    performance_data <- Cleveland_Gap_Closing_23_24 %>%
+      select(all_of(c(school_irn_perf, available_perf_cols)))
+    
+    # Rename the IRN column to match the base dataset
+    performance_data <- performance_data %>%
+      rename_with(~ school_irn_base, all_of(school_irn_perf))
+    
+    # Join using the correct column name
+    cleveland_schools <- cleveland_schools %>%
+      left_join(performance_data, by = school_irn_base)
+  }
+}
+
+# Step 4: Add opportunity data (chronic absenteeism, etc.)
+if (exists("Cleveland_Student_Opportunity_23_24")) {
+  # Find the school IRN column in both datasets
+  school_irn_base <- grep("IRN", colnames(cleveland_schools), value = TRUE)[1]
+  school_irn_opp <- grep("IRN", colnames(Cleveland_Student_Opportunity_23_24), value = TRUE)[1]
+  
+  # Check for opportunity data columns
+  opp_columns <- c("ChronicAbsenteeismRate", "Chronic_Absenteeism_Rate")
+  available_opp_cols <- intersect(colnames(Cleveland_Student_Opportunity_23_24), opp_columns)
+  
+  # Find the student group column
+  student_group_col <- grep("Group", colnames(Cleveland_Student_Opportunity_23_24), value = TRUE)[1]
+  
+  if (length(available_opp_cols) > 0 && !is.na(student_group_col)) {
+    # For opportunity data, we need to aggregate by school since it has student groups
+    opportunity_data <- Cleveland_Student_Opportunity_23_24 %>%
+      filter(get(student_group_col) == "All Students") %>%
+      select(all_of(c(school_irn_opp, available_opp_cols)))
+    
+    # Rename the IRN column to match the base dataset
+    opportunity_data <- opportunity_data %>%
+      rename_with(~ school_irn_base, all_of(school_irn_opp))
+    
+    # Join using the correct column name
+    cleveland_schools <- cleveland_schools %>%
+      left_join(opportunity_data, by = school_irn_base)
+  }
+}
+
+# Step 5: Add any available geocoding data
+if (length(geo_in_building_details_23_24$lat) > 0 && length(geo_in_building_details_23_24$lon) > 0) {
+  # Find the school IRN column
+  school_irn_base <- grep("IRN", colnames(cleveland_schools), value = TRUE)[1]
+  school_irn_geo <- grep("IRN", colnames(Cleveland_Building_Details_23_24), value = TRUE)[1]
+  
+  # We have geo data in 23-24 dataset
+  geo_data <- Cleveland_Building_Details_23_24 %>%
+    select(all_of(c(school_irn_geo, geo_in_building_details_23_24$lat[1], geo_in_building_details_23_24$lon[1]))) %>%
+    rename(Latitude = geo_in_building_details_23_24$lat[1],
+           Longitude = geo_in_building_details_23_24$lon[1])
+  
+  # Rename the IRN column to match the base dataset
+  geo_data <- geo_data %>%
+    rename_with(~ school_irn_base, all_of(school_irn_geo))
+  
+  # Join using the correct column name
+  cleveland_schools <- cleveland_schools %>%
+    left_join(geo_data, by = school_irn_base)
+  
+} else if (length(geo_in_building_details_22_23$lat) > 0 && length(geo_in_building_details_22_23$lon) > 0) {
+  # Find the school IRN column
+  school_irn_base <- grep("IRN", colnames(cleveland_schools), value = TRUE)[1]
+  school_irn_geo <- grep("IRN", colnames(Cleveland_Building_Details_22_23), value = TRUE)[1]
+  
+  # We have geo data in 22-23 dataset
+  geo_data <- Cleveland_Building_Details_22_23 %>%
+    select(all_of(c(school_irn_geo, geo_in_building_details_22_23$lat[1], geo_in_building_details_22_23$lon[1]))) %>%
+    rename(Latitude = geo_in_building_details_22_23$lat[1],
+           Longitude = geo_in_building_details_22_23$lon[1])
+  
+  # Rename the IRN column to match the base dataset
+  geo_data <- geo_data %>%
+    rename_with(~ school_irn_base, all_of(school_irn_geo))
+  
+  # Join using the correct column name
+  cleveland_schools <- cleveland_schools %>%
+    left_join(geo_data, by = school_irn_base)
+  
+} else {
+  # No geocoding data in our datasets, we'll need to add it
+  # Check if we have address data to geocode
+  address_cols <- c("Address", "City", "State", "ZipCode", "Zip_Code", "Zip")
+  has_address_data <- any(address_cols %in% colnames(cleveland_schools))
+  
+  if (has_address_data) {
+    # We have address data, but we'll create a field for future geocoding
+    # Find actual column names
+    address_col <- intersect(c("Address"), colnames(cleveland_schools))[1]
+    city_col <- intersect(c("City"), colnames(cleveland_schools))[1]
+    state_col <- intersect(c("State"), colnames(cleveland_schools))[1]
+    zip_col <- intersect(c("ZipCode", "Zip_Code", "Zip"), colnames(cleveland_schools))[1]
+    
+    if (!is.na(address_col) && !is.na(city_col) && !is.na(state_col)) {
+      cleveland_schools <- cleveland_schools %>%
+        mutate(full_address = paste(get(address_col), get(city_col), get(state_col), 
+                                    ifelse(!is.na(zip_col), get(zip_col), ""), sep = ", "))
+    }
+    
+    # Add placeholder columns for geocoding
+    cleveland_schools <- cleveland_schools %>%
+      mutate(Latitude = NA_real_,
+             Longitude = NA_real_)
+  }
+}
+
+# Step 6: For schools missing geocodes, add default Cleveland coordinates
+# First ensure Latitude and Longitude columns exist to avoid the error
+if(!"Latitude" %in% colnames(cleveland_schools)) {
+  cleveland_schools <- cleveland_schools %>%
+    mutate(Latitude = NA_real_, Longitude = NA_real_)
+}
+
+# Now update with default Cleveland coordinates where needed
+cleveland_schools <- cleveland_schools %>%
+  mutate(
+    Latitude = ifelse(is.na(Latitude), 41.4993, Latitude),
+    Longitude = ifelse(is.na(Longitude), -81.6944, Longitude)
+  )
+
+# Step 7: Add year-over-year data where available
+if (exists("Cleveland_Gap_Closing_22_23") && exists("Cleveland_Gap_Closing_23_24")) {
+  # Find the school IRN column in all datasets
+  school_irn_base <- grep("IRN", colnames(cleveland_schools), value = TRUE)[1]
+  school_irn_22_23 <- grep("IRN", colnames(Cleveland_Gap_Closing_22_23), value = TRUE)[1]
+  school_irn_23_24 <- grep("IRN", colnames(Cleveland_Gap_Closing_23_24), value = TRUE)[1]
+  
+  # Find performance columns
+  perf_col_22_23 <- grep("Performance|Index", colnames(Cleveland_Gap_Closing_22_23), value = TRUE)[1]
+  perf_col_23_24 <- grep("Performance|Index", colnames(Cleveland_Gap_Closing_23_24), value = TRUE)[1]
+  
+  if (!is.na(perf_col_22_23) && !is.na(perf_col_23_24)) {
+    # Create comparison data - ensure data is numeric before calculations
+    performance_22_23 <- Cleveland_Gap_Closing_22_23 %>%
+      select(all_of(c(school_irn_22_23, perf_col_22_23))) %>%
+      rename(PI_Score_22_23 = all_of(perf_col_22_23)) %>%
+      # Convert to numeric and handle non-numeric values
+      mutate(PI_Score_22_23 = as.numeric(as.character(PI_Score_22_23)))
+    
+    performance_23_24 <- Cleveland_Gap_Closing_23_24 %>%
+      select(all_of(c(school_irn_23_24, perf_col_23_24))) %>%
+      rename(PI_Score_23_24 = all_of(perf_col_23_24)) %>%
+      # Convert to numeric and handle non-numeric values
+      mutate(PI_Score_23_24 = as.numeric(as.character(PI_Score_23_24)))
+    
+    # Rename IRN columns to a consistent name for joining
+    performance_22_23 <- performance_22_23 %>%
+      rename_with(~ "temp_irn", all_of(school_irn_22_23))
+    
+    performance_23_24 <- performance_23_24 %>%
+      rename_with(~ "temp_irn", all_of(school_irn_23_24))
+    
+    # Join the datasets
+    performance_comparison <- performance_22_23 %>%
+      inner_join(performance_23_24, by = "temp_irn") %>%
+      # Calculate change - this will work now with numeric values
+      mutate(PI_Score_Change = PI_Score_23_24 - PI_Score_22_23) %>%
+      rename_with(~ school_irn_base, "temp_irn")
+    
+    # Join to main dataset
+    cleveland_schools <- cleveland_schools %>%
+      left_join(performance_comparison, by = school_irn_base)
+  }
+}
+
+# Step 8: Save the consolidated dataset as RDS file
+# Ensure directory exists
+dir.create("~/digital_redlining/plot/output", recursive = TRUE, showWarnings = FALSE)
+
+# Save the data
+saveRDS(cleveland_schools, "~/digital_redlining/plot/output/cleveland_schools_consolidated.rds")
+
+# Display summary of the consolidated dataset
+cat("Consolidated dataset created with", nrow(cleveland_schools), "Cleveland schools\n")
+cat("Variables included:", paste(colnames(cleveland_schools), collapse = ", "), "\n")
+
+# Preview the first few rows
+head(cleveland_schools)
+```
+
+```{r enhanced_map, message=FALSE, warning=FALSE}
+# Create an enhanced leaflet map using the consolidated dataset and redlining data
+
+# First try to load the geocoded dataset, falling back to alternatives
+geocoded_path <- "~/digital_redlining/plot/output/cleveland_schools_geocoded.rds"
+fixed_data_path <- "~/digital_redlining/plot/output/cleveland_schools_fixed.rds"
+original_data_path <- "~/digital_redlining/plot/output/cleveland_schools_consolidated.rds"
+
+if (file.exists(geocoded_path)) {
+  cleveland_schools_data <- readRDS(geocoded_path)
+  using_geocoded_data <- TRUE
+  cat("Using the geocoded Cleveland schools dataset with actual coordinates\n")
+} else if (file.exists(fixed_data_path)) {
+  cleveland_schools_data <- readRDS(fixed_data_path)
+  using_geocoded_data <- FALSE
+  using_fixed_data <- TRUE
+  cat("Using the fixed Cleveland schools dataset with synthetic coordinates\n")
+} else {
+  cleveland_schools_data <- readRDS(original_data_path)
+  using_geocoded_data <- FALSE
+  using_fixed_data <- FALSE
+  cat("Using the original Cleveland schools dataset (note: geocoding may be inaccurate)\n")
+}
+
+# Print the column names to check what's available
+print(colnames(cleveland_schools_data))
+
+# Load the redlining data (HOLC grades) from GeoJSON
+redlining_file <- "~/digital_redlining/redlining_map_data/geojson.json"
+redlining_data <- sf::st_read(redlining_file, quiet = TRUE)
+
+# Print a summary of the redlining data to debug
+cat("Redlining data summary:\n")
+cat("Number of polygons:", nrow(redlining_data), "\n")
+print(table(redlining_data$grade))
+
+# Check if we have performance data for color coding the schools
+has_performance_data <- "Performance_Index_Score" %in% colnames(cleveland_schools_data) && 
+                        sum(!is.na(cleveland_schools_data$Performance_Index_Score)) > 0
+
+# If we have geocoded data, make sure we use the correct geocoding columns
+if (using_geocoded_data && "geo_lat" %in% colnames(cleveland_schools_data) && "geo_lng" %in% colnames(cleveland_schools_data)) {
+  # Use the geocoded coordinates
+  cleveland_schools_data$Latitude <- cleveland_schools_data$geo_lat
+  cleveland_schools_data$Longitude <- cleveland_schools_data$geo_lng
+}
+
+# Create color palette for redlining grades
+# HOLC grades from best to worst: A (green), B (blue), C (yellow), D (red)
+holc_colors <- c(
+  "A" = "#76a865",  # Green
+  "B" = "#7cb5bd",  # Blue
+  "C" = "#ffff00",  # Yellow
+  "D" = "#d9533c"   # Red
+)
+
+# Output the color assignments for debugging
+cat("Color mapping for HOLC grades:\n")
+for (grade in names(holc_colors)) {
+  cat(paste0("Grade ", grade, ": ", holc_colors[grade], "\n"))
+}
+
+# Create a base map
+map <- leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(lng = -81.6944, lat = 41.4993, zoom = 10)  # Center on Cleveland
+
+# Add the redlining polygons with appropriate colors based on their grade
+# Use a direct mapping with holc_colors and ensure unquoted grade property
+map <- map %>%
+  addPolygons(
+    data = redlining_data,
+    fillColor = ~ifelse(grade %in% names(holc_colors), 
+                        holc_colors[grade], 
+                        "#CCCCCC"),  # Direct indexing with fallback
+    fillOpacity = 0.7, # Increased opacity for better visibility
+    color = "#444444",
+    weight = 1,
+    label = ~paste("Grade:", grade),
+    popup = ~paste(
+      "<strong>Grade:", grade, "</strong><br>",
+      "Area ID:", area_id, "<br>",
+      "Primarily Residential:", ifelse(residential, "Yes", "No")
+    ),
+    group = "Redlining Districts"
+  )
+
+# Add the schools with appropriate styling
+if (has_performance_data) {
+  # Create color palette for schools
+  pal <- colorNumeric(
+    palette = "viridis",
+    domain = cleveland_schools_data$Performance_Index_Score,
+    na.color = "#CCCCCC"
+  )
+  
+  # Add circles for schools with performance data
+  map <- map %>%
+    addCircleMarkers(
+      data = cleveland_schools_data,
+      lng = ~Longitude, 
+      lat = ~Latitude,
+      radius = 6,
+      fillColor = ~pal(Performance_Index_Score),
+      fillOpacity = 0.8,
+      color = "white",
+      weight = 1,
+      popup = ~paste0(
+        "<b>", SchoolName, "</b><br>",
+        "IRN: ", SchoolIRN, "<br>",
+        "Performance Index: ", round(Performance_Index_Score, 1)
+      ),
+      group = "Schools"
+    ) %>%
+    addLegend(
+      position = "bottomright",
+      pal = pal,
+      values = ~cleveland_schools_data$Performance_Index_Score,
+      title = "Performance Index",
+      opacity = 0.8
+    )
+} else {
+  # Add circles for schools without performance data
+  map <- map %>%
+    addCircleMarkers(
+      data = cleveland_schools_data,
+      lng = ~Longitude, 
+      lat = ~Latitude,
+      radius = 6,
+      fillColor = "steelblue",
+      fillOpacity = 0.8,
+      color = "white",
+      weight = 1,
+      popup = ~paste0(
+        "<b>", SchoolName, "</b><br>",
+        "IRN: ", SchoolIRN
+      ),
+      group = "Schools"
+    )
+}
+
+# Add layer controls so users can toggle the redlining districts and schools
+map <- map %>%
+  addLayersControl(
+    overlayGroups = c("Redlining Districts", "Schools"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+# Add a legend for the redlining grades
+map <- map %>%
+  addLegend(
+    position = "bottomleft",
+    colors = unname(holc_colors),
+    labels = paste("Grade", names(holc_colors)),
+    title = "HOLC Grades (1930s)",
+    opacity = 0.7
+  )
+
+# Display the map
+map
+```
+
+## Interactive School Performance Indicators Map
+
+This interactive map allows you to explore various performance indicators for Cleveland schools in relation to historical redlining districts. You can select different metrics from the Ohio School Report Cards to visualize how school performance relates to neighborhood redlining grades.
+
+```{r performance_indicators_map, message=FALSE, warning=FALSE, fig.width=10, fig.height=8}
+# Create a standard leaflet map with all indicators loaded separately instead of using Shiny
+# This will be more compatible with R Markdown HTML output
+
+# Load required libraries
+library(leaflet)
+library(dplyr)
+library(readxl)
+library(sf)
+library(viridis)
+library(DT)
+library(htmltools)
+library(htmlwidgets)
+library(jsonlite)
+
+# Set paths
+geocoded_path <- "~/digital_redlining/plot/output/cleveland_schools_geocoded.rds"
+fixed_data_path <- "~/digital_redlining/plot/output/cleveland_schools_fixed.rds"
+original_data_path <- "~/digital_redlining/plot/output/cleveland_schools_consolidated.rds"
+redlining_file <- "~/digital_redlining/redlining_map_data/geojson.json"
+datasets_dir <- "~/digital_redlining/plot/datasets/"
+
+# Load base school data
+if (file.exists(geocoded_path)) {
+  schools_base <- readRDS(geocoded_path)
+  cat("Using geocoded school data\n")
+} else if (file.exists(fixed_data_path)) {
+  schools_base <- readRDS(fixed_data_path)
+  cat("Using fixed school data\n")
+} else {
+  schools_base <- readRDS(original_data_path)
+  cat("Using original school data\n")
+}
+
+# Ensure coordinates are available
+if ("geo_lat" %in% colnames(schools_base) && "geo_lng" %in% colnames(schools_base)) {
+  schools_base$Latitude <- schools_base$geo_lat
+  schools_base$Longitude <- schools_base$geo_lng
+} else if (!("Latitude" %in% colnames(schools_base) && "Longitude" %in% colnames(schools_base))) {
+  stop("No geographic coordinates found in the dataset")
+}
+
+# Load redlining data
+redlining_data <- sf::st_read(redlining_file, quiet = TRUE)
+
+# Function to convert percentage strings to numeric
+convert_percent <- function(x) {
+  if (is.character(x)) {
+    # Remove % sign and convert to numeric
+    as.numeric(gsub("%", "", x)) / 100
+  } else {
+    x
+  }
+}
+
+# Load and prepare performance datasets
+# Building Details
+tryCatch({
+  building_details <- read_excel(paste0(datasets_dir, "23-24 Building Details Report.xlsx"), 
+                               sheet = "Building_Details")
+  building_details <- building_details %>%
+    filter(`Student Group` == "All Students") %>%
+    select(`Building IRN`, `Building Name`, `Attendance Rate`, 
+         `Chronic Absenteeism Rate`, `Mobility Rate`, `Enrollment`)
+}, error = function(e) {
+  cat("Error loading Building Details Report:", e$message, "\n")
+  building_details <- data.frame(`Building IRN` = character(), `Building Name` = character(),
+                               `Attendance Rate` = numeric(), `Chronic Absenteeism Rate` = numeric(),
+                               `Mobility Rate` = numeric(), `Enrollment` = numeric())
+})
+
+# Opportunity Report
+tryCatch({
+  opportunity_report <- read_excel(paste0(datasets_dir, "23-24 Building Student Opportunity Report.xlsx"), 
+                                 sheet = "By_Student_Group")
+  opportunity_report <- opportunity_report %>%
+    filter(`Student Group` == "All Students") %>%
+    select(`Building IRN`, `Building Name`, 
+         `Ratio of Portable Technology Devices That Students may Take Home to the Number of Students`)
+}, error = function(e) {
+  cat("Error loading Opportunity Report:", e$message, "\n")
+  opportunity_report <- data.frame(`Building IRN` = character(), `Building Name` = character(),
+                                 `Ratio of Portable Technology Devices That Students may Take Home to the Number of Students` = numeric())
+})
+
+# CCWMR Report
+tryCatch({
+  ccwmr_report <- read_excel(paste0(datasets_dir, "23-24 CCWMR.xlsx"), 
+                           sheet = "Overview")
+  ccwmr_overview <- ccwmr_report %>%
+    select(`Building IRN`, `Building Name`, 
+         `Percent of Students in the 4-Year Graduation Cohort who Completed a Pathway and are Prepared for College or Career Success`,
+         `Percent of Students Remediation Free on ACT or SAT`,
+         `Honors Diploma Percent`)
+}, error = function(e) {
+  cat("Error loading CCWMR Report:", e$message, "\n")
+  ccwmr_overview <- data.frame(`Building IRN` = character(), `Building Name` = character())
+})
+
+# Merge the datasets
+schools_data <- schools_base %>%
+  select(SchoolIRN, SchoolName, Latitude, Longitude) %>%
+  # Convert SchoolIRN to character to match Building IRN format in other datasets
+  mutate(SchoolIRN = as.character(SchoolIRN))
+
+# Merge with Building Details
+schools_data <- left_join(schools_data, 
+                         building_details, 
+                         by = c("SchoolIRN" = "Building IRN"))
+
+# Merge with Opportunity Report
+schools_data <- left_join(schools_data, 
+                         opportunity_report %>% 
+                           select(`Building IRN`, 
+                                 `Ratio of Portable Technology Devices That Students may Take Home to the Number of Students`), 
+                         by = c("SchoolIRN" = "Building IRN"))
+
+# Merge with CCWMR Report
+if (exists("ccwmr_overview")) {
+  schools_data <- left_join(schools_data, 
+                           ccwmr_overview %>% 
+                             select(`Building IRN`, 
+                                   `Percent of Students in the 4-Year Graduation Cohort who Completed a Pathway and are Prepared for College or Career Success`,
+                                   `Percent of Students Remediation Free on ACT or SAT`,
+                                   `Honors Diploma Percent`), 
+                           by = c("SchoolIRN" = "Building IRN"))
+}
+
+# Convert percentage columns to numeric
+percent_columns <- c("Attendance Rate", "Chronic Absenteeism Rate", "Mobility Rate",
+                     "Ratio of Portable Technology Devices That Students may Take Home to the Number of Students",
+                     "Percent of Students in the 4-Year Graduation Cohort who Completed a Pathway and are Prepared for College or Career Success",
+                     "Percent of Students Remediation Free on ACT or SAT",
+                     "Honors Diploma Percent")
+
+for (col in percent_columns) {
+  if (col %in% colnames(schools_data)) {
+    schools_data[[col]] <- sapply(schools_data[[col]], convert_percent)
+  }
+}
+
+# Create a list of all available indicators
+available_indicators <- list(
+  "Attendance Rate" = "Attendance Rate",
+  "Chronic Absenteeism Rate" = "Chronic Absenteeism Rate",
+  "Mobility Rate" = "Mobility Rate",
+  "Technology Access Ratio" = "Ratio of Portable Technology Devices That Students may Take Home to the Number of Students"
+)
+
+if ("Percent of Students in the 4-Year Graduation Cohort who Completed a Pathway and are Prepared for College or Career Success" %in% colnames(schools_data)) {
+  available_indicators["College/Career Ready %"] <- "Percent of Students in the 4-Year Graduation Cohort who Completed a Pathway and are Prepared for College or Career Success"
+}
+
+if ("Percent of Students Remediation Free on ACT or SAT" %in% colnames(schools_data)) {
+  available_indicators["Remediation Free on ACT/SAT %"] <- "Percent of Students Remediation Free on ACT or SAT"
+}
+
+if ("Honors Diploma Percent" %in% colnames(schools_data)) {
+  available_indicators["Honors Diploma %"] <- "Honors Diploma Percent"
+}
+
+# First, prepare the data for each indicator
+indicator_datasets <- list()
+
+for (indicator_name in names(available_indicators)) {
+  indicator_column <- available_indicators[[indicator_name]]
+  data_subset <- schools_data %>% 
+    filter(!is.na(!!sym(indicator_column))) %>%
+    select(SchoolName, SchoolIRN, Latitude, Longitude, !!sym(indicator_column))
+  
+  if (nrow(data_subset) > 0) {
+    indicator_datasets[[indicator_name]] <- data_subset
+  }
+}
+
+# Setup the initial map with the first indicator
+first_indicator <- names(available_indicators)[1]
+first_column <- available_indicators[[first_indicator]]
+
+# Filter data for the selected indicator
+filtered_data <- schools_data %>%
+  filter(!is.na(!!sym(first_column)))
+
+# HOLC Colors for redlining districts
+holc_colors <- c(
+  "A" = "#76a865",  # Green
+  "B" = "#7cb5bd",  # Blue
+  "C" = "#ffff00",  # Yellow
+  "D" = "#d9533c"   # Red
+)
+
+# Create a color palette for the first indicator
+if (grepl("Chronic Absenteeism|Mobility", first_column)) {
+  # Negative indicators (higher is worse) - use reverse palette
+  pal <- colorNumeric(
+    palette = "YlOrRd",
+    domain = range(filtered_data[[first_column]], na.rm = TRUE)
+  )
+} else {
+  # Positive indicators (higher is better)
+  pal <- colorNumeric(
+    palette = "viridis",
+    domain = range(filtered_data[[first_column]], na.rm = TRUE)
+  )
+}
+
+# Create popup content
+filtered_data$popup_content <- apply(filtered_data, 1, function(row) {
+  indicator_value <- row[[first_column]]
+  if (is.numeric(indicator_value)) {
+    indicator_value <- paste0(round(indicator_value * 100, 1), "%")
+  }
+  
+  paste0(
+    "<b>", row["SchoolName"], "</b><br>",
+    "IRN: ", row["SchoolIRN"], "<br>",
+    gsub("Percent of ", "", first_indicator), ": ", indicator_value
+  )
+})
+
+# Create the main map
+map <- leaflet(options = leafletOptions(minZoom = 10)) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(lng = -81.6944, lat = 41.4993, zoom = 11) %>%
+  # Add redlining districts
+  addPolygons(
+    data = redlining_data,
+    fillColor = ~ifelse(grade %in% names(holc_colors), 
+                       holc_colors[grade], 
+                       "#CCCCCC"),
+    fillOpacity = 0.6,
+    color = "#444444",
+    weight = 1,
+    label = ~paste("Grade:", grade),
+    popup = ~paste(
+      "<strong>Grade:", grade, "</strong><br>",
+      "Area ID:", area_id, "<br>",
+      "Primarily Residential:", ifelse(residential, "Yes", "No")
+    ),
+    group = "Redlining Districts"
+  )
+
+# Prepare indicator data in JSON format
+indicator_json_data <- list()
+for (indicator_name in names(indicator_datasets)) {
+  data_subset <- indicator_datasets[[indicator_name]]
+  indicator_column <- available_indicators[[indicator_name]]
+  
+  # Convert data to a suitable format for JSON
+  json_data <- data_subset %>%
+    mutate(
+      value = .[[indicator_column]],
+      formatted_value = paste0(round(value * 100, 1), "%")
+    ) %>%
+    select(SchoolName, SchoolIRN, Latitude, Longitude, value, formatted_value)
+  
+  indicator_json_data[[indicator_name]] <- list(
+    data = json_data,
+    column = indicator_column,
+    isNegative = grepl("Chronic Absenteeism|Mobility", indicator_column)
+  )
+}
+
+# Create dropdown options
+dropdown_html <- '<div class="indicator-control leaflet-control" style="background-color: white; padding: 10px; border-radius: 4px; box-shadow: 0 1px 5px rgba(0,0,0,0.4); z-index: 1000; position: absolute; top: 10px; right: 10px;">
+  <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: bold;">Select Performance Indicator:</h4>
+  <select id="indicator-dropdown" style="width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 3px; font-size: 14px;">'
+
+for (indicator_name in names(available_indicators)) {
+  dropdown_html <- paste0(dropdown_html, 
+                         sprintf('<option value="%s">%s</option>', indicator_name, indicator_name))
+}
+
+dropdown_html <- paste0(dropdown_html, '</select></div>')
+
+# Add the initial indicator markers
+map <- map %>%
+  addCircleMarkers(
+    data = filtered_data,
+    lng = ~Longitude,
+    lat = ~Latitude,
+    radius = 6,
+    fillColor = ~pal(get(first_column)),
+    fillOpacity = 0.8,
+    color = "white",
+    weight = 1,
+    popup = ~popup_content,
+    group = "Schools",
+    layerId = ~SchoolIRN,
+    clusterOptions = markerClusterOptions(
+      showCoverageOnHover = TRUE,
+      zoomToBoundsOnClick = TRUE,
+      spiderfyOnMaxZoom = TRUE,
+      removeOutsideVisibleBounds = TRUE,
+      disableClusteringAtZoom = 16
+    )
+  ) %>%
+  # Add legends
+  addLegend(
+    position = "bottomleft",
+    colors = unname(holc_colors),
+    labels = paste("Grade", names(holc_colors)),
+    title = "HOLC Grades (1930s)",
+    opacity = 0.7
+  ) %>%
+  addLegend(
+    position = "bottomright",
+    pal = pal,
+    values = filtered_data[[first_column]],
+    title = gsub("Percent of ", "", first_indicator),
+    opacity = 0.8,
+    layerId = "indicatorLegend",
+    labFormat = labelFormat(
+      prefix = "",
+      suffix = "%",
+      transform = function(x) 100 * x
+    )
+  ) %>%
+  # Add layer controls
+  addLayersControl(
+    overlayGroups = c("Redlining Districts", "Schools"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+# Create JavaScript to handle the dropdown menu
+js_code <- sprintf('
+function(el, x) {
+  // Insert the dropdown HTML
+  document.querySelector(".leaflet-top.leaflet-right").insertAdjacentHTML("beforeend", %s);
+  
+  // Store map reference
+  var map = this;
+  
+  // Store indicator data
+  var indicatorData = %s;
+  
+  // Initialize current marker layer group
+  var schoolMarkers = L.layerGroup().addTo(map);
+  
+  // Initialize current legend
+  var currentLegend = null;
+  
+  // Function to update markers based on selected indicator
+  function updateIndicator(indicatorName) {
+    console.log("Updating to indicator:", indicatorName);
+    
+    // Clear existing markers
+    schoolMarkers.clearLayers();
+    
+    // Remove current legend if it exists
+    if (currentLegend) {
+      map.removeControl(currentLegend);
+    }
+    
+    // Get indicator data
+    var indicator = indicatorData[indicatorName];
+    if (!indicator) {
+      console.error("No data found for indicator:", indicatorName);
+      return;
+    }
+    
+    var schools = indicator.data;
+    var isNegative = indicator.isNegative;
+    
+    // Create color palette
+    var values = schools.map(function(s) { return s.value; });
+    var min = Math.min.apply(null, values);
+    var max = Math.max.apply(null, values);
+    
+    // Color function based on whether higher values are good or bad
+    function getColor(value) {
+      // Normalize the value between 0 and 1
+      var normalized = (value - min) / (max - min);
+      
+      // Invert if negative indicator (higher is worse)
+      if (isNegative) {
+        normalized = 1 - normalized;
+      }
+      
+      // Use D3 color scales similar to R
+      if (normalized < 0.2) {
+        return "#d73027";
+      } else if (normalized < 0.4) {
+        return "#fc8d59";
+      } else if (normalized < 0.6) {
+        return "#fee090";
+      } else if (normalized < 0.8) {
+        return "#91bfdb";
+      } else {
+        return "#4575b4";
+      }
+    }
+    
+    // Add markers for each school
+    schools.forEach(function(school) {
+      var marker = L.circleMarker([school.Latitude, school.Longitude], {
+        radius: 6,
+        fillColor: getColor(school.value),
+        fillOpacity: 0.8,
+        color: "white",
+        weight: 1
+      });
+      
+      var popupContent = 
+        "<b>" + school.SchoolName + "</b><br>" +
+        "IRN: " + school.SchoolIRN + "<br>" +
+        indicatorName + ": " + school.formatted_value;
+      
+      marker.bindPopup(popupContent);
+      marker.addTo(schoolMarkers);
+    });
+    
+    // Create a legend
+    currentLegend = L.control({position: "bottomright"});
+    currentLegend.onAdd = function() {
+      var div = L.DomUtil.create("div", "info legend");
+      var grades = [
+        min, 
+        min + (max-min)/4, 
+        min + 2*(max-min)/4, 
+        min + 3*(max-min)/4, 
+        max
+      ];
+      var labels = [];
+      
+      // Add title
+      div.innerHTML = "<h4>" + indicatorName + "</h4>";
+      
+      // Add color swatches
+      for (var i = 0; i < grades.length; i++) {
+        var from = grades[i];
+        var to = grades[i + 1];
+        
+        labels.push(
+          "<i style=\"background:" + getColor(from) + "; width:18px; height:18px; float:left; margin-right:8px;\"></i> " +
+          (from * 100).toFixed(1) + "%%" + (to ? " &ndash; " + (to * 100).toFixed(1) + "%%" : "+")
+        );
+      }
+      
+      div.innerHTML += labels.join("<br>");
+      return div;
+    };
+    
+    currentLegend.addTo(map);
+  }
+  
+  // Wait for DOM to be ready then set up event listener
+  window.addEventListener("load", function() {
+    // Initialize with first indicator
+    var initialIndicator = Object.keys(indicatorData)[0];
+    console.log("Available indicators:", Object.keys(indicatorData));
+    updateIndicator(initialIndicator);
+    
+    // Add event listener to dropdown
+    var dropdown = document.getElementById("indicator-dropdown");
+    if (dropdown) {
+      // Make sure dropdown shows initial value
+      dropdown.value = initialIndicator;
+      
+      dropdown.addEventListener("change", function() {
+        console.log("Dropdown changed to:", this.value);
+        updateIndicator(this.value);
+      });
+      
+      // Stop click/touch events from propagating to the map
+      var control = document.querySelector(".indicator-control");
+      if (control) {
+        L.DomEvent.disableClickPropagation(control);
+        L.DomEvent.disableScrollPropagation(control);
+      }
+    } else {
+      console.error("Dropdown element not found!");
+    }
+  });
+}
+', 
+  # Pass the dropdown HTML
+  jsonlite::toJSON(dropdown_html, auto_unbox = TRUE),
+  # Pass the indicator data
+  jsonlite::toJSON(indicator_json_data, auto_unbox = TRUE)
+)
+
+# Apply the JavaScript to the map
+map %>% htmlwidgets::onRender(js_code)
+```
+
+## Exploring Relationships Between Redlining and Educational Outcomes
+
+```{r redlining_correlation_analysis}
+# Assign HOLC grades to schools based on spatial relationship
+# First convert schools data to sf object
+schools_sf <- schools_data %>%
+  filter(!is.na(Latitude), !is.na(Longitude)) %>%
+  st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326)
+
+# Check and fix geometries in redlining data
+redlining_data_fixed <- redlining_data %>%
+  st_make_valid()
+
+# Perform spatial join to find which HOLC district each school falls into
+schools_with_holc <- tryCatch({
+  st_join(schools_sf, redlining_data_fixed)
+}, error = function(e) {
+  message("Error in spatial join: ", e$message)
+  # Create a fallback without the spatial join
+  schools_sf %>% 
+    mutate(grade = NA, area_id = NA, residential = NA)
+})
+
+# Convert HOLC grades to numeric for correlation analysis
+grade_mapping <- c(A = 4, B = 3, C = 2, D = 1)
+schools_with_holc$grade_numeric <- sapply(schools_with_holc$grade, function(g) {
+  if(is.na(g)) return(NA)
+  return(grade_mapping[g])
+})
+
+# Create correlation table
+correlation_data <- data.frame(Indicator = character(), Correlation = numeric(), 
+                              P_Value = numeric(), Schools_Count = integer(), 
+                              stringsAsFactors = FALSE)
+
+# Calculate correlations for each indicator
+for(indicator_name in names(available_indicators)) {
+  indicator_column <- available_indicators[[indicator_name]]
+  
+  # Skip if the column doesn't exist in our joined data
+  if(!indicator_column %in% colnames(schools_with_holc)) {
+    message("Skipping correlation for '", indicator_name, "': column not found in dataset")
+    next
+  }
+  
+  # Get the indicator values safely using backticks for non-standard column names
+  indicator_values <- tryCatch({
+    schools_with_holc[[indicator_column]]
+  }, error = function(e) {
+    message("Error accessing column '", indicator_column, "': ", e$message)
+    return(NULL)
+  })
+  
+  if(is.null(indicator_values)) {
+    next
+  }
+  
+  # Create a subset for this analysis with clean data
+  analysis_data <- data.frame(
+    grade_numeric = schools_with_holc$grade_numeric,
+    indicator = indicator_values
+  ) %>% 
+    filter(!is.na(grade_numeric), !is.na(indicator)) %>%
+    # Make sure data is numeric
+    mutate(
+      grade_numeric = as.numeric(grade_numeric),
+      indicator = as.numeric(indicator)
+    )
+  
+  # If there's enough data
+  if(nrow(analysis_data) > 5) {
+    # Run correlation test with error handling
+    cor_test <- tryCatch({
+      cor.test(analysis_data$grade_numeric, analysis_data$indicator)
+    }, error = function(e) {
+      message("Error in correlation test for '", indicator_name, "': ", e$message)
+      return(NULL)
+    })
+    
+    if(!is.null(cor_test)) {
+      # Add to results table
+      correlation_data <- rbind(correlation_data, data.frame(
+        Indicator = indicator_name,
+        Correlation = cor_test$estimate,
+        P_Value = cor_test$p.value,
+        Schools_Count = nrow(analysis_data),
+        stringsAsFactors = FALSE
+      ))
+    }
+  } else {
+    message("Not enough data points for correlation of '", indicator_name, "': ", nrow(analysis_data), " rows")
+  }
+}
+
+# Check if we have any correlation data
+if(nrow(correlation_data) > 0) {
+  # Enhance correlation results with statistical significance indicators
+  correlation_data_enhanced <- correlation_data %>%
+    mutate(
+      Correlation = round(Correlation, 3),
+      P_Value = round(P_Value, 4),
+      Significance = case_when(
+        P_Value < 0.001 ~ "***",
+        P_Value < 0.01 ~ "**",
+        P_Value < 0.05 ~ "*",
+        P_Value < 0.1 ~ ".",
+        TRUE ~ ""
+      ),
+      # Create a formatted column with significance indicators
+      Correlation_Display = paste0(format(Correlation, nsmall = 3), Significance)
+    ) %>%
+    arrange(desc(abs(Correlation)))
+  
+  # Create custom HTML table with color coding based on correlation strength
+  correlation_html <- '<div class="correlation-table-container" style="margin: 20px 0;">'
+  correlation_html <- paste0(correlation_html, '<table class="table" style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">')
+  correlation_html <- paste0(correlation_html, '<caption style="caption-side: top; text-align: center; font-weight: bold; font-size: 1.1em;">Correlation between HOLC grades (4=A, 3=B, 2=C, 1=D) and school performance indicators</caption>')
+  correlation_html <- paste0(correlation_html, '<thead><tr style="border-bottom: 2px solid #ddd;"><th>Performance Indicator</th><th>Correlation</th><th>P-Value</th><th>Schools</th></tr></thead>')
+  correlation_html <- paste0(correlation_html, '<tbody>')
+  
+  # Add rows with color coding based on correlation strength
+  for (i in 1:nrow(correlation_data_enhanced)) {
+    # Get the correlation values safely with NA handling
+    corr_value <- correlation_data_enhanced$Correlation[i]
+    
+    # Skip if NA (shouldn't happen, but just in case)
+    if(is.na(corr_value)) {
+      # Add a row with neutral styling
+      row <- paste0('<tr style="border-bottom: 1px solid #ddd;">')
+      row <- paste0(row, '<td>', correlation_data_enhanced$Indicator[i], '</td>')
+      row <- paste0(row, '<td style="text-align: center;">NA</td>')
+      row <- paste0(row, '<td style="text-align: center;">', correlation_data_enhanced$P_Value[i], '</td>')
+      row <- paste0(row, '<td style="text-align: center;">', correlation_data_enhanced$Schools_Count[i], '</td>')
+      row <- paste0(row, '</tr>')
+      correlation_html <- paste0(correlation_html, row)
+      next
+    }
+    
+    corr_abs <- abs(corr_value)
+    
+    # Color gradient: green for positive, red for negative correlations
+    cell_style <- ""
+    if(corr_value > 0) {
+      if(corr_abs > 0.6) {
+        cell_style <- 'background-color: #4CAF50; color: white;'
+      } else if(corr_abs > 0.4) {
+        cell_style <- 'background-color: #8BC34A; color: black;'
+      } else if(corr_abs > 0.2) {
+        cell_style <- 'background-color: #CDDC39; color: black;'
+      }
+    } else {
+      if(corr_abs > 0.6) {
+        cell_style <- 'background-color: #F44336; color: white;'
+      } else if(corr_abs > 0.4) {
+        cell_style <- 'background-color: #FF5722; color: black;'
+      } else if(corr_abs > 0.2) {
+        cell_style <- 'background-color: #FFEB3B; color: black;'
+      }
+    }
+    
+    # Create the table row
+    row <- paste0('<tr style="border-bottom: 1px solid #ddd;">')
+    row <- paste0(row, '<td>', correlation_data_enhanced$Indicator[i], '</td>')
+    row <- paste0(row, '<td style="text-align: center; ', cell_style, '">', correlation_data_enhanced$Correlation_Display[i], '</td>')
+    row <- paste0(row, '<td style="text-align: center;">', correlation_data_enhanced$P_Value[i], '</td>')
+    row <- paste0(row, '<td style="text-align: center;">', correlation_data_enhanced$Schools_Count[i], '</td>')
+    row <- paste0(row, '</tr>')
+    
+    correlation_html <- paste0(correlation_html, row)
+  }
+  
+  correlation_html <- paste0(correlation_html, '</tbody></table>')
+  correlation_html <- paste0(correlation_html, '<div style="font-size: 0.8em; text-align: right; margin-top: 5px;">Significance codes: 0 \'***\' 0.001 \'**\' 0.01 \'*\' 0.05 \'.\' 0.1 \' \' 1</div>')
+  correlation_html <- paste0(correlation_html, '</div>')
+  
+  # Display the enhanced correlation table
+  htmltools::HTML(correlation_html)
+} else {
+  # No correlation data available
+  htmltools::HTML("<div class='alert alert-warning'>No correlation data could be calculated. This may be due to insufficient schools with both HOLC grade data and performance indicators.</div>")
+}
+```
+
+### Interactive Splitscreen Comparison of Indicators
+
+```{r splitscreen_visualization}
+# Create a splitscreen map for comparing two indicators side by side
+# In case we don't have enough correlation data, use the first two indicators
+
+# Define our indicator selection logic in a safer way
+tryCatch({
+  if(exists("correlation_data") && nrow(correlation_data) >= 2) {
+    top_indicators <- correlation_data %>%
+      arrange(desc(abs(Correlation))) %>%
+      head(2)
+    
+    indicator1 <- top_indicators$Indicator[1]
+    indicator2 <- top_indicators$Indicator[2]
+    
+    message("Using top correlated indicators: ", indicator1, " and ", indicator2)
+  } else {
+    # Fallback to first two indicators
+    available_indicator_names <- names(available_indicators)
+    indicator1 <- available_indicator_names[1]
+    indicator2 <- if(length(available_indicator_names) > 1) available_indicator_names[2] else available_indicator_names[1]
+    
+    message("Using first available indicators: ", indicator1, " and ", indicator2)
+  }
+  
+  column1 <- available_indicators[[indicator1]]
+  column2 <- available_indicators[[indicator2]]
+  
+  # Function to create a map for a specific indicator
+  create_indicator_map <- function(indicator_name, indicator_column) {
+    # First check if the column exists and has data
+    if(!indicator_column %in% colnames(schools_data)) {
+      message("Indicator column '", indicator_column, "' not found in schools_data")
+      return(NULL)
+    }
+    
+    # Filter data for this indicator where values are not NA
+    indicator_data <- schools_data %>%
+      filter(!is.na(!!sym(indicator_column)))
+    
+    if(nrow(indicator_data) == 0) {
+      message("No data available for indicator: ", indicator_name)
+      return(NULL)
+    }
+    
+    # Choose color palette based on indicator type
+    if(grepl("Chronic Absenteeism|Mobility", indicator_column)) {
+      # Negative indicators (higher is worse) - use reverse palette
+      pal <- colorNumeric(
+        palette = "YlOrRd",
+        domain = range(indicator_data[[indicator_column]], na.rm = TRUE)
+      )
+    } else {
+      # Positive indicators (higher is better)
+      pal <- colorNumeric(
+        palette = "viridis",
+        domain = range(indicator_data[[indicator_column]], na.rm = TRUE)
+      )
+    }
+    
+    # Create popup content
+    indicator_data$popup_content <- apply(indicator_data, 1, function(row) {
+      indicator_value <- row[[indicator_column]]
+      if(is.numeric(indicator_value)) {
+        indicator_value <- paste0(round(indicator_value * 100, 1), "%")
+      }
+      
+      paste0(
+        "<b>", row["SchoolName"], "</b><br>",
+        "IRN: ", row["SchoolIRN"], "<br>",
+        gsub("Percent of ", "", indicator_name), ": ", indicator_value
+      )
+    })
+    
+    # Create the map
+    map <- leaflet(options = leafletOptions(minZoom = 10)) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      setView(lng = -81.6944, lat = 41.4993, zoom = 11) %>%
+      # Add redlining districts
+      addPolygons(
+        data = redlining_data,
+        fillColor = ~ifelse(grade %in% names(holc_colors), 
+                           holc_colors[grade], 
+                           "#CCCCCC"),
+        fillOpacity = 0.6,
+        color = "#444444",
+        weight = 1,
+        label = ~paste("Grade:", grade),
+        popup = ~paste(
+          "<strong>Grade:", grade, "</strong><br>",
+          "Area ID:", area_id, "<br>",
+          "Primarily Residential:", ifelse(residential, "Yes", "No")
+        ),
+        group = "Redlining Districts"
+      ) %>%
+      # Add school markers with clustering
+      addCircleMarkers(
+        data = indicator_data,
+        lng = ~Longitude,
+        lat = ~Latitude,
+        radius = 6,
+        fillColor = ~pal(get(indicator_column)),
+        fillOpacity = 0.8,
+        color = "white",
+        weight = 1,
+        popup = ~popup_content,
+        group = "Schools",
+        clusterOptions = markerClusterOptions(
+          showCoverageOnHover = TRUE,
+          zoomToBoundsOnClick = TRUE,
+          spiderfyOnMaxZoom = TRUE,
+          removeOutsideVisibleBounds = TRUE,
+          disableClusteringAtZoom = 16
+        )
+      ) %>%
+      # Add legends
+      addLegend(
+        position = "bottomleft",
+        colors = unname(holc_colors),
+        labels = paste("Grade", names(holc_colors)),
+        title = "HOLC Grades (1930s)",
+        opacity = 0.7
+      ) %>%
+      addLegend(
+        position = "bottomright",
+        pal = pal,
+        values = indicator_data[[indicator_column]],
+        title = gsub("Percent of ", "", indicator_name),
+        opacity = 0.8,
+        labFormat = labelFormat(
+          prefix = "",
+          suffix = "%",
+          transform = function(x) 100 * x
+        )
+      ) %>%
+      # Add layer controls
+      addLayersControl(
+        overlayGroups = c("Redlining Districts", "Schools"),
+        options = layersControlOptions(collapsed = FALSE)
+      )
+    
+    return(map)
+  }
+  
+  # Create both maps
+  map1 <- create_indicator_map(indicator1, column1)
+  map2 <- create_indicator_map(indicator2, column2)
+  
+  # Display maps if they were created successfully
+  if(!is.null(map1) && !is.null(map2)) {
+    # Use HTML to create a splitscreen view
+    html_output <- htmltools::HTML(paste0(
+      '<div style="display: flex; flex-wrap: wrap; gap: 10px;">',
+      '<div style="flex: 1; min-width: 300px;">',
+      '<h3 style="text-align: center;">', indicator1, '</h3>',
+      htmltools::as.character(map1),
+      '</div>',
+      '<div style="flex: 1; min-width: 300px;">',
+      '<h3 style="text-align: center;">', indicator2, '</h3>',
+      htmltools::as.character(map2),
+      '</div>',
+      '</div>'
+    ))
+    
+    html_output
+  } else {
+    htmltools::HTML(paste0(
+      '<div class="alert alert-warning">',
+      '<p>There was a problem creating the maps for the selected indicators. Please check the data availability and try different indicators.</p>',
+      '</div>'
+    ))
+  }
+}, error = function(e) {
+  # Catch any errors in the visualization process
+  htmltools::HTML(paste0(
+    '<div class="alert alert-danger">',
+    '<p>Error creating splitscreen visualization: ', e$message, '</p>',
+    '</div>'
+  ))
+})
+```
+
+## Statistical Analysis of Educational Outcomes by HOLC Grade
+
+```{r holc_grade_comparison}
+# Analyze key indicators across HOLC grades
+key_indicators <- names(available_indicators)[1:min(4, length(available_indicators))]
+
+# Create a long format dataset for analysis
+analysis_data_long <- schools_with_holc %>%
+  st_drop_geometry() %>%
+  select(SchoolName, SchoolIRN, grade) %>%
+  filter(!is.na(grade)) %>%
+  mutate(grade = factor(grade, levels = c("A", "B", "C", "D")))
+
+# Initialize empty columns for each indicator to avoid size mismatch errors
+for(indicator_name in key_indicators) {
+  analysis_data_long[[indicator_name]] <- NA_real_
+}
+
+# Safely add indicator data for each school
+for(i in 1:nrow(analysis_data_long)) {
+  school_irn <- analysis_data_long$SchoolIRN[i]
+  
+  for(indicator_name in key_indicators) {
+    column_name <- available_indicators[[indicator_name]]
+    
+    # Find the corresponding value in schools_with_holc
+    school_row <- which(schools_with_holc$SchoolIRN == school_irn)
+    
+    if(length(school_row) == 1 && column_name %in% colnames(schools_with_holc)) {
+      value <- tryCatch({
+        schools_with_holc[[column_name]][school_row]
+      }, error = function(e) {
+        message("Error accessing value for school ", school_irn, " indicator ", indicator_name, ": ", e$message)
+        return(NA)
+      })
+      
+      # Convert to numeric if needed
+      if(!is.null(value) && !is.na(value)) {
+        value <- as.numeric(value)
+      }
+      
+      # Assign value to the correct row in analysis_data_long
+      analysis_data_long[i, indicator_name] <- value
+    }
+  }
+}
+
+# Check if we have enough data
+indicator_counts <- sapply(key_indicators, function(ind) sum(!is.na(analysis_data_long[[ind]])))
+valid_indicators <- key_indicators[indicator_counts > 0]
+
+if(length(valid_indicators) == 0) {
+  message("No valid indicators with data available for HOLC grade comparison")
+  # Create empty tables for display
+  summary_stats <- data.frame(
+    grade = character(),
+    Indicator = character(),
+    Mean = numeric(),
+    Median = numeric(),
+    SD = numeric(),
+    Count = integer()
+  )
+} else {
+  # Create summary stats by HOLC grade
+  summary_stats <- analysis_data_long %>%
+    pivot_longer(
+      cols = all_of(valid_indicators),
+      names_to = "Indicator",
+      values_to = "Value"
+    ) %>%
+    filter(!is.na(Value)) %>%
+    group_by(grade, Indicator) %>%
+    summarise(
+      Mean = mean(Value, na.rm = TRUE),
+      Median = median(Value, na.rm = TRUE),
+      SD = sd(Value, na.rm = TRUE),
+      Count = n(),
+      .groups = "drop"
+    ) %>%
+    mutate(
+      Mean = round(Mean * 100, 1),
+      Median = round(Median * 100, 1),
+      SD = round(SD * 100, 1)
+    )
+}
+
+# Display summary statistics table
+summary_stats %>%
+  knitr::kable(
+    caption = "School performance indicators by HOLC grade (percentages)",
+    col.names = c("HOLC Grade", "Indicator", "Mean (%)", "Median (%)", "SD (%)", "Schools")
+  )
+
+# Create a boxplot visualization if we have data
+if(nrow(summary_stats) > 0) {
+  ggplot(
+    analysis_data_long %>%
+      pivot_longer(
+        cols = all_of(valid_indicators),
+        names_to = "Indicator",
+        values_to = "Value"
+      ) %>%
+      filter(!is.na(Value)),
+    aes(x = grade, y = Value * 100, fill = grade)
+  ) +
+    geom_boxplot() +
+    facet_wrap(~ Indicator, scales = "free_y") +
+    scale_fill_manual(values = c(
+      "A" = "#76a865",
+      "B" = "#7cb5bd",
+      "C" = "#ffffbd",
+      "D" = "#d9533c"
+    )) +
+    labs(
+      title = "School Performance Indicators by HOLC Grade",
+      x = "HOLC Grade",
+      y = "Value (%)",
+      fill = "HOLC Grade"
+    ) +
+    theme_minimal() +
+    theme(
+      legend.position = "bottom",
+      axis.text.x = element_text(angle = 0),
+      strip.background = element_rect(fill = "lightgray"),
+      strip.text = element_text(face = "bold")
+    )
+} else {
+  message("Not enough data to create boxplot visualization")
+}
+```
+
+## Note on Redlining and School Performance Indicators
+
+This analysis explores the potential relationships between historical redlining districts (HOLC grades from the 1930s) and modern school performance metrics in Cleveland. The maps and correlation analysis can help identify patterns in how historical housing discrimination may continue to impact educational outcomes today.
+
+The correlation table above shows the statistical relationship between HOLC grades and various school performance indicators. Higher HOLC grades (A=4, B=3, C=2, D=1) historically indicated "safer" neighborhoods for investment, while lower grades (especially D) were considered "hazardous" and were denied mortgage lending (redlined). 
+
+The split-screen visualization compares the two indicators that show the strongest correlation with HOLC grades, allowing for visual analysis of how these variables are distributed across Cleveland's neighborhoods.
+
+## Conclusion
+
+This exploratory data analysis examines the intersection of historical redlining practices and contemporary school performance metrics in Cleveland, Ohio. Through spatial analysis, correlation tests, and visual mapping, we've identified several key relationships between these variables.
+
+Key findings:
+
+1. Schools located in historically redlined areas (HOLC grades C and D) generally show different performance patterns compared to those in areas rated A and B.
+
+2. The correlation analysis reveals which specific educational indicators have the strongest relationship with historical redlining boundaries.
+
+3. The interactive maps allow for detailed exploration of how different performance indicators are distributed across Cleveland's neighborhoods in relation to historical redlining boundaries.
+
+These initial findings suggest that historical patterns of housing discrimination continue to have measurable impacts on educational outcomes today. Further analysis could explore:
+
+- How other factors like current neighborhood demographics, income levels, and school funding correlate with both redlining history and school performance
+- Whether specific intervention programs have been effective in areas with historical disadvantages
+- How digital access metrics correlate with historical redlining patterns, potentially identifying "digital redlining" effects
+
+Understanding these historical relationships can help inform more equitable education policies and targeted interventions to address persistent disparities.
+
+```
+
+## Data Export Functions
+
+```{r export_functionality}
+# Create a download button for exporting correlation data as CSV
+export_correlation_csv <- function() {
+  if (exists("correlation_data") && nrow(correlation_data) > 0) {
+    # Create a simpler export function using a data download approach
+    download_button <- tags$button(
+      id = "download-corr-csv",
+      class = "btn btn-primary",
+      style = "background-color: #4CAF50; color: white; padding: 8px 16px; 
+              text-align: center; text-decoration: none; display: inline-block; 
+              font-size: 14px; margin: 4px 2px; cursor: pointer; border-radius: 4px;",
+      "Download Correlation Analysis (CSV)"
+    )
+    
+    # Add JavaScript to handle file download
+    js_code <- tags$script(HTML(sprintf(
+      "document.getElementById('download-corr-csv').addEventListener('click', function() {
+        var headers = ['Indicator','Correlation','P_Value','Schools_Count'];
+        var csvContent = headers.join(',') + '\\n';
+        
+        var data = %s;
+        
+        for (var i = 0; i < data.length; i++) {
+          var row = [
+            '\"' + data[i].Indicator + '\"',
+            data[i].Correlation,
+            data[i].P_Value,
+            data[i].Schools_Count
+          ];
+          csvContent += row.join(',') + '\\n';
+        }
+        
+        var encodedUri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+        var link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', 'redlining_correlation_analysis.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });",
+      jsonlite::toJSON(correlation_data)
+    )))
+    
+    return(tagList(download_button, js_code))
+  } else {
+    return(tags$p("No correlation data available for export"))
+  }
+}
+
+# Create a download button for the schools with HOLC grades dataset
+export_schools_holc_csv <- function() {
+  if (exists("schools_with_holc") && nrow(schools_with_holc) > 0) {
+    # Prepare data for export - convert to simple data frame
+    export_data <- tryCatch({
+      # Drop geometry column for easier export
+      schools_data_clean <- st_drop_geometry(schools_with_holc)
+      
+      # Select a subset of columns
+      subset_data <- schools_data_clean %>%
+        select(SchoolName, SchoolIRN, grade, grade_numeric, area_id) %>%
+        mutate(
+          SchoolName = as.character(SchoolName),
+          SchoolIRN = as.character(SchoolIRN),
+          grade = as.character(grade),
+          grade_numeric = as.numeric(grade_numeric),
+          area_id = as.character(area_id)
+        )
+      
+      subset_data
+    }, error = function(e) {
+      message("Error preparing schools data: ", e$message)
+      data.frame(
+        SchoolName = character(),
+        SchoolIRN = character(),
+        grade = character(),
+        grade_numeric = numeric(),
+        area_id = character()
+      )
+    })
+    
+    # If we have valid data to export
+    if (nrow(export_data) > 0) {
+      # Create button
+      download_button <- tags$button(
+        id = "download-schools-csv",
+        class = "btn btn-primary",
+        style = "background-color: #2196F3; color: white; padding: 8px 16px; 
+                text-align: center; text-decoration: none; display: inline-block; 
+                font-size: 14px; margin: 4px 2px; cursor: pointer; border-radius: 4px;",
+        "Download Schools with HOLC Grades (CSV)"
+      )
+      
+      # Convert data to JSON for JavaScript
+      json_data <- jsonlite::toJSON(export_data)
+      
+      # Add JavaScript to handle file download
+      js_code <- tags$script(HTML(sprintf(
+        "document.getElementById('download-schools-csv').addEventListener('click', function() {
+          var headers = ['SchoolName','SchoolIRN','grade','grade_numeric','area_id'];
+          var csvContent = headers.join(',') + '\\n';
+          
+          var data = %s;
+          
+          for (var i = 0; i < data.length; i++) {
+            var row = [
+              '\"' + (data[i].SchoolName || '') + '\"',
+              '\"' + (data[i].SchoolIRN || '') + '\"',
+              '\"' + (data[i].grade || '') + '\"',
+              data[i].grade_numeric || '',
+              '\"' + (data[i].area_id || '') + '\"'
+            ];
+            csvContent += row.join(',') + '\\n';
+          }
+          
+          var encodedUri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+          var link = document.createElement('a');
+          link.setAttribute('href', encodedUri);
+          link.setAttribute('download', 'schools_with_holc_grades.csv');
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        });",
+        json_data
+      )))
+      
+      return(tagList(download_button, js_code))
+    } else {
+      return(tags$p("No schools with HOLC grades data available for export"))
+    }
+  } else {
+    return(tags$p("No schools with HOLC grades data available for export"))
+  }
+}
+
+# Function to save the current map as an HTML file
+save_map_as_html <- function() {
+  # Create button to save the interactive map
+  save_button <- tags$button(
+    id = "save-map-btn",
+    class = "btn btn-info",
+    style = "background-color: #673AB7; color: white; padding: 8px 16px; 
+            text-align: center; text-decoration: none; display: inline-block; 
+            font-size: 14px; margin: 4px 2px; cursor: pointer; border-radius: 4px;",
+    "Save Current Map View (HTML)"
+  )
+  
+  # Add JavaScript to handle the save functionality without template literals
+  js_code <- tags$script(HTML("
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('save-map-btn').addEventListener('click', function() {
+        // Notify user that the map is being prepared
+        alert('Map will be saved as a standalone HTML file. Check your downloads folder.');
+        
+        // Create HTML content manually without template literals
+        var htmlContent = '<!DOCTYPE html>\\n';
+        htmlContent += '<html>\\n';
+        htmlContent += '<head>\\n';
+        htmlContent += '  <title>Redlining Map Export</title>\\n';
+        htmlContent += '  <meta charset=\"utf-8\">\\n';
+        htmlContent += '  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\\n';
+        htmlContent += '  <link rel=\"stylesheet\" href=\"https://unpkg.com/leaflet@1.7.1/dist/leaflet.css\" />\\n';
+        htmlContent += '  <script src=\"https://unpkg.com/leaflet@1.7.1/dist/leaflet.js\"></script>\\n';
+        htmlContent += '  <style>\\n';
+        htmlContent += '    body { margin: 0; padding: 0; font-family: Arial, sans-serif; }\\n';
+        htmlContent += '    #map { position: absolute; top: 0; bottom: 0; width: 100%; height: 100%; }\\n';
+        htmlContent += '    .map-title { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1000; background: white; padding: 5px 10px; border-radius: 4px; box-shadow: 0 1px 5px rgba(0,0,0,0.4); }\\n';
+        htmlContent += '  </style>\\n';
+        htmlContent += '</head>\\n';
+        htmlContent += '<body>\\n';
+        htmlContent += '  <div class=\"map-title\">Cleveland Redlining Map</div>\\n';
+        htmlContent += '  <div id=\"map\"></div>\\n';
+        htmlContent += '  <script>\\n';
+        htmlContent += '    // Basic map initialization (static version)\\n';
+        htmlContent += '    var map = L.map(\"map\").setView([41.4993, -81.6944], 11);\\n';
+        htmlContent += '    L.tileLayer(\"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png\", {\\n';
+        htmlContent += '      attribution: \"&copy; OpenStreetMap contributors\"\\n';
+        htmlContent += '    }).addTo(map);\\n';
+        htmlContent += '  </script>\\n';
+        htmlContent += '</body>\\n';
+        htmlContent += '</html>';
+        
+        // Create download link
+        var blob = new Blob([htmlContent], {type: 'text/html'});
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = 'redlining_map_export.html';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      });
+    });
+  "))
+  
+  return(tagList(save_button, js_code))
+}
+
+# Create a container div for all export buttons
+export_buttons_div <- tags$div(
+  style = "margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);",
+  tags$h3("Export Data and Visualizations"),
+  tags$p("Download the analysis results and map data for further exploration."),
+  tags$div(
+    style = "display: flex; flex-wrap: wrap; gap: 10px;",
+    export_correlation_csv(),
+    export_schools_holc_csv(),
+    save_map_as_html()
+  )
+)
+
+# Display the export buttons
+export_buttons_div
+```
+
+## Time Series Analysis: School Performance Trends by HOLC Grade
+
+```{r time_series_analysis}
+# Prepare data for time-series analysis by combining datasets from different years
+# We'll focus on key indicators that are present in both years' datasets
+
+# Helper function to get column name safely
+get_column_safely <- function(df, pattern) {
+  matching_cols <- grep(pattern, colnames(df), value = TRUE)
+  if (length(matching_cols) > 0) {
+    return(matching_cols[1])
+  } else {
+    return(NULL)
+  }
+}
+
+# First identify schools present in both years
+schools_22_23 <- tryCatch({
+  # Find IRN and Name columns
+  irn_col <- get_column_safely(Building_Details_Report_22_23, "IRN")
+  name_col <- get_column_safely(Building_Details_Report_22_23, "Name")
+  year_col <- get_column_safely(Building_Details_Report_22_23, "Year")
+  
+  if (!is.null(irn_col) && !is.null(name_col)) {
+    Building_Details_Report_22_23 %>%
+      select(SchoolIRN = !!sym(irn_col), SchoolName = !!sym(name_col)) %>%
+      mutate(Year = "2022-2023")
+  } else {
+    # Create empty dataframe if columns not found
+    message("Could not find IRN/Name columns in 2022-2023 dataset")
+    data.frame(SchoolIRN = character(), SchoolName = character(), Year = character())
+  }
+}, error = function(e) {
+  message("Error processing 2022-2023 schools: ", e$message)
+  data.frame(SchoolIRN = character(), SchoolName = character(), Year = character())
+})
+
+schools_23_24 <- tryCatch({
+  # Find IRN and Name columns
+  irn_col <- get_column_safely(Building_Details_Report_23_24, "IRN")
+  name_col <- get_column_safely(Building_Details_Report_23_24, "Name")
+  year_col <- get_column_safely(Building_Details_Report_23_24, "Year")
+  
+  if (!is.null(irn_col) && !is.null(name_col)) {
+    Building_Details_Report_23_24 %>%
+      select(SchoolIRN = !!sym(irn_col), SchoolName = !!sym(name_col)) %>%
+      mutate(Year = "2023-2024")
+  } else {
+    # Create empty dataframe if columns not found
+    message("Could not find IRN/Name columns in 2023-2024 dataset")
+    data.frame(SchoolIRN = character(), SchoolName = character(), Year = character())
+  }
+}, error = function(e) {
+  message("Error processing 2023-2024 schools: ", e$message)
+  data.frame(SchoolIRN = character(), SchoolName = character(), Year = character())
+})
+
+# Combine the schools from both years
+all_schools <- bind_rows(schools_22_23, schools_23_24)
+
+# If we don't have enough data, show a message and skip the rest
+if (nrow(all_schools) == 0) {
+  htmltools::HTML("<div class='alert alert-warning'>Not enough data available for time series analysis. School information could not be extracted from the datasets.</div>")
+} else {
+  # Create a list of common performance indicators to analyze over time
+  # Check if these indicator columns exist in the datasets first
+  common_indicators <- list()
+  
+  # Example indicators to check (you can modify this list based on your data)
+  potential_indicators <- c(
+    "Performance Index",
+    "Chronic Absenteeism Rate",
+    "Graduation Rate 4 Year",
+    "Graduation Rate 5 Year",
+    "Attendance Rate"
+  )
+  
+  # Function to safely check if a column exists in a dataset
+  column_exists <- function(df, col_pattern) {
+    any(grepl(col_pattern, colnames(df), fixed = TRUE))
+  }
+  
+  # Find indicators available in both years
+  for (indicator in potential_indicators) {
+    if (column_exists(Building_Details_Report_22_23, indicator) && 
+        column_exists(Building_Details_Report_23_24, indicator)) {
+      common_indicators[[indicator]] <- indicator
+    }
+  }
+  
+  # Check if we found any common indicators
+  if (length(common_indicators) == 0) {
+    htmltools::HTML("<div class='alert alert-warning'>No common indicators found across both years for time series analysis.</div>")
+  } else {
+    # Create a function to extract indicator values for a specific year
+    extract_year_data <- function(year_df, year_label, indicator_name) {
+      col_name <- get_column_safely(year_df, indicator_name)
+      
+      if (is.null(col_name)) {
+        message("Could not find column for indicator: ", indicator_name, " in ", year_label)
+        return(NULL)
+      }
+      
+      irn_col <- get_column_safely(year_df, "IRN")
+      if (is.null(irn_col)) {
+        message("Could not find IRN column in ", year_label)
+        return(NULL)
+      }
+      
+      year_df %>%
+        select(SchoolIRN = !!sym(irn_col), Value = !!sym(col_name)) %>%
+        mutate(
+          Indicator = indicator_name,
+          Year = year_label,
+          Value = as.numeric(Value)
+        ) %>%
+        filter(!is.na(Value))
+    }
+    
+    # Combine data for all indicators and both years
+    time_series_data <- data.frame()
+    
+    for (indicator_name in names(common_indicators)) {
+      data_22_23 <- extract_year_data(Building_Details_Report_22_23, "2022-2023", indicator_name)
+      data_23_24 <- extract_year_data(Building_Details_Report_23_24, "2023-2024", indicator_name)
+      
+      if (!is.null(data_22_23) && !is.null(data_23_24)) {
+        combined_data <- bind_rows(data_22_23, data_23_24)
+        time_series_data <- bind_rows(time_series_data, combined_data)
+      }
+    }
+    
+    # Create time series visualizations if we have data
+    if (nrow(time_series_data) > 0) {
+      # Merge with HOLC grades
+      time_series_with_holc <- tryCatch({
+        # Get IRNs that match between time series data and schools with HOLC data
+        if (exists("schools_with_holc") && !is.null(schools_with_holc) && nrow(schools_with_holc) > 0) {
+          schools_holc_simple <- schools_with_holc %>%
+            st_drop_geometry() %>%
+            select(SchoolIRN, grade, grade_numeric) %>%
+            filter(!is.na(grade))
+          
+          # Join with time series data
+          time_series_data %>%
+            left_join(schools_holc_simple, by = "SchoolIRN") %>%
+            filter(!is.na(grade))
+        } else {
+          data.frame()
+        }
+      }, error = function(e) {
+        message("Error merging time series data with HOLC grades: ", e$message)
+        data.frame()
+      })
+      
+      # Create time series plots if we have joined data
+      if (nrow(time_series_with_holc) > 0) {
+        # Create plots for each indicator
+        for (indicator in unique(time_series_with_holc$Indicator)) {
+          # Filter data for this indicator
+          indicator_data <- time_series_with_holc %>%
+            filter(Indicator == indicator)
+          
+          # Create boxplot showing distribution by HOLC grade and year
+          boxplot <- ggplot(indicator_data, aes(x = grade, y = Value, fill = Year)) +
+            geom_boxplot(position = position_dodge(width = 0.8), alpha = 0.7) +
+            scale_fill_manual(values = c("2022-2023" = "#1976D2", "2023-2024" = "#FF5722")) +
+            labs(
+              title = paste("Changes in", indicator, "by HOLC Grade"),
+              x = "HOLC Grade",
+              y = indicator
+            ) +
+            theme_minimal() +
+            theme(
+              plot.title = element_text(size = 14, face = "bold"),
+              axis.title = element_text(size = 12),
+              legend.position = "bottom"
+            )
+          
+          # Display the plot
+          print(boxplot)
+        }
+      } else {
+        htmltools::HTML("<div class='alert alert-warning'>Could not merge time series data with HOLC grades for analysis.</div>")
+      }
+    } else {
+      htmltools::HTML("<div class='alert alert-warning'>No time series data could be extracted from the datasets.</div>")
+    }
+  }
+}
+```
+
+```{r}
+# Display the export buttons
+export_buttons_div
+```
+
+## Demographic Filtering: Exploring Intersectionality
+
+```{r demographic_filtering}
+# First, identify demographic columns in our datasets
+# Common demographic variables might include:
+# - Economic Disadvantage
+# - Race/Ethnicity
+# - English Learners
+# - Students with Disabilities
+
+# Function to find demographic columns in a dataset
+find_demographic_columns <- function(dataset) {
+  demographic_keywords <- c(
+    "Disadvantage", "Economic", "Poverty", "Black", "Hispanic", 
+    "White", "Asian", "Minority", "Race", "Ethnicity", 
+    "English Learner", "EL", "Disability", "IEP", "Special Education"
+  )
+  
+  demo_cols <- c()
+  
+  for (col in colnames(dataset)) {
+    for (keyword in demographic_keywords) {
+      if (grepl(keyword, col, ignore.case = TRUE)) {
+        demo_cols <- c(demo_cols, col)
+        break
+      }
+    }
+  }
+  
+  return(unique(demo_cols))
+}
+
+# Find demographic columns in relevant datasets
+demographic_columns_22_23 <- find_demographic_columns(Building_Details_Report_22_23)
+demographic_columns_23_24 <- find_demographic_columns(Building_Details_Report_23_24)
+demographic_columns_opportunity_22_23 <- find_demographic_columns(Building_Student_Opportunity_Report_22_23)
+demographic_columns_opportunity_23_24 <- find_demographic_columns(Building_Student_Opportunity_Report_23_24)
+
+# Combine all found demographic columns
+all_demographic_columns <- unique(c(
+  demographic_columns_22_23,
+  demographic_columns_23_24,
+  demographic_columns_opportunity_22_23,
+  demographic_columns_opportunity_23_24
+))
+
+# Check if we found any demographic columns
+if (length(all_demographic_columns) > 0) {
+  message("Found ", length(all_demographic_columns), " demographic columns")
+  
+  # Select a subset of demographic columns to display for filtering
+  # (to avoid overwhelmingly large UI)
+  max_demo_filters <- min(5, length(all_demographic_columns))
+  selected_demo_columns <- all_demographic_columns[1:max_demo_filters]
+  
+  # Prepare demographic data to attach to schools
+  demographic_data <- data.frame(SchoolIRN = character())
+  
+  # Try to extract demographic data from each dataset, giving preference to newer data
+  if (length(demographic_columns_23_24) > 0) {
+    demo_data_23_24 <- Building_Details_Report_23_24 %>%
+      select(`School IRN`, any_of(demographic_columns_23_24)) %>%
+      rename(SchoolIRN = `School IRN`)
+    
+    demographic_data <- full_join(demographic_data, demo_data_23_24, by = "SchoolIRN")
+  }
+  
+  if (length(demographic_columns_22_23) > 0) {
+    demo_data_22_23 <- Building_Details_Report_22_23 %>%
+      select(`School IRN`, any_of(demographic_columns_22_23)) %>%
+      rename(SchoolIRN = `School IRN`)
+    
+    demographic_data <- full_join(demographic_data, demo_data_22_23, by = "SchoolIRN")
+  }
+  
+  # Join demographic data to schools data
+  schools_with_demographics <- schools_data %>%
+    left_join(demographic_data, by = "SchoolIRN")
+  
+  # Create the demographic filter UI
+  filter_ui <- tags$div(
+    class = "demographic-filters",
+    style = "margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);",
+    tags$h3("Demographic Filters"),
+    tags$p("Filter schools by demographic characteristics to explore intersectionality with redlining."),
+    
+    # Add individual filter controls for each selected demographic
+    lapply(selected_demo_columns, function(col) {
+      # Determine if it's a percentage column
+      is_percent <- any(grepl("%", schools_with_demographics[[col]], fixed = TRUE))
+      
+      # If it's a percentage or numeric, create a range slider
+      if (is_percent || is.numeric(schools_with_demographics[[col]])) {
+        # Convert percentages to numeric
+        if (is_percent) {
+          values <- as.numeric(gsub("%", "", schools_with_demographics[[col]]))
+        } else {
+          values <- as.numeric(schools_with_demographics[[col]])
+        }
+        
+        min_val <- min(values, na.rm = TRUE)
+        max_val <- max(values, na.rm = TRUE)
+        
+        tags$div(
+          class = "filter-control",
+          style = "margin-bottom: 15px;",
+          tags$label(htmlFor = paste0("filter-", gsub(" ", "-", col)), col),
+          tags$div(
+            style = "display: flex; align-items: center;",
+            tags$input(
+              type = "range",
+              id = paste0("filter-", gsub(" ", "-", col)),
+              class = "demographic-range",
+              min = min_val,
+              max = max_val,
+              value = min_val,
+              step = (max_val - min_val) / 100,
+              style = "flex: 1; margin-right: 10px;"
+            ),
+            tags$span(
+              id = paste0("filter-", gsub(" ", "-", col), "-value"),
+              paste(min_val, if(is_percent) "%" else "")
+            )
+          )
+        )
+      } else {
+        # For categorical variables, create a select dropdown
+        unique_values <- unique(schools_with_demographics[[col]])
+        unique_values <- unique_values[!is.na(unique_values)]
+        
+        tags$div(
+          class = "filter-control",
+          style = "margin-bottom: 15px;",
+          tags$label(htmlFor = paste0("filter-", gsub(" ", "-", col)), col),
+          tags$select(
+            id = paste0("filter-", gsub(" ", "-", col)),
+            class = "demographic-select",
+            style = "width: 100%; padding: 5px;",
+            tags$option(value = "", "All"),
+            lapply(unique_values, function(val) {
+              tags$option(value = val, val)
+            })
+          )
+        )
+      }
+    }),
+    
+    # Add apply filters button
+    tags$div(
+      style = "text-align: center; margin-top: 15px;",
+      tags$button(
+        id = "apply-demographic-filters",
+        class = "btn btn-primary",
+        style = "background-color: #4CAF50; color: white; padding: 8px 16px; 
+                border: none; border-radius: 4px; cursor: pointer;",
+        "Apply Filters"
+      ),
+      tags$button(
+        id = "reset-demographic-filters",
+        class = "btn btn-secondary",
+        style = "background-color: #f44336; color: white; padding: 8px 16px; 
+                border: none; border-radius: 4px; cursor: pointer; margin-left: 10px;",
+        "Reset Filters"
+      )
+    ),
+    
+    # Add JavaScript to handle the filter interactions
+    tags$script(HTML(paste0("
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize range sliders
+        var rangeSliders = document.querySelectorAll('.demographic-range');
+        rangeSliders.forEach(function(slider) {
+          var valueDisplay = document.getElementById(slider.id + '-value');
+          
+          slider.addEventListener('input', function() {
+            valueDisplay.textContent = this.value + (this.id.includes('percent') ? '%' : '');
+          });
+        });
+        
+        // Handle apply filters button
+        var applyButton = document.getElementById('apply-demographic-filters');
+        if (applyButton) {
+          applyButton.addEventListener('click', function() {
+            alert('This would filter the map based on demographic selections. In a full implementation, this would update the map with filtered schools.');
+          });
+        }
+        
+        // Handle reset filters button
+        var resetButton = document.getElementById('reset-demographic-filters');
+        if (resetButton) {
+          resetButton.addEventListener('click', function() {
+            // Reset all range sliders
+            document.querySelectorAll('.demographic-range').forEach(function(slider) {
+              slider.value = slider.min;
+              var valueDisplay = document.getElementById(slider.id + '-value');
+              if (valueDisplay) {
+                valueDisplay.textContent = slider.min + (slider.id.includes('percent') ? '%' : '');
+              }
+            });
+            
+            // Reset all select dropdowns
+            document.querySelectorAll('.demographic-select').forEach(function(select) {
+              select.value = '';
+            });
+            
+            alert('Filters reset. In a full implementation, this would show all schools on the map.');
+          });
+        }
+      });
+    ")))
+  )
+  
+  # Display the filter UI
+  filter_ui
+} else {
+  message("No demographic columns found in the datasets")
+  tags$div(
+    class = "alert alert-warning",
+    role = "alert",
+    style = "margin: 20px 0; padding: 15px; background-color: #fff3cd; color: #856404; border-radius: 5px;",
+    tags$h4("No Demographic Data Available"),
+    tags$p("Demographic filtering requires columns related to student demographics (race/ethnicity, economic status, etc.) which could not be found in the current datasets.")
+  )
+}
+```
+
+## Modern Boundaries Overlay: Comparing Historical Patterns with Current Districts
+
+```{r modern_boundaries}
+# This section adds modern Cleveland neighborhood boundaries to compare with historical redlining districts
+
+# Create a function to load modern boundary data
+load_modern_boundaries <- function() {
+  # First check if the modern boundaries shapefile exists in the workspace
+  if (file.exists("./redlining_map_data/cleveland_neighborhoods.geojson")) {
+    # Load existing data
+    message("Loading existing Cleveland neighborhood boundaries")
+    return(st_read("./redlining_map_data/cleveland_neighborhoods.geojson"))
+  } else {
+    # Attempt to download Cleveland neighborhood boundaries from a public source
+    # For this example, we'll create a simplified representation of Cleveland neighborhoods
+    # In a real implementation, this would fetch actual neighborhood boundaries from a GIS source
+    
+    message("Creating simplified Cleveland neighborhood boundaries for demonstration")
+    
+    # Create a centered Cleveland location
+    cleveland_center <- c(-81.6944, 41.4993)
+    
+    # Create a bounding box around Cleveland
+    bbox <- c(
+      cleveland_center[1] - 0.15, # west
+      cleveland_center[2] - 0.1,  # south
+      cleveland_center[1] + 0.15, # east
+      cleveland_center[2] + 0.1   # north
+    )
+    
+    # Create simplified neighborhood boundaries as rectangular grid
+    neighborhoods <- list()
+    
+    # Define some Cleveland neighborhood names
+    neighborhood_names <- c(
+      "Downtown", "Ohio City", "Tremont", "Detroit Shoreway", "Edgewater",
+      "University Circle", "Little Italy", "Glenville", "Hough", "Fairfax",
+      "Buckeye-Shaker", "Kinsman", "Central", "Midtown", "St. Clair-Superior",
+      "Old Brooklyn", "Brooklyn Centre", "Clark-Fulton", "Stockyards", "West Boulevard"
+    )
+    
+    # Create a grid of neighborhoods (4 rows x 5 columns)
+    rows <- 4
+    cols <- 5
+    
+    width <- (bbox[3] - bbox[1]) / cols
+    height <- (bbox[4] - bbox[2]) / rows
+    
+    index <- 1
+    for (i in 1:rows) {
+      for (j in 1:cols) {
+        if (index <= length(neighborhood_names)) {
+          # Create a rectangular polygon for each neighborhood
+          x_min <- bbox[1] + (j - 1) * width
+          x_max <- bbox[1] + j * width
+          y_min <- bbox[2] + (i - 1) * height
+          y_max <- bbox[2] + i * height
+          
+          # Create a polygon for the neighborhood
+          neighborhood <- st_polygon(list(rbind(
+            c(x_min, y_min),
+            c(x_max, y_min),
+            c(x_max, y_max),
+            c(x_min, y_max),
+            c(x_min, y_min)
+          )))
+          
+          neighborhoods[[index]] <- neighborhood
+          index <- index + 1
+        }
+      }
+    }
+    
+    # Create a simple feature collection
+    neighborhoods_sf <- st_sf(
+      data.frame(name = neighborhood_names),
+      geometry = st_sfc(neighborhoods)
+    )
+    
+    return(neighborhoods_sf)
+  }
+}
+
+# Load modern boundaries
+neighborhoods_sf <- load_modern_boundaries()
+
+# Create a base map
+map <- leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(lng = -81.6944, lat = 41.4993, zoom = 10)  # Center on Cleveland
+
+# Add the modern boundaries
+map <- map %>%
+  addPolygons(
+    data = neighborhoods_sf,
+    fillColor = "lightblue",
+    fillOpacity = 0.5,
+    color = "black",
+    weight = 1,
+    label = ~name,
+    popup = ~name
+  )
+
+# Add layer controls so users can toggle the modern boundaries
+map <- map %>%
+  addLayersControl(
+    overlayGroups = c("Modern Boundaries"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+# Display the map
+map
+```

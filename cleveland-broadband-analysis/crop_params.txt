@@ -1,0 +1,8 @@
+top: 0.3028205128205127
+bottom: 0.6305128205128204
+left: 0.18666666666666662
+right: 0.5346153846153846
+pixel_top: 772
+pixel_bottom: 1607
+pixel_left: 615
+pixel_right: 1764

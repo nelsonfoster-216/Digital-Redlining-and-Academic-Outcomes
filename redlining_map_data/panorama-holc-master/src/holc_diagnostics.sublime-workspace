@@ -1,0 +1,2164 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"seleced",
+				"selectedCity"
+			],
+			[
+				"AreaDe",
+				"AreaDescriptionsStore"
+			],
+			[
+				"selecte",
+				"selectedNeighborhood"
+			],
+			[
+				"search",
+				"searchName"
+			],
+			[
+				"vis",
+				"visibleAdIds"
+			],
+			[
+				"visi",
+				"visibleAdIds"
+			],
+			[
+				"user",
+				"userId"
+			],
+			[
+				"url",
+				"urlsToTestRectified"
+			],
+			[
+				"urlsT",
+				"urlsToTestScans"
+			],
+			[
+				"sorted",
+				"sortedIndices"
+			],
+			[
+				"onCity",
+				"onCitySelected"
+			],
+			[
+				"neighborhoodD",
+				"neighborhoodData"
+			],
+			[
+				"respons",
+				"responsesMapIds"
+			],
+			[
+				"overlapp",
+				"overlappingMapIds"
+			],
+			[
+				"over",
+				"overlaps"
+			],
+			[
+				"city",
+				"cityData"
+			],
+			[
+				"App",
+				"AppActions"
+			],
+			[
+				"sort",
+				"sortOrder"
+			],
+			[
+				"app",
+				"applicableMapIds"
+			],
+			[
+				"rend",
+				"render1939_selection"
+			],
+			[
+				"render",
+				"render1939_selection"
+			],
+			[
+				"renderN",
+				"renderNSForm8_19370203_selections"
+			],
+			[
+				"set",
+				"setView"
+			],
+			[
+				"show",
+				"showSelection"
+			],
+			[
+				"to",
+				"toggleADView"
+			],
+			[
+				"sho",
+				"showSelection"
+			],
+			[
+				"Inf",
+				"Infiltration"
+			],
+			[
+				"form",
+				"getFormId"
+			],
+			[
+				"_",
+				"_isRetina"
+			],
+			[
+				"downl",
+				"downloadOpen"
+			],
+			[
+				"down",
+				"downloadOpen"
+			],
+			[
+				"download",
+				"downloadGeojson"
+			],
+			[
+				"hasA",
+				"hasADData"
+			],
+			[
+				"bringTo",
+				"bringToBack"
+			],
+			[
+				"neig",
+				"neighborhoodPolygonInverted"
+			],
+			[
+				"clas",
+				"className"
+			],
+			[
+				"leafl",
+				"leafletPip"
+			],
+			[
+				"holc",
+				"holcPolygon"
+			],
+			[
+				"area",
+				"area_geojson"
+			],
+			[
+				"by",
+				"byNeighborhood"
+			],
+			[
+				"onNei",
+				"onNeighborhoodInvertedPolygonClick"
+			],
+			[
+				"hold",
+				"holc_ads"
+			],
+			[
+				"Ap",
+				"AppActionTypes"
+			],
+			[
+				"selec",
+				"selectedIndices"
+			],
+			[
+				"cons",
+				"console"
+			],
+			[
+				"map",
+				"mapId"
+			],
+			[
+				"sor",
+				"sortOrder"
+			],
+			[
+				"ov",
+				"overlapObj"
+			],
+			[
+				"the",
+				"the_geojson"
+			],
+			[
+				"sortL",
+				"sortLat"
+			],
+			[
+				"onMap",
+				"onMapClick"
+			],
+			[
+				"ring",
+				"ringNum"
+			],
+			[
+				"for",
+				"form_id"
+			],
+			[
+				"inn",
+				"innerWidth"
+			],
+			[
+				"wind",
+				"windowWidth"
+			],
+			[
+				"graded",
+				"gradedTotalArea"
+			],
+			[
+				"center",
+				"centerLat"
+			],
+			[
+				"loop",
+				"looplat"
+			],
+			[
+				"bb",
+				"bbymax"
+			],
+			[
+				"waitin",
+				"waitingCityInitialized"
+			],
+			[
+				"waiting",
+				"waitingViewInitialized"
+			],
+			[
+				"load",
+				"loadData"
+			],
+			[
+				"view",
+				"viewInitialized"
+			],
+			[
+				"vi",
+				"viewInitialized"
+			],
+			[
+				"initial",
+				"initialViewLoaded"
+			],
+			[
+				"has",
+				"hasLoaded"
+			],
+			[
+				"hash",
+				"hashState"
+			],
+			[
+				"ini",
+				"initialHashState"
+			],
+			[
+				"Cities",
+				"CitiesStore"
+			],
+			[
+				"Citi",
+				"CitiesStore"
+			],
+			[
+				"City",
+				"cityData"
+			],
+			[
+				"new",
+				"newCenter"
+			],
+			[
+				"getMap",
+				"getMapIdsForState"
+			],
+			[
+				"get",
+				"getTheMap"
+			],
+			[
+				"reques",
+				"requestedZoom"
+			],
+			[
+				"bar",
+				"barPercents"
+			],
+			[
+				"aRing",
+				"aRingAndGradeStats"
+			],
+			[
+				"format",
+				"formattedStats"
+			],
+			[
+				"Map",
+				"MapStateStore"
+			],
+			[
+				"getVisi",
+				"getVisibleCities"
+			],
+			[
+				"getVis",
+				"getVisibleCities"
+			],
+			[
+				"contact",
+				"contactUsForm"
+			],
+			[
+				"conta",
+				"contactUs"
+			],
+			[
+				"modal",
+				"modalCopy"
+			],
+			[
+				"cur",
+				"curMonth"
+			],
+			[
+				"onCou",
+				"onCountrySelected"
+			],
+			[
+				"AppAct",
+				"AppActionTypes"
+			],
+			[
+				"onStat",
+				"onStateSelected"
+			],
+			[
+				"state",
+				"stateSelected"
+			],
+			[
+				"ad",
+				"adsMetadata"
+			],
+			[
+				"pop",
+				"popStats"
+			],
+			[
+				"parse",
+				"parsePopSnippetDisplayDataDecade"
+			],
+			[
+				"display",
+				"displayPop"
+			],
+			[
+				"na",
+				"native_white"
+			],
+			[
+				"total_pop",
+				"total_pop_1930"
+			],
+			[
+				"total_pop_1",
+				"total_pop_1940"
+			],
+			[
+				"selected",
+				"selectedCity"
+			],
+			[
+				"buck",
+				"bucketPath"
+			],
+			[
+				"rendSim",
+				"renderSimpleCategory"
+			],
+			[
+				"renderSimpl",
+				"renderSimpleCategory"
+			],
+			[
+				"Occu",
+				"Occupancy"
+			],
+			[
+				"renderNS",
+				"renderNSForm8_19371001"
+			],
+			[
+				"recti",
+				"rectofiedUrl"
+			],
+			[
+				"data",
+				"dataLoader"
+			],
+			[
+				"Area",
+				"AreaDescriptionsStore"
+			],
+			[
+				"holc_",
+				"holc_maps_ads_join"
+			],
+			[
+				"visible",
+				"visibleStateNames"
+			],
+			[
+				"vislb",
+				"visibleStates"
+			],
+			[
+				"visib",
+				"visibleHOLCMapsByState"
+			],
+			[
+				"visibleHOLMap",
+				"getVisibleHOLCMapsByState"
+			],
+			[
+				"Text",
+				"TextsStore"
+			],
+			[
+				"selectedH",
+				"getSelectedHolcId"
+			],
+			[
+				"sele",
+				"selectedNeighborhood"
+			],
+			[
+				"adr",
+				"areaDescriptions"
+			],
+			[
+				"til",
+				"tilePath"
+			],
+			[
+				"comb",
+				"combinedImg"
+			],
+			[
+				"com",
+				"combinedImg"
+			],
+			[
+				"she",
+				"sheetNum"
+			],
+			[
+				"tile",
+				"tileUrls"
+			],
+			[
+				"thum",
+				"thumbnailUrl"
+			],
+			[
+				"bu",
+				"bucketUrl"
+			],
+			[
+				"visibleH",
+				"visibleHOLCMapsByState"
+			],
+			[
+				"A",
+				"AreaDescriptionsStore"
+			],
+			[
+				"getLe",
+				"getLeafletElementForAD"
+			],
+			[
+				"adImage",
+				"adImageOpen"
+			],
+			[
+				"the_ad",
+				"the_ad_tiles"
+			],
+			[
+				"adIm",
+				"adImageOpen"
+			],
+			[
+				"neigh",
+				"neighborhoodId"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/Users/rnelson2/Documents/projects/holc/site_diagnostics/lookForTiles/index.js",
+			"settings":
+			{
+				"buffer_size": 2719,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 8 files for \"st_\" (regex)\n\n/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/stores/AreaDescriptionsStore.js:\n   28  \t\t\tif (!this.data.areaDescriptions[adId]) {\n   29  \t\t\t\tqueries.push({\n   30: \t\t\t\t\tquery: 'SELECT holc_ads.city_id as ad_id, dir_name, holc_ads.year, holc_ads.state, holc_polygons.name, sheets, form_id, holc_id, holc_grade, polygon_id, cat_id, sub_cat_id, _order as order, data, ST_asgeojson (holc_polygons.the_geom, 4) as the_geojson, round(st_xmin(st_envelope(holc_polygons.the_geom))::numeric, 3) as bbxmin, round(st_ymin(st_envelope(holc_polygons.the_geom))::numeric, 3) as bbymin, round(st_xmax(st_envelope(holc_polygons.the_geom))::numeric, 3) as bbxmax, round(st_ymax(st_envelope(holc_polygons.the_geom))::numeric, 3) as bbymax, round(st_y(st_centroid(holc_polygons.the_geom))::numeric, 3) as centerlat, round(st_x(st_centroid(holc_polygons.the_geom))::numeric, 3) as centerlng, round((st_area(holc_polygons.the_geom::geography)/1000000 * 0.386102)::numeric, 3) as sqmi FROM holc_ad_data right join holc_polygons on holc_ad_data.polygon_id = holc_polygons.neighborhood_id join holc_ads on city_id = holc_polygons.ad_id where holc_ads.city_id =' + adId,\n   31  \t\t\t\t\tformat: 'JSON'\n   32  \t\t\t\t});\n   ..\n   37  \t\t\t\tif (overlaps) {\n   38  \t\t\t\t\tqueries.push({\n   39: \t\t\t\t\t\tquery: 'with the_overlaps as (SELECT holc_polygons.the_geom as neighborhood_geom, holc_maps.the_geom as map_geom,  holc_maps.map_id, holc_id, holc_polygons.ad_id FROM holc_maps, holc_polygons, holc_maps_ads_join hmaj WHERE ST_intersects(holc_maps.the_geom, holc_polygons.the_geom)  and holc_polygons.ad_id = hmaj.ad_id and hmaj.map_id = holc_maps.map_id and holc_maps.map_id in (SELECT distinct(hm1.map_id) as overlapping_map_id FROM holc_maps AS hm1, holc_maps AS hm2 WHERE hm1.map_id <> hm2.map_id AND ST_Overlaps(hm1.the_geom, hm2.the_geom)) and holc_polygons.ad_id = ' + adId + '), counts as (select count(holc_id) as the_count, holc_id  from the_overlaps  group by holc_id) select ad_id, the_overlaps.holc_id, map_id, case when the_count > 1 then st_area(st_intersection(map_geom, neighborhood_geom)) / st_area(neighborhood_geom) else 1 end as area from the_overlaps join counts on the_overlaps.holc_id = counts.holc_id order by the_overlaps.holc_id, area desc',\n   40  \t\t\t\t\t\tformat: 'JSON'\n   41  \t\t\t\t\t});\n\n/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/stores/CitiesStore.js:\n   21  \t\tthis.dataLoader.query([\n   22  \t\t\t{\n   23: \t\t\t\tquery: \"WITH polygon_bounds as (select ad_id, st_xmin(st_envelope(st_collect(holc_polygons.the_geom))) as bbxmin, st_ymin(st_envelope(st_collect(holc_polygons.the_geom))) as bbymin, st_xmax(st_envelope(st_collect(holc_polygons.the_geom))) as bbxmax, st_ymax(st_envelope(st_collect(holc_polygons.the_geom))) as bbymax FROM holc_polygons group by ad_id), has_ads as (select count(data), ad_id from holc_ad_data join holc_polygons on holc_ad_data.polygon_id = holc_polygons.neighborhood_id group by ad_id) SELECT holc_ads.city_id as ad_id, city, state, holc_ads.year, looplat::numeric, looplng::numeric, form_id, total_pop_1940, total_pop_1930, american_indian_eskimo_1930, american_indian_eskimo_1940, asian_pacific_1930 as asian_pacific_islander_1930, asian_pacific_1940 as asian_pacific_1940, black_pop_1930, black_pop_1940, white_pop_1930, white_pop_1940, fb_30, fb30_afr_amer, fb30_all_other, fb30_chinese, fb30_indian, fb30_japanese, fb30_other_races, fb30_white, native_pop_1930, fb_40, fb40_afr_amer, fb40_all_other, fb40_chinese, fb40_indian, fb40_japanese, fb40_other_races, fb40_white, native_pop_1940, images, case when has_ads.ad_id is not null then true else false end as has_ads, sum(st_area(holc_polygons.the_geom_webmercator)) / 1609.34^2 as total_area, sum(CASE WHEN holc_grade = 'A' THEN st_area(holc_polygons.the_geom_webmercator) ELSE 0 END) / 1609.34^2 as area_a, sum(CASE WHEN holc_grade = 'B' THEN st_area(holc_polygons.the_geom_webmercator) ELSE 0 END) / 1609.34^2 as area_b, sum(CASE WHEN holc_grade = 'C' THEN st_area(holc_polygons.the_geom_webmercator) ELSE 0 END) / 1609.34^2 as area_c, sum(CASE WHEN holc_grade = 'D' THEN st_area(holc_polygons.the_geom_webmercator) ELSE 0 END) / 1609.34^2 as area_d, bbxmin, bbymin, bbxmax, bbymax, array_agg(distinct map_id) as map_ids FROM holc_polygons right join holc_ads on holc_polygons.ad_id = holc_ads.city_id left join polygon_bounds on holc_ads.city_id = polygon_bounds.ad_id join holc_maps_ads_join on holc_maps_ads_join.ad_id = holc_ads.city_id left join has_ads on has_ads.ad_id = holc_ads.city_id and holc_ads.looplng is not null and holc_ads.looplat is not null group by holc_ads.city_id, city, state, holc_ads.year, form_id, looplat, looplng, total_pop_1940, total_pop_1930, american_indian_eskimo_1930, american_indian_eskimo_1940, asian_pacific_1930, asian_pacific_1940, black_pop_1930, black_pop_1940, white_pop_1930, white_pop_1940, fb_30, fb30_afr_amer, fb30_all_other, fb30_chinese, fb30_indian, fb30_japanese, fb30_other_races, fb30_white, native_pop_1930, fb_40, fb40_afr_amer, fb40_all_other, fb40_chinese, fb40_indian, fb40_japanese, fb40_other_races, fb40_white, native_pop_1940, images, has_ads, bbxmin, bbymin, bbxmax, bbymax  order by state, city\",\n   24  \t\t\t\tformat: 'JSON'\n   25  \t\t\t}\n\n/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/stores/CityStore.js:\n  107  \t\t\t// get ring polygons\n  108  \t\t\t{\n  109: \t\t\t\tquery: 'WITH the_hull as (select ST_Collect(digitalscholarshiplab.holc_polygons.the_geom_webmercator) as hull, ad_id FROM digitalscholarshiplab.holc_polygons where ad_id = ' + cityId + ' GROUP BY ad_id), maxdist as (SELECT st_distance_sphere(st_transform(st_endpoint(st_longestline(st_transform(ST_SetSRID(ST_MakePoint(looplng,looplat),4326),3857), hull)), 4326), ST_SetSRID(ST_MakePoint(looplng,looplat), 4326)) as outerringradius, st_length(st_longestline(st_transform(ST_SetSRID(ST_Point(looplng,looplat),4326),3857), hull)) / 3.5 as distintv, ST_Transform(ST_SetSRID(ST_MakePoint(looplng,looplat),4326),3857)::geometry as the_point from the_hull join holc_ads on the_hull.ad_id = holc_ads.city_id and holc_ads.city_id = ' + cityId + ' Order by distintv DESC Limit 1 ), city_buffers as (SELECT ST_Transform((ST_Buffer(the_point,distintv * 3.5,\\'quad_segs=32\\')::geometry),3857) as buffer4, ST_Transform((ST_Buffer(the_point,distintv * 2.5,\\'quad_segs=32\\')::geometry),3857) as buffer3, ST_Transform((ST_Buffer(the_point,distintv * 1.5,\\'quad_segs=32\\')::geometry),3857) as buffer2, ST_Transform((ST_Buffer(the_point,distintv * 0.5,\\'quad_segs=32\\')::geometry),3857) as buffer1 FROM maxdist), city_rings as (SELECT ST_Difference(buffer4, buffer3) as the_geom_webmercator, 4 as ring_id, st_area(ST_Difference(buffer4, buffer3)) as ring_area from city_buffers union all select ST_Difference(buffer3, buffer2) as the_geom_webmercator, 3 as ring_id, st_area(ST_Difference(buffer3, buffer2)) as ring_area from city_buffers union all select ST_Difference(buffer2, buffer1) as the_geom_webmercator, 2 as ring_id, st_area(ST_Difference(buffer2, buffer1)) as ring_area from city_buffers union all select buffer1 as the_webmercator, 1 as ring_id, st_area(buffer1) as ring_area from city_buffers ), combined_grades as (SELECT holc_grade, ST_union(the_geom_webmercator) as the_geom_webmercator FROM digitalscholarshiplab.holc_polygons where ad_id = ' + cityId + ' group by holc_grade) SELECT holc_grade as grade, ring_id as ring, ST_AsGeoJSON(ST_Transform(ST_Intersection(city_rings.the_geom_webmercator, combined_grades.the_geom_webmercator),4326), 4) as the_geojson, ST_AsGeoJSON(ST_Transform(ST_Difference(city_rings.the_geom_webmercator, combined_grades.the_geom_webmercator),4326), 4) as inverted_geojson, st_area(ST_Intersection(city_rings.the_geom_webmercator, combined_grades.the_geom_webmercator)) as area, ST_Area(city_rings.the_geom_webmercator) as ring_area, outerringradius FROM city_rings, combined_grades, maxdist',\n  110  \t\t\t\tformat: 'JSON'\n  111  \t\t\t},\n  112  \t\t\t{\n  113: \t\t\t\tquery: 'Select round(st_x(st_centroid(ST_SetSRID(st_extent(the_geom),4326)))::numeric, 3) as centerLng, round(st_y(st_centroid(ST_SetSRID(st_extent(the_geom),4326)))::numeric, 3) as centerLat, round(st_xmin(ST_SetSRID(st_extent(the_geom),4326))::numeric, 3) as minlng, round(st_ymin(ST_SetSRID(st_extent(the_geom),4326))::numeric, 3) as minlat, round(st_xmax(ST_SetSRID(st_extent(the_geom),4326))::numeric, 3) as maxlng, round(st_ymax(ST_SetSRID(st_extent(the_geom),4326))::numeric, 3) as maxlat from digitalscholarshiplab.holc_polygons where ad_id =' + cityId,\n  114  \t\t\t\tformat: 'JSON'\n  115  \t\t\t}\n  ...\n  288  \t\tthis.dataLoader.query([\n  289  \t\t\t{\n  290: \t\t\t\tquery: 'SELECT ad_id, city, ST_distance(ST_setsrid(ST_MakePoint(holc_maps.looplng, holc_maps.looplat),4326), ST_setsrid(ST_MakePoint(' + point[1] +', ' + point[0] + '),4326)) as distance, st_xmin( st_envelope(st_collect(ST_setsrid(ST_MakePoint(' + point[1] +', ' + point[0] + '),4326), holc_maps.the_geom))) as bbxmin, st_xmax( st_envelope(st_collect(ST_setsrid(ST_MakePoint(' + point[1] +', ' + point[0] + '),4326), holc_maps.the_geom))) as bbxmax, st_ymin( st_envelope(st_collect(ST_setsrid(ST_MakePoint(' + point[1] +', ' + point[0] + '),4326), holc_maps.the_geom))) as bbymin, st_ymax( st_envelope(st_collect(ST_setsrid(ST_MakePoint(' + point[1] +', ' + point[0] + '),4326), holc_maps.the_geom))) as bbymax from holc_maps join holc_maps_ads_join on holc_maps.map_id = holc_maps_ads_join.map_id join holc_ads on holc_ads.city_id = holc_maps_ads_join.ad_id order by distance limit 1',\n  291  \t\t\t\tformat: 'JSON'\n  292  \t\t\t}\n\n/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/stores/RasterStore.js:\n   18  \t\tthis.dataLoader.query([\n   19  \t\t\t{\n   20: \t\t\t\tquery: 'SELECT holc_maps.*, ST_asgeojson(holc_maps.the_geom, 4) as the_geojson, st_xmin(holc_maps.the_geom) as minLng, st_xmax(holc_maps.the_geom) as maxLng, st_ymin(holc_maps.the_geom) as minLat, st_ymax(holc_maps.the_geom) as maxLat, st_x(st_centroid(holc_maps.the_geom)) as centerLng, st_y(st_centroid(holc_maps.the_geom)) as centerLat FROM holc_maps',\n   21  \t\t\t\tformat: 'JSON'\n   22  \t\t\t},\n   23  \t\t\t{\n   24: \t\t\t\tquery: 'SELECT distinct(hm1.map_id) FROM digitalscholarshiplab.holc_maps AS hm1, digitalscholarshiplab.holc_maps AS hm2 WHERE hm1.map_id <> hm2.map_id AND ST_Overlaps(hm1.the_geom, hm2.the_geom)',\n   25  \t\t\t\tformat: 'JSON'\n   26  \t\t\t}\n\n/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/stores/UserLocationStore.js:\n   21  \t\tthis.dataLoader.query([\n   22  \t\t\t{\n   23: \t\t\t\tquery: 'SELECT ad_id, city, ST_distance(ST_setsrid(ST_MakePoint(holc_ads.looplng, holc_ads.looplat),4326), ST_setsrid(ST_MakePoint(' + point[1] +', ' + point[0] + '),4326)) as distance, st_xmin( st_envelope(st_collect(ST_setsrid(ST_MakePoint(' + point[1] +', ' + point[0] + '),4326), holc_maps.the_geom))) as bbxmin, st_xmax( st_envelope(st_collect(ST_setsrid(ST_MakePoint(' + point[1] +', ' + point[0] + '),4326), holc_maps.the_geom))) as bbxmax, st_ymin( st_envelope(st_collect(ST_setsrid(ST_MakePoint(' + point[1] +', ' + point[0] + '),4326), holc_maps.the_geom))) as bbymin, st_ymax( st_envelope(st_collect(ST_setsrid(ST_MakePoint(' + point[1] +', ' + point[0] + '),4326), holc_maps.the_geom))) as bbymax from holc_maps join holc_maps_ads_join on holc_maps.map_id = holc_maps_ads_join.map_id join holc_ads on holc_ads.city_id = holc_maps_ads_join.ad_id order by distance limit 1',\n   24  \t\t\t\tformat: 'JSON'\n   25  \t\t\t}\n\n162 matches across 5 files\n",
+			"settings":
+			{
+				"buffer_size": 11472,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "http://digitalscholarshiplab.cartodb.com/api/v2/sql?q=select%20city,%20holc_polygons.the_geom,%20holc_grade,%20holc_id,%20name%20from%20holc_polygons%20join%20holc_ads%20on%20city_id%20=%20ad_id%20where%20ad_id%20=%20201&format=GeoJSON&filename=HOLC_Milwaukee\n\n\nselect the_geom, holc_grade, holc_id, name from holc_polygons where ad_id = 201",
+			"settings":
+			{
+				"buffer_size": 341,
+				"line_ending": "Unix",
+				"name": "http://digitalscholarshiplab.cartodb.com/api/v2/sq"
+			}
+		},
+		{
+			"contents": "select%20city,%20the_geom,%20holc_grade,%20holc_id,%20name%20from%20holc_polygons%20join%20holc_ads%20on%20city_id%20=%20ad_id%20where%20ad_id%20=%20201",
+			"settings":
+			{
+				"buffer_size": 152,
+				"line_ending": "Unix",
+				"name": "select%20city,%20the_geom,%20holc_grade,%20holc_id"
+			}
+		},
+		{
+			"file": "/Users/rnelson2/Documents/projects/holc/site_diagnostics/shpfiles/index.js",
+			"settings":
+			{
+				"buffer_size": 4043,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 87.0,
+		"last_filter": "wrap",
+		"selected_items":
+		[
+			[
+				"wrap",
+				"Word Wrap: Toggle"
+			],
+			[
+				"Snippet: ",
+				"Snippet: sql_redlining_neighborhood_name"
+			],
+			[
+				"wra",
+				"Word Wrap: Toggle"
+			],
+			[
+				"word",
+				"Word Wrap: Toggle"
+			],
+			[
+				"w",
+				"Word Wrap: Toggle"
+			],
+			[
+				"Snippet: n",
+				"Snippet: newstore"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Package Control: Discover Packages"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"",
+				"Package Control: Add Repository"
+			],
+			[
+				"Pack",
+				"Package Control: Install Package"
+			],
+			[
+				"Package",
+				"Package Control: Install Package"
+			],
+			[
+				"e",
+				"Package Control: Enable Package"
+			],
+			[
+				"enable",
+				"Package Control: Enable Package"
+			],
+			[
+				"sidebar",
+				"View: Toggle Side Bar"
+			],
+			[
+				"sideb",
+				"View: Toggle Open Files in Side Bar"
+			],
+			[
+				"syn mark",
+				"Set Syntax: Markdown"
+			],
+			[
+				"syn text",
+				"Set Syntax: Plain Text"
+			],
+			[
+				"selectAll",
+				"Bookmarks: Select All"
+			]
+		],
+		"width": 467.0
+	},
+	"console":
+	{
+		"height": 125.0,
+		"history":
+		[
+			"view.encoding()"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": true
+	},
+	"expanded_folders":
+	[
+		"/Users/rnelson2/Documents/projects/holc/site_diagnostics",
+		"/Users/rnelson2/Documents/projects/holc/site_diagnostics/lookForTiles",
+		"/Users/rnelson2/Documents/projects/holc/site_diagnostics/shpfiles"
+	],
+	"file_history":
+	[
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/index.html",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/App.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/HOLCMap.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/stores/RasterStore.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/stores/AreaDescriptionsStore.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/AreaDescription.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/components/text.scss",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/components/app.scss",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/_layout.scss",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/components/areaDescription.scss",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/SidebarMap.jsx",
+		"/Users/rnelson2/Documents/projects/holc/site_diagnostics/package.json",
+		"/Users/rnelson2/Documents/projects/holc/site_diagnostics/shpfiles/index.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/stores/CitiesStore.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/Downloader.jsx",
+		"/Users/rnelson2/Documents/projects/holc/site_diagnostics/lookForTiles/index.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/stores/CityStore.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/build/main.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/components/downloader.scss",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/CityStats.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/stores/TextsStore.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/build/main.css",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/utils/carto.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/components/cityStats.scss",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/panorama/src/CartoDBLoader/CartoDBLoader.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/panorama/src/CartoDBTileLayer/CartoDBTileLayer.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/basemaps/tileLayers.json",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/panorama/src/Navigation/Navigation.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/utils/CartoDBLoader.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/stores/MapStateStore.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/holc_ads/processimages.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/richmondatlas-canals/build/vendors.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/CitySnippet.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/utils/AppActionCreator.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/stores/UserLocationStore.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/Burgess.jsx",
+		"/Users/rnelson2/Documents/projects/holc/tiling/getBB/index.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/data/formsMetadata.json",
+		"/Users/rnelson2/Documents/scratch/GHI paper.txt",
+		"/Users/rnelson2/Documents/projects/text_mining/docsouthnarratives/keys.txt",
+		"/Users/rnelson2/Downloads/sql.txt",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/basemaps/cartodb/basemaps.json",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/basemaps/cartodb/styles/cityMarkers.mss",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/components/legend.scss",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/CartoDBTileLayer.jsx",
+		"/Users/rnelson2/Desktop/generate-gradients-demdelta.less",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/basemaps/cartodb/styles/labels.mss",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/basemaps/cartodb/layers.yml",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/package.json",
+		"/Users/rnelson2/Desktop/generate-opacity.less",
+		"/Users/rnelson2/Desktop/generate-gradients-banking2.less",
+		"/Users/rnelson2/Desktop/generate-chorpleth.less",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/AreaPolygon.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/_variables.scss",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/basemaps/cartodb/basemaps.yml",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/richmondatlas-canals/scss/_variables.scss",
+		"/Users/rnelson2/Desktop/holc_visualizations/index.js",
+		"/Users/rnelson2/Desktop/generate-size-banking.less",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/richmondatlas-forcedmigration/app/dispatchers/app.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/Donut/L.Donut.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/stores/DimensionsStore.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/richmondatlas-forcedmigration/.env.json",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/initialmaps.sublime-project",
+		"/Users/rnelson2/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/SidebarNeighborhoodTitle.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/main.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/components/citySnippet.scss",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/TypeAheadCitySnippet.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/components/typeahead.scss",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/gulpfile.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/StateList.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/components/stateList.scss",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/main.scss",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/components/MapList.scss",
+		"/Users/rnelson2/Documents/projects/eastend/basemaps/cartodb/basemaps.json",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/utilities/bb2sql.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/StateStats.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/components/HOLCMap.scss",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/ContactUs.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/components/rcslider.scss",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/components/intro.scss",
+		"/Users/rnelson2/Documents/projects/eastend/basemaps/tileLayers.json",
+		"/Users/rnelson2/Documents/projects/eastend/src/components/HeadstoneComponent.jsx",
+		"/Users/rnelson2/Documents/projects/eastend/src/stores/HeadstonesStore.js",
+		"/Users/rnelson2/Documents/projects/eastend/src/App.jsx",
+		"/Users/rnelson2/Documents/projects/eastend/data/headstones.json",
+		"/Users/rnelson2/Library/Application Support/Sublime Text 3/Packages/User/holc-catstump.sublime-snippet",
+		"/Users/rnelson2/Library/Application Support/Sublime Text 3/Packages/User/holc-rendersimpledata.sublime-snippet",
+		"/Users/rnelson2/Library/Application Support/Sublime Text 3/Packages/User/holc-simplesubcategory.sublime-snippet",
+		"/Users/rnelson2/Library/Application Support/Sublime Text 3/Packages/User/holc-tablerow.sublime-snippet",
+		"/Users/rnelson2/Library/Application Support/Sublime Text 3/Packages/User/sql_redlining_neighborhood_name.sublime-snippet",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/holc_ads/processSingleAD.js",
+		"/Users/rnelson2/Documents/projects/eastend/basemaps/cartodb/layers.yml",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/ADCat.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/SidebarNeighborhoodNav.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/components/sidebarMap.scss",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/node_modules/@panorama/toolkit/dist/components.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/panorama/src/Legend/Legend.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/holc_ads/renameDir.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/holc_ads/croptest.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/holc_ads/tiletest.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/holc_ads/tileADs.py",
+		"/Users/rnelson2/Documents/scratch/cartodb-query (1).json",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/holc_ads/gulpfile.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/build/static/burgess.svg",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/data/appConfig.json",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/static/burgess.svg",
+		"/Users/rnelson2/Documents/scratch/Nelson_Robert_bio.txt",
+		"/Users/rnelson2/Library/Application Support/Sublime Text 3/Packages/User/newstore.sublime-snippet",
+		"/Users/rnelson2/Library/Application Support/Sublime Text 3/Packages/User/storeset.sublime-snippet",
+		"/Users/rnelson2/Library/Application Support/Sublime Text 3/Packages/User/snippet_storeget.sublime-snippet",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/richmondatlas-canals/src/stores/CommodityStore.js",
+		"/Users/rnelson2/Library/Application Support/Sublime Text 3/Packages/Babel/Monokai Phoenix.tmTheme",
+		"/Users/rnelson2/Library/Application Support/Sublime Text 3/Packages/Babel/Monokai Phoenix.YAML-tmTheme",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/components/Donut/Donut.jsx",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/node_modules/react/lib/ReactPerf.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/node_modules/react/lib/ReactDebugTool.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/node_modules/react/lib/ReactDefaultPerfAnalysis.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/node_modules/react/lib/ReactDefaultPerf.js",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/node_modules/react/package.json",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/node_modules/react-addons-perf/package.json",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/node_modules/react-leaflet/package.json",
+		"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/_typography.scss",
+		"/Users/rnelson2/Documents/scratch/fugitive slave ads/split_into_articles2_new.py",
+		"/Users/rnelson2/Documents/scratch/fugitive slave ads/vendor/NW_RichTimesD_018_114.xml",
+		"/Users/rnelson2/Documents/scratch/fugitive slave ads/date_index.py",
+		"/Users/rnelson2/Documents/scratch/fugitive slave ads/split_into_articles.py",
+		"/Library/WebServer/Documents/scratch_space/holc_d3/area.html"
+	],
+	"find":
+	{
+		"height": 48.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src/stores",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/richmondatlas-canals",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/richmondatlas-canals/src",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss/components",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss",
+			"/Users/rnelson2/Documents/",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/scss",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/richmondatlas-forcedmigration",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/holc/src",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/richmondatlas-forcedmigration/app",
+			"/Users/rnelson2/Documents/projects/Digital Atlas/panorama/richmondatlas-forcedmigration"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"geojson",
+			"st_",
+			" ",
+			"console.log",
+			"data.rows[0]",
+			"console.log",
+			"raster",
+			"the_ad",
+			"sheet",
+			"hasADImages",
+			"thumbnail",
+			"sheets",
+			"\\n",
+			"window",
+			"desir",
+			"amazon",
+			"thumb",
+			"typeahead",
+			"',",
+			"  '",
+			"a ",
+			"a",
+			"dotted",
+			"click here",
+			"downloadge",
+			"geojson",
+			"click on",
+			"userlo",
+			"userlocation",
+			"getmapparent",
+			"font",
+			"rosarivo",
+			"cartodb",
+			"googleusercontent",
+			"inconsolata",
+			"cloud",
+			"downloadicon",
+			"cloud",
+			"src=",
+			"src",
+			"menu.svg",
+			"http",
+			"analyti",
+			"google",
+			"shim",
+			"polyfill",
+			"object",
+			"year",
+			"bucketpath",
+			"Scans",
+			"urlsToTest",
+			"data.",
+			"has_ad",
+			"hasad",
+			"citystats",
+			"hasad",
+			"bucketpath",
+			"url",
+			"visibleHOLCMaps",
+			"modal",
+			"<burges",
+			", \n\t\t\t\t\t\t",
+			"Fresno",
+			"fresno-ca",
+			"onclick",
+			"slug",
+			"burgess",
+			"slug",
+			"\\\"",
+			"dangerously",
+			"fresno",
+			"icon",
+			"userlocation",
+			"modal",
+			"looplng",
+			"id",
+			"' + point[0] + '",
+			"' + point[1] +'",
+			"userlocated",
+			"click on",
+			"click to",
+			"click",
+			"visibleHOLCMaps",
+			".maps",
+			"cityId",
+			"rasterstore",
+			"digitalscholarshiplab.",
+			"overl",
+			"overlaps",
+			"overlap",
+			"overlaps",
+			"-1,",
+			",1",
+			"neighborhood_id",
+			"polygon_id",
+			"overlaps",
+			"bringtofront",
+			"setsortorder",
+			"setthemap",
+			"holc_maps",
+			"file_name",
+			"<areadescription",
+			"areadescription",
+			"showselection",
+			"onclick",
+			"<areadescription",
+			"areadescription>",
+			"areadescription",
+			"optional",
+			"j",
+			"grade",
+			"isretina",
+			"whip",
+			"mother",
+			"chattel",
+			"pen",
+			"trade",
+			"sold",
+			"downloadgeo",
+			"geojson",
+			"mapUrl",
+			"maps",
+			"citystats",
+			"downloadgeo",
+			"download",
+			"downloader",
+			"citystats",
+			"style"
+		],
+		"highlight": false,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"%20",
+			" ",
+			",\\n'",
+			"</li>",
+			"<li>",
+			"</cite>",
+			"<cite>",
+			"\",",
+			"\"",
+			"'",
+			"\\\"",
+			"",
+			"\"",
+			"[inmigrations_sqmi",
+			"[inmigrations",
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/Users/rnelson2/Documents/projects/holc/site_diagnostics/lookForTiles/index.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2719,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								981,
+								981
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11472,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										422,
+										425
+									],
+									[
+										485,
+										488
+									],
+									[
+										493,
+										496
+									],
+									[
+										560,
+										563
+									],
+									[
+										568,
+										571
+									],
+									[
+										635,
+										638
+									],
+									[
+										643,
+										646
+									],
+									[
+										710,
+										713
+									],
+									[
+										718,
+										721
+									],
+									[
+										785,
+										788
+									],
+									[
+										790,
+										793
+									],
+									[
+										860,
+										863
+									],
+									[
+										865,
+										868
+									],
+									[
+										936,
+										939
+									],
+									[
+										1541,
+										1544
+									],
+									[
+										1822,
+										1825
+									],
+									[
+										2070,
+										2073
+									],
+									[
+										2078,
+										2081
+									],
+									[
+										2126,
+										2129
+									],
+									[
+										2523,
+										2526
+									],
+									[
+										2531,
+										2534
+									],
+									[
+										2543,
+										2546
+									],
+									[
+										2591,
+										2594
+									],
+									[
+										2599,
+										2602
+									],
+									[
+										2611,
+										2614
+									],
+									[
+										2659,
+										2662
+									],
+									[
+										2667,
+										2670
+									],
+									[
+										2679,
+										2682
+									],
+									[
+										2727,
+										2730
+									],
+									[
+										2735,
+										2738
+									],
+									[
+										2747,
+										2750
+									],
+									[
+										3673,
+										3676
+									],
+									[
+										3781,
+										3784
+									],
+									[
+										3896,
+										3899
+									],
+									[
+										4011,
+										4014
+									],
+									[
+										4126,
+										4129
+									],
+									[
+										5431,
+										5434
+									],
+									[
+										5621,
+										5624
+									],
+									[
+										5640,
+										5643
+									],
+									[
+										5653,
+										5656
+									],
+									[
+										5665,
+										5668
+									],
+									[
+										5680,
+										5683
+									],
+									[
+										5693,
+										5696
+									],
+									[
+										5704,
+										5707
+									],
+									[
+										5762,
+										5765
+									],
+									[
+										5773,
+										5776
+									],
+									[
+										5831,
+										5834
+									],
+									[
+										5841,
+										5844
+									],
+									[
+										5856,
+										5859
+									],
+									[
+										5869,
+										5872
+									],
+									[
+										5880,
+										5883
+									],
+									[
+										5945,
+										5948
+									],
+									[
+										5958,
+										5961
+									],
+									[
+										5969,
+										5972
+									],
+									[
+										6195,
+										6198
+									],
+									[
+										6209,
+										6212
+									],
+									[
+										6291,
+										6294
+									],
+									[
+										6305,
+										6308
+									],
+									[
+										6387,
+										6390
+									],
+									[
+										6401,
+										6404
+									],
+									[
+										6483,
+										6486
+									],
+									[
+										6497,
+										6500
+									],
+									[
+										6615,
+										6618
+									],
+									[
+										6686,
+										6689
+									],
+									[
+										6694,
+										6697
+									],
+									[
+										6775,
+										6778
+									],
+									[
+										6846,
+										6849
+									],
+									[
+										6854,
+										6857
+									],
+									[
+										6935,
+										6938
+									],
+									[
+										7006,
+										7009
+									],
+									[
+										7014,
+										7017
+									],
+									[
+										7137,
+										7140
+									],
+									[
+										7227,
+										7230
+									],
+									[
+										7418,
+										7421
+									],
+									[
+										7431,
+										7434
+									],
+									[
+										7444,
+										7447
+									],
+									[
+										7557,
+										7560
+									],
+									[
+										7570,
+										7573
+									],
+									[
+										7583,
+										7586
+									],
+									[
+										7699,
+										7702
+									],
+									[
+										7707,
+										7710
+									],
+									[
+										7804,
+										7807
+									],
+									[
+										8002,
+										8005
+									],
+									[
+										8007,
+										8010
+									],
+									[
+										8019,
+										8022
+									],
+									[
+										8030,
+										8033
+									],
+									[
+										8091,
+										8094
+									],
+									[
+										8096,
+										8099
+									],
+									[
+										8108,
+										8111
+									],
+									[
+										8119,
+										8122
+									],
+									[
+										8180,
+										8183
+									],
+									[
+										8188,
+										8191
+									],
+									[
+										8199,
+										8202
+									],
+									[
+										8256,
+										8259
+									],
+									[
+										8264,
+										8267
+									],
+									[
+										8275,
+										8278
+									],
+									[
+										8332,
+										8335
+									],
+									[
+										8340,
+										8343
+									],
+									[
+										8351,
+										8354
+									],
+									[
+										8408,
+										8411
+									],
+									[
+										8416,
+										8419
+									],
+									[
+										8427,
+										8430
+									],
+									[
+										8671,
+										8674
+									],
+									[
+										8683,
+										8686
+									],
+									[
+										8694,
+										8697
+									],
+									[
+										8752,
+										8755
+									],
+									[
+										8763,
+										8766
+									],
+									[
+										8831,
+										8834
+									],
+									[
+										8840,
+										8843
+									],
+									[
+										8852,
+										8855
+									],
+									[
+										8863,
+										8866
+									],
+									[
+										8874,
+										8877
+									],
+									[
+										8962,
+										8965
+									],
+									[
+										8971,
+										8974
+									],
+									[
+										8983,
+										8986
+									],
+									[
+										8994,
+										8997
+									],
+									[
+										9005,
+										9008
+									],
+									[
+										9093,
+										9096
+									],
+									[
+										9102,
+										9105
+									],
+									[
+										9114,
+										9117
+									],
+									[
+										9125,
+										9128
+									],
+									[
+										9136,
+										9139
+									],
+									[
+										9224,
+										9227
+									],
+									[
+										9233,
+										9236
+									],
+									[
+										9245,
+										9248
+									],
+									[
+										9256,
+										9259
+									],
+									[
+										9267,
+										9270
+									],
+									[
+										9743,
+										9746
+									],
+									[
+										9795,
+										9798
+									],
+									[
+										9834,
+										9837
+									],
+									[
+										9873,
+										9876
+									],
+									[
+										9912,
+										9915
+									],
+									[
+										9951,
+										9954
+									],
+									[
+										9956,
+										9959
+									],
+									[
+										10003,
+										10006
+									],
+									[
+										10008,
+										10011
+									],
+									[
+										10288,
+										10291
+									],
+									[
+										10549,
+										10552
+									],
+									[
+										10561,
+										10564
+									],
+									[
+										10572,
+										10575
+									],
+									[
+										10628,
+										10631
+									],
+									[
+										10639,
+										10642
+									],
+									[
+										10707,
+										10710
+									],
+									[
+										10716,
+										10719
+									],
+									[
+										10728,
+										10731
+									],
+									[
+										10739,
+										10742
+									],
+									[
+										10750,
+										10753
+									],
+									[
+										10838,
+										10841
+									],
+									[
+										10847,
+										10850
+									],
+									[
+										10859,
+										10862
+									],
+									[
+										10870,
+										10873
+									],
+									[
+										10881,
+										10884
+									],
+									[
+										10969,
+										10972
+									],
+									[
+										10978,
+										10981
+									],
+									[
+										10990,
+										10993
+									],
+									[
+										11001,
+										11004
+									],
+									[
+										11012,
+										11015
+									],
+									[
+										11100,
+										11103
+									],
+									[
+										11109,
+										11112
+									],
+									[
+										11121,
+										11124
+									],
+									[
+										11132,
+										11135
+									],
+									[
+										11143,
+										11146
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								422,
+								434
+							]
+						],
+						"settings":
+						{
+							"default_dir": "/Users/rnelson2/Documents/projects/holc/site_diagnostics",
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ \t].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 341,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								260
+							]
+						],
+						"settings":
+						{
+							"auto_name": "http://digitalscholarshiplab.cartodb.com/api/v2/sq",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 152,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								152
+							]
+						],
+						"settings":
+						{
+							"auto_name": "select%20city,%20the_geom,%20holc_grade,%20holc_id",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/Users/rnelson2/Documents/projects/holc/site_diagnostics/shpfiles/index.js",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 4043,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2397,
+								2397
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 240.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 25.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "holc_diagnostics.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"rasterstore",
+				"holc/src/stores/RasterStore.js"
+			],
+			[
+				"areastore",
+				"holc/src/stores/AreaDescriptionsStore.js"
+			],
+			[
+				"areadescription.",
+				"holc/src/components/AreaDescription.jsx"
+			],
+			[
+				"holc",
+				"holc/src/components/HOLCMap.jsx"
+			],
+			[
+				"scssapp",
+				"holc/scss/components/app.scss"
+			],
+			[
+				"side",
+				"holc/src/components/SidebarMap.jsx"
+			],
+			[
+				"aread",
+				"holc/src/stores/AreaDescriptionsStore.js"
+			],
+			[
+				"app",
+				"holc/src/App.jsx"
+			],
+			[
+				"areades",
+				"holc/src/components/AreaDescription.jsx"
+			],
+			[
+				"raster",
+				"holc/src/stores/RasterStore.js"
+			],
+			[
+				"ras",
+				"holc/src/stores/RasterStore.js"
+			],
+			[
+				"downloa",
+				"holc/src/components/Downloader.jsx"
+			],
+			[
+				"index.html",
+				"holc/src/index.html"
+			],
+			[
+				"areade",
+				"holc/src/stores/AreaDescriptionsStore.js"
+			],
+			[
+				"cities",
+				"holc/src/stores/CitiesStore.js"
+			],
+			[
+				"text",
+				"holc/src/stores/TextsStore.js"
+			],
+			[
+				"area",
+				"holc/scss/components/areaDescription.scss"
+			],
+			[
+				"down",
+				"holc/src/components/Downloader.jsx"
+			],
+			[
+				"downloader",
+				"holc/scss/components/downloader.scss"
+			],
+			[
+				"city",
+				"holc/src/components/CityStats.jsx"
+			],
+			[
+				"action",
+				"holc/src/utils/AppActionCreator.js"
+			],
+			[
+				"mapstate",
+				"holc/src/stores/MapStateStore.js"
+			],
+			[
+				"user",
+				"holc/src/stores/UserLocationStore.js"
+			],
+			[
+				"citystor",
+				"holc/src/stores/CityStore.js"
+			],
+			[
+				"basema",
+				"holc/basemaps/tileLayers.json"
+			],
+			[
+				"userloca",
+				"holc/src/stores/UserLocationStore.js"
+			],
+			[
+				"citystat",
+				"holc/src/components/CityStats.jsx"
+			],
+			[
+				"raste",
+				"holc/src/stores/RasterStore.js"
+			],
+			[
+				"mapstte",
+				"holc/src/stores/MapStateStore.js"
+			],
+			[
+				"areasro",
+				"holc/src/stores/AreaDescriptionsStore.js"
+			],
+			[
+				"forms",
+				"holc/data/formsMetadata.json"
+			],
+			[
+				"citystats",
+				"holc/src/components/CityStats.jsx"
+			],
+			[
+				"store",
+				"holc/src/stores/MapStateStore.js"
+			],
+			[
+				"hol",
+				"holc/src/components/HOLCMap.jsx"
+			],
+			[
+				"holcm",
+				"holc/src/components/HOLCMap.jsx"
+			],
+			[
+				"_varia",
+				"holc/scss/_variables.scss"
+			],
+			[
+				"_var",
+				"richmondatlas-canals/scss/_variables.scss"
+			],
+			[
+				"citysto",
+				"holc/src/stores/CityStore.js"
+			],
+			[
+				"areadesc",
+				"holc/src/stores/AreaDescriptionsStore.js"
+			],
+			[
+				"appaction",
+				"holc/src/utils/AppActionCreator.js"
+			],
+			[
+				"areastor",
+				"holc/src/stores/AreaDescriptionsStore.js"
+			],
+			[
+				"citie",
+				"holc/src/stores/CitiesStore.js"
+			],
+			[
+				"donu",
+				"holc/src/components/Donut/L.Donut.js"
+			],
+			[
+				"mapsta",
+				"holc/src/stores/MapStateStore.js"
+			],
+			[
+				"dimen",
+				"holc/src/stores/DimensionsStore.js"
+			],
+			[
+				"cityst",
+				"holc/src/stores/CityStore.js"
+			],
+			[
+				"",
+				"holc/src/stores/AreaDescriptionsStore.js"
+			],
+			[
+				"textss",
+				"holc/src/stores/TextsStore.js"
+			],
+			[
+				"mapstat",
+				"holc/src/stores/MapStateStore.js"
+			],
+			[
+				"textsst",
+				"holc/src/stores/TextsStore.js"
+			],
+			[
+				"citystore",
+				"holc/src/stores/CityStore.js"
+			],
+			[
+				"statestat",
+				"holc/src/components/StateStats.jsx"
+			],
+			[
+				"citysnipp",
+				"holc/src/components/CitySnippet.jsx"
+			],
+			[
+				"app.sc",
+				"holc/scss/components/app.scss"
+			],
+			[
+				"layout",
+				"holc/scss/_layout.scss"
+			],
+			[
+				"areadescript",
+				"holc/scss/components/areaDescription.scss"
+			],
+			[
+				"areadescription",
+				"holc/src/stores/AreaDescriptionsStore.js"
+			],
+			[
+				"citystre",
+				"holc/src/stores/CityStore.js"
+			],
+			[
+				"linoln",
+				"/Volumes/MINARD/web/docs/projects/april1865/index.html"
+			],
+			[
+				"lootin",
+				"/Users/rnelson2/Documents/projects/April sesquicentennial/create_points_looting.py"
+			],
+			[
+				"browse",
+				"/Users/rnelson2/Sites/zotero/browse.php"
+			],
+			[
+				"inde",
+				"/Volumes/MINARD/web/docs/projects/rnelson2/forced_migration/index.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/Documents/projects/Digital Atlas/panorama/initialmaps.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 994.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 218.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

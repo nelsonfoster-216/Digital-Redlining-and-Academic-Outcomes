@@ -1,0 +1,271 @@
+{
+	"19370203": {
+		"1": [
+			"Name of City",
+			"Security Grade",
+			"Area No"
+		],
+		"2": "Description of Terrain",
+		"3": "Favorable Influences",
+		"4": "Detrimental Influences",
+		"5": {
+			"header": "Inhabitants",
+			"subcats": {
+				"a": "Type",
+				"b": "Estimated annual family income",
+				"c": "Foreign-born",
+				"d": "Negro",
+				"e": "Infiltration of",
+				"f": "Relief families",
+				"g": "Population is"
+			}
+		},
+		"6": {
+			"header": "Buildings",
+			"subcats": {
+				"a": "Type or Types",
+				"b": "Type of Construction",
+				"c": "Average age",
+				"d": "Repair"
+			}
+		},
+		"8": {
+			"header": "Occupancy",
+			"subcats": {
+				"a": "Land",
+				"b": "Dwelling units",
+				"c": "Home Owners"
+			}
+		},
+		"9": {
+			"header": "Sales Demand",
+			"subcats": {
+				"a": "",
+				"b": "",
+				"c": "Activity is"
+			}
+		},
+		"10": {
+			"header": "Rental Demand",
+			"subcats": {
+				"a": "",
+				"b": "",
+				"c": "Activity is"
+			}
+		},
+		"11": {
+			"header": "New Construction",
+			"subcats": {
+				"a": "Types",
+				"b": "Amount last year"
+			}
+		},
+		"12": {
+			"header": "Availability of Mortgage Funds",
+			"subcats": {
+				"a": "Home purchase",
+				"b": "Home building"
+			}
+		},
+		"13": "Trend of Desireability Next 10-15 Years",
+		"14": "Clarifying Remarks",
+		"15": "Information for this form was obtained from"
+	},
+	"19370601": {
+		"1": [
+			"Name of City",
+			"Security Grade",
+			"Area No"
+		],
+		"2": "Description of Terrain",
+		"3": "Favorable Influences",
+		"4": "Detrimental Influences",
+		"5": {
+			"header": "Inhabitants",
+			"subcats": {
+				"a": "Type",
+				"b": "Estimated annual family income",
+				"c": "Foreign-born",
+				"d": "Negro",
+				"e": "Infiltration of",
+				"f": "Relief families",
+				"g": "Population is"
+			}
+		},
+		"6": {
+			"header": "Buildings",
+			"subcats": {
+				"a": "Type or Types",
+				"b": "Type of Construction",
+				"c": "Average age",
+				"d": "Repair"
+			}
+		},
+		"8": {
+			"header": "Occupancy",
+			"subcats": {
+				"a": "Land",
+				"b": "Dwelling units",
+				"c": "Home Owners"
+			}
+		},
+		"9": {
+			"header": "Sales Demand",
+			"subcats": {
+				"a": "",
+				"b": "",
+				"c": "Activity is"
+			}
+		},
+		"10": {
+			"header": "Rental Demand",
+			"subcats": {
+				"a": "",
+				"b": "",
+				"c": "Activity is"
+			}
+		},
+		"11": {
+			"header": "New Construction",
+			"subcats": {
+				"a": "Types",
+				"b": "Amount last year"
+			}
+		},
+		"12": {
+			"header": "Availability of Mortgage Funds",
+			"subcats": {
+				"a": "Home purchase",
+				"b": "Home building"
+			}
+		},
+		"13": "Trend of Desireability Next 10-15 Years",
+		"14": "Clarifying Remarks",
+		"15": "Information for this form was obtained from"
+	},
+	"19370826": {
+		"1": [
+			"Name of City",
+			"Security Grade",
+			"Area No"
+		],
+		"2": "Description of Terrain",
+		"3": "Favorable Influences",
+		"4": "Detrimental Influences",
+		"5": {
+			"header": "Inhabitants",
+			"subcats": {
+				"a": "Type",
+				"b": "Estimated annual family income",
+				"c": "Foreign-born",
+				"d": "Negro",
+				"e": "Infiltration of",
+				"f": "Relief families",
+				"g": "Population is"
+			}
+		},
+		"6": {
+			"header": "Buildings",
+			"subcats": {
+				"a": "Type or Types",
+				"b": "Type of Construction",
+				"c": "Average age",
+				"d": "Repair"
+			}
+		},
+		"8": {
+			"header": "Occupancy",
+			"subcats": {
+				"a": "Land",
+				"b": "Dwelling units",
+				"c": "Home Owners"
+			}
+		},
+		"9": {
+			"header": "Sales Demand",
+			"subcats": {
+				"a": "",
+				"b": "",
+				"c": "Activity is"
+			}
+		},
+		"10": {
+			"header": "Rental Demand",
+			"subcats": {
+				"a": "",
+				"b": "",
+				"c": "Activity is"
+			}
+		},
+		"11": {
+			"header": "New Construction",
+			"subcats": {
+				"a": "Types",
+				"b": "Amount last year"
+			}
+		},
+		"12": {
+			"header": "Availability of Mortgage Funds",
+			"subcats": {
+				"a": "Home purchase",
+				"b": "Home building"
+			}
+		},
+		"13": "Trend of Desireability Next 10-15 Years",
+		"14": "Clarifying Remarks",
+		"15": "Information for this form was obtained from"
+	},
+	"19371001": {
+		"1": {
+			"header": "Area Characteristics",
+			"subcats": {
+				"a": "Description of Terrain",
+				"b": "Favorable Influences",
+				"c": "Detrimental Influences",
+				"d": "Percentage of land improved",
+				"e": "Trend of desireability next 10-15 yrs."
+			}
+		},
+		"2": {
+			"header": "Inhabitants",
+			"subcats": {
+				"a": "Occupation",
+				"b": "Estimated Annual Family Income",
+				"c": "Foreign-born families",
+				"d": "Negro",
+				"e": "Infiltration of",
+				"f": "Relief families",
+				"g": "Population is"
+			}
+		},
+		"4": {
+			"header": "Availability of Mortgage Funds",
+			"subcats": {
+				"a": "Home purchase",
+				"b": "Home building"
+			}
+		},
+		"5": "Clarifying Remarks",
+		"6": [
+			"Name and Location",
+			"Security Grade",
+			"Area No."
+		],
+	},
+	"1939": {
+		"1": {
+			"header": "Population",
+			"subcats": {
+				"b": "Class and Occupation",
+				"d": "Negro",
+				"e": "Shifting or Infiltration"
+			}
+		},
+		"6": "Mortgage Funds",
+		"8": "Description and Characteristics of Area" 
+	},
+	"1": {
+
+	}
+
+}

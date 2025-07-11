@@ -1,0 +1,320 @@
+---
+title: "Map Test - Performance Indicators"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(leaflet)
+library(dplyr)
+library(sf)
+library(readxl)
+```
+
+## Interactive School Performance Map
+
+```{r, fig.width=10, fig.height=8}
+# Load necessary data
+geocoded_path <- "~/digital_redlining/plot/output/cleveland_schools_geocoded.rds"
+redlining_file <- "~/digital_redlining/redlining_map_data/geojson.json"
+
+# Load data
+if(file.exists(geocoded_path)) {
+  schools_data <- readRDS(geocoded_path)
+} else {
+  # Create minimal test data
+  schools_data <- data.frame(
+    SchoolName = paste0("School ", 1:10),
+    SchoolIRN = paste0("IRN", 1:10),
+    Latitude = runif(10, 41.45, 41.55),
+    Longitude = runif(10, -81.75, -81.65),
+    Attendance_Rate = runif(10, 0.80, 0.95),
+    Chronic_Absenteeism = runif(10, 0.05, 0.25),
+    stringsAsFactors = FALSE
+  )
+}
+
+# Ensure coordinates are available
+if ("geo_lat" %in% colnames(schools_data) && "geo_lng" %in% colnames(schools_data)) {
+  schools_data$Latitude <- schools_data$geo_lat
+  schools_data$Longitude <- schools_data$geo_lng
+}
+
+# Load redlining data
+redlining_data <- sf::st_read(redlining_file, quiet = TRUE)
+
+# Set color palette for HOLC grades
+holc_colors <- c(
+  "A" = "#76a865",  # Green - "Best"
+  "B" = "#7cb5bd",  # Blue - "Still Desirable" 
+  "C" = "#ffff00",  # Yellow - "Definitely Declining"
+  "D" = "#d9533c"   # Red - "Hazardous"
+)
+
+# Define indicators
+indicators <- list(
+  attendance = list(
+    id = "attendance",
+    name = "Attendance Rate",
+    column = "Attendance_Rate",
+    is_negative = FALSE
+  ),
+  chronic = list(
+    id = "chronic",
+    name = "Chronic Absenteeism Rate",
+    column = "Chronic_Absenteeism",
+    is_negative = TRUE
+  )
+)
+
+# Generate popups and colors for indicators
+indicator_data <- list()
+for (id in names(indicators)) {
+  indicator <- indicators[[id]]
+  column_name <- indicator$column
+  
+  # Make sure the column exists or add it with random data
+  if (!column_name %in% colnames(schools_data)) {
+    if (indicator$is_negative) {
+      schools_data[[column_name]] <- runif(nrow(schools_data), 0.05, 0.25)
+    } else {
+      schools_data[[column_name]] <- runif(nrow(schools_data), 0.75, 0.95)
+    }
+  }
+  
+  # Filter schools that have data for this indicator
+  filtered_schools <- schools_data %>%
+    filter(!is.na(!!sym(column_name)))
+  
+  # Create popup content
+  filtered_schools$popup_content <- sapply(1:nrow(filtered_schools), function(i) {
+    school <- filtered_schools[i,]
+    value <- school[[column_name]]
+    value_display <- paste0(round(value * 100, 1), "%")
+    
+    paste0(
+      "<b>", school$SchoolName, "</b><br>",
+      "IRN: ", school$SchoolIRN, "<br>",
+      indicator$name, ": ", value_display
+    )
+  })
+  
+  # Select color palette based on indicator type
+  if (indicator$is_negative) {
+    pal <- colorNumeric(
+      palette = "YlOrRd",
+      domain = range(filtered_schools[[column_name]], na.rm = TRUE),
+      reverse = FALSE
+    )
+  } else {
+    pal <- colorNumeric(
+      palette = "viridis",
+      domain = range(filtered_schools[[column_name]], na.rm = TRUE),
+      reverse = FALSE
+    )
+  }
+  
+  # Store this indicator's processed data
+  indicator_data[[id]] <- list(
+    id = id,
+    name = indicator$name,
+    column = column_name,
+    is_negative = indicator$is_negative,
+    data = filtered_schools,
+    palette = pal
+  )
+}
+
+# Create HTML dropdown directly - this will be output before the map
+cat('
+<div style="background-color: white; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 15px; max-width: 300px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+  <label for="indicator-select" style="font-weight: bold; display: block; margin-bottom: 5px;">Select Performance Indicator:</label>
+  <select id="indicator-select" style="width: 100%; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
+')
+
+# Add options for each indicator
+for (id in names(indicators)) {
+  cat(sprintf('    <option value="%s">%s</option>\n', id, indicators[[id]]$name))
+}
+
+cat('  </select>
+</div>
+')
+
+# Create the base map with redlining districts
+first_indicator_id <- names(indicators)[1]
+first_indicator_data <- indicator_data[[first_indicator_id]]
+
+base_map <- leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(lng = -81.6944, lat = 41.4993, zoom = 11) %>%
+  addPolygons(
+    data = redlining_data,
+    fillColor = ~ifelse(grade %in% names(holc_colors), 
+                       holc_colors[grade], 
+                       "#CCCCCC"),
+    fillOpacity = 0.6,
+    color = "#444444",
+    weight = 1,
+    label = ~paste("Grade:", grade),
+    group = "Redlining Districts"
+  ) %>%
+  addCircleMarkers(
+    data = first_indicator_data$data,
+    lng = ~Longitude,
+    lat = ~Latitude,
+    radius = 6,
+    fillColor = ~first_indicator_data$palette(get(first_indicator_data$column)),
+    fillOpacity = 0.8,
+    color = "white",
+    weight = 1,
+    popup = ~popup_content,
+    group = "Schools"
+  ) %>%
+  addLayersControl(
+    overlayGroups = c("Redlining Districts", "Schools"),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>%
+  addLegend(
+    position = "bottomleft",
+    colors = unname(holc_colors),
+    labels = paste("Grade", names(holc_colors)),
+    title = "HOLC Grades (1930s)",
+    opacity = 0.7
+  ) %>%
+  addLegend(
+    position = "bottomright",
+    pal = first_indicator_data$palette,
+    values = first_indicator_data$data[[first_indicator_data$column]],
+    title = first_indicator_data$name,
+    opacity = 0.8,
+    labFormat = labelFormat(
+      prefix = "",
+      suffix = "%",
+      transform = function(x) round(x * 100, 1)
+    ),
+    layerId = "indicator-legend"
+  )
+
+# Add JavaScript to handle dropdown interaction
+js_code <- sprintf('
+function(el, x) {
+  // Wait for everything to load
+  setTimeout(function() {
+    // Get the Leaflet map instance
+    var map = this.getMap(el);
+    if (!map) {
+      console.error("Map not found");
+      return;
+    }
+    
+    // Store indicator data
+    var indicatorData = %s;
+    
+    // Add listener to dropdown
+    var dropdown = document.getElementById("indicator-select");
+    if (!dropdown) {
+      console.error("Dropdown not found");
+      return;
+    }
+    
+    console.log("Found dropdown and map elements");
+    
+    // Function to switch indicators
+    function switchIndicator(indicatorId) {
+      console.log("Switching to indicator:", indicatorId);
+      
+      if (!indicatorData[indicatorId]) {
+        console.error("Indicator not found:", indicatorId);
+        return;
+      }
+      
+      var indicator = indicatorData[indicatorId];
+      
+      // Remove existing school markers
+      map.eachLayer(function(layer) {
+        if (layer.options && layer.options.group === "Schools") {
+          map.removeLayer(layer);
+        }
+      });
+      
+      // Remove existing indicator legend
+      var legends = document.querySelectorAll(".leaflet-bottom.leaflet-right .leaflet-control");
+      legends.forEach(function(legend) {
+        var legendContent = legend.innerHTML || "";
+        if (legendContent.includes("%%") || 
+            legendContent.includes("Rate") || 
+            legendContent.includes("Score")) {
+          legend.remove();
+        }
+      });
+      
+      // Add new school markers
+      if (indicator.data && indicator.data.length > 0) {
+        indicator.data.forEach(function(school) {
+          if (!school.Latitude || !school.Longitude) return;
+          
+          var value = school[indicator.column];
+          var color = indicator.palette(value);
+          
+          L.circleMarker([school.Latitude, school.Longitude], {
+            radius: 6,
+            fillColor: color,
+            fillOpacity: 0.8,
+            color: "white",
+            weight: 1,
+            group: "Schools"
+          }).bindPopup(school.popup_content).addTo(map);
+        });
+        
+        // Add new legend
+        var legend = L.control({position: "bottomright"});
+        legend.onAdd = function() {
+          var div = L.DomUtil.create("div", "info legend");
+          div.innerHTML = "<strong>" + indicator.name + "</strong><br>";
+          
+          // Get the values range
+          var values = indicator.data.map(function(d) { 
+            return parseFloat(d[indicator.column]); 
+          });
+          var validValues = values.filter(function(v) { return !isNaN(v); });
+          var min = Math.min.apply(null, validValues);
+          var max = Math.max.apply(null, validValues);
+          var range = max - min;
+          var step = range / 4;
+          
+          // Create the color scale
+          for (var i = 0; i < 5; i++) {
+            var value = min + (i * step);
+            var color = indicator.palette(value);
+            div.innerHTML += 
+              "<i style=\'background:" + color + "; width:18px; height:18px; " + 
+              "float:left; margin-right:8px; opacity:0.7;\'></i> " +
+              (value * 100).toFixed(1) + "%%" + (i < 4 ? "<br>" : "");
+          }
+          
+          return div;
+        };
+        
+        legend.addTo(map);
+      }
+    }
+    
+    // Attach event listener to dropdown
+    dropdown.addEventListener("change", function() {
+      switchIndicator(this.value);
+    });
+    
+    // Set initial indicator
+    if (dropdown.options.length > 0) {
+      dropdown.selectedIndex = 0;
+      switchIndicator(dropdown.options[0].value);
+    }
+  }, 500);
+}', jsonlite::toJSON(indicator_data, auto_unbox = TRUE, force = TRUE))
+
+# Display the map with JavaScript
+base_map %>% htmlwidgets::onRender(js_code)
+```
+
+The map above shows Cleveland schools colored by their performance indicators. Use the dropdown to select between different indicators. The schools are displayed over historical redlining districts from the 1930s Home Owners' Loan Corporation (HOLC). 

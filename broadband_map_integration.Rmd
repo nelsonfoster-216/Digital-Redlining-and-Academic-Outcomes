@@ -1,0 +1,213 @@
+---
+title: "Digital Redlining with Broadband Overlay"
+author: "ProKofa Solutions, LLP"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    self_contained: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, comment = NA)
+
+# Load required libraries
+library(leaflet)
+library(sf)
+library(dplyr)
+library(htmltools)
+library(RColorBrewer)
+```
+
+## Digital Redlining with Broadband Speed Overlay
+
+This document demonstrates how to integrate historical redlining data with modern broadband speed data to identify patterns of digital redlining.
+
+### Loading the Data
+
+First, we'll load both the historical redlining data and the digitized broadband data.
+
+```{r load_data}
+# Load redlining data
+redlining_data_path <- "../redlining_map_data/geojson.json"
+redlining_data <- sf::st_read(redlining_data_path, quiet = TRUE)
+
+# Load digitized broadband data
+broadband_data_path <- "cleveland_broadband_data.rds"
+
+if(file.exists(broadband_data_path)) {
+  broadband_data <- readRDS(broadband_data_path)
+  has_broadband_data <- TRUE
+} else {
+  has_broadband_data <- FALSE
+  message("Broadband data not found. Please run the digitization script first.")
+}
+```
+
+### Creating the Map with Toggleable Layers
+
+Now we'll create an interactive map with toggleable layers for both redlining and broadband speeds.
+
+```{r create_map, eval=has_broadband_data}
+# Create map with both layers
+map <- leaflet() %>%
+  addProviderTiles("CartoDB.Positron", group = "Base Map") %>%
+  setView(lng = -81.7, lat = 41.5, zoom = 12)
+
+# Add redlining layer
+redlining_colors <- c("A" = "#76a865", "B" = "#7cb5bd", "C" = "#ffff00", "D" = "#d9838d")
+
+map <- map %>%
+  addPolygons(
+    data = redlining_data,
+    fillColor = ~redlining_colors[grade],
+    color = "#000000",
+    weight = 1,
+    opacity = 1,
+    fillOpacity = 0.6,
+    highlightOptions = highlightOptions(color = "white", weight = 2, bringToFront = TRUE),
+    label = ~paste0("Grade: ", grade, " - ", label),
+    group = "Historical Redlining (1930s)"
+  )
+
+# Add broadband layer
+broadband_colors <- c(
+  "0-9 Mbps" = "#d73027",
+  "10-24 Mbps" = "#f46d43",
+  "25-49 Mbps" = "#fdae61",
+  "50-100 Mbps" = "#abd9e9",
+  "100+ Mbps" = "#74add1"
+)
+
+map <- map %>%
+  addPolygons(
+    data = broadband_data,
+    fillColor = ~color_code,
+    color = "#000000",
+    weight = 1,
+    opacity = 1,
+    fillOpacity = 0.7,
+    highlightOptions = highlightOptions(color = "white", weight = 2, bringToFront = TRUE),
+    label = ~paste0("Broadband Speed: ", speed_category),
+    group = "Broadband Speeds (2021)"
+  )
+
+# Add school locations if available
+schools_path <- "../schools_geocoded.rds"
+if(file.exists(schools_path)) {
+  schools_data <- readRDS(schools_path)
+  
+  map <- map %>%
+    addCircleMarkers(
+      data = schools_data,
+      lng = ~longitude, 
+      lat = ~latitude,
+      radius = 5,
+      color = "#0000FF",
+      fillOpacity = 0.8,
+      label = ~school_name,
+      group = "Schools"
+    )
+}
+
+# Add layer controls
+map %>%
+  addLayersControl(
+    baseGroups = "Base Map",
+    overlayGroups = c("Historical Redlining (1930s)", "Broadband Speeds (2021)", "Schools"),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>%
+  addLegend(
+    position = "bottomright",
+    colors = redlining_colors,
+    labels = names(redlining_colors),
+    title = "HOLC Grades (1930s)",
+    opacity = 0.7,
+    group = "Historical Redlining (1930s)"
+  ) %>%
+  addLegend(
+    position = "bottomright",
+    colors = broadband_colors,
+    labels = names(broadband_colors),
+    title = "Broadband Speeds",
+    opacity = 0.7,
+    group = "Broadband Speeds (2021)"
+  )
+```
+
+### Spatial Analysis
+
+This section will perform a spatial analysis to identify the relationship between historical redlining and current broadband speeds.
+
+```{r spatial_analysis, eval=has_broadband_data}
+# Ensure same CRS
+redlining_data <- sf::st_transform(redlining_data, crs = 4326)
+broadband_data <- sf::st_transform(broadband_data, crs = 4326)
+
+# Perform spatial intersection
+intersection <- sf::st_intersection(redlining_data, broadband_data)
+intersection$area_sqm <- as.numeric(sf::st_area(intersection))
+
+# Calculate summary statistics
+summary_stats <- intersection %>%
+  sf::st_drop_geometry() %>%
+  group_by(grade, speed_category) %>%
+  summarise(
+    total_area = sum(area_sqm),
+    polygon_count = n(),
+    .groups = "drop"
+  )
+
+# Convert to percentages within each grade
+summary_with_pct <- summary_stats %>%
+  group_by(grade) %>%
+  mutate(
+    grade_total_area = sum(total_area),
+    pct_area = (total_area / grade_total_area) * 100
+  ) %>%
+  ungroup()
+
+# Display the summary table
+knitr::kable(
+  summary_with_pct %>%
+    select(grade, speed_category, polygon_count, pct_area) %>%
+    arrange(grade, desc(pct_area)),
+  caption = "Percentage of each HOLC grade area covered by broadband speed categories",
+  digits = 2
+)
+
+# Create a visualization of the relationship
+library(ggplot2)
+
+ggplot(summary_with_pct, aes(x = grade, y = pct_area, fill = speed_category)) +
+  geom_bar(stat = "identity", position = "stack") +
+  scale_fill_manual(values = broadband_colors) +
+  labs(
+    title = "Broadband Speed Distribution by HOLC Grade",
+    x = "HOLC Grade",
+    y = "Percentage of Area",
+    fill = "Broadband Speed"
+  ) +
+  theme_minimal()
+```
+
+## Conclusion
+
+This analysis helps identify whether areas historically subjected to redlining (grades C and D) continue to experience digital inequality through lower broadband speeds. The overlay map and statistical analysis provide evidence of whether digital redlining exists in Cleveland.
+
+## How to Run the Digitization Process
+
+If you haven't yet digitized the broadband data, follow these steps:
+
+1. Navigate to the broadband_redlining directory
+2. Run the digitization script:
+
+```r
+# In R console
+setwd("broadband_redlining")
+source("digitize_broadband.R")
+```
+
+3. Follow the on-screen instructions to digitize the broadband zones from the PDF
+4. Once complete, re-run this R Markdown file to see the results 

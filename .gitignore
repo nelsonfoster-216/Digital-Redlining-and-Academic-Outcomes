@@ -1,0 +1,76 @@
+# R and RStudio files
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.bak
+*.bak2
+*.backup
+*.backup_*
+*_backup
+*_backup.*
+
+# Temporary files
+temp_processing/
+*/temp_*
+*_temp.*
+
+# Large image directories
+GreaterCleveland/
+
+# Generated HTML files (keep main analysis files but exclude test/temp ones)
+*_test.html
+test_*.html
+temp_*.html
+direct_test.html
+fixed.html
+
+# Data files that are too large or temporary
+*.rds
+places_result.rds
+test_geocoded_schools.rds
+
+# Log files
+*.log
+
+# Large CSV files (keep smaller ones)
+# You may want to uncomment these if files are very large
+# *.csv
+
+# PDF files if they're large
+# state_reports/
+
+# Plot/output directories with generated content
+plot/test/
+plot/output/
+plot/img/
+
+# Node modules if any
+node_modules/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local 
