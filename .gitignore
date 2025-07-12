@@ -53,6 +53,10 @@ test_geocoded_schools.rds
 # You may want to uncomment these if files are very large
 # *.csv
 
+# Large TIFF files (over 100MB limit)
+*.tif
+redlining_map_data/OH_Cleveland_1940.tif
+
 # PDF files if they're large
 # state_reports/
 
